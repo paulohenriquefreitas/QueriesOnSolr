@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html >
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:c="http://java.sun.com/jstl/core" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:form="http://www.springframework.org/tags/form">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
@@ -69,7 +69,7 @@ overflow: hidden;
 	</div>
 </div>
 					
-		<form:form class="form-horizontal"  action="/busca" method="post" modelAttribute="query" >
+		<form:form class="form-horizontal"  action="/test" method="post" modelAttribute="query" >
 		<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">
@@ -79,7 +79,7 @@ overflow: hidden;
 			          SUBMARINO <span class="caret"></span>
 			        </a>
 			        <ul class="dropdown-menu" role="menu">
-			          <li><a href="#">ProduÃ§Ã£o</a></li>
+			          <li><a href="#">Produção</a></li>
 			          <li><a href="#">Staging</a></li>			         
 			        </ul>
 			      </div>
@@ -88,13 +88,13 @@ overflow: hidden;
 			          AMERICANAS <span class="caret"></span>
 			        </a>
 			         <ul class="dropdown-menu" role="menu">
-			          <li><a href="#">ProduÃ§Ã£o</a></li>
+			          <li><a href="#">Produção</a></li>
 			          <li><a href="#">Staging</a></li>			         
 			        </ul>
 			      </div>
 			      <a class="btn btn-shop" role="button">SHOPTIME</a>
 			      <a class="btn btn-soub" role="button">SOUBARATO</a>
-			      <a class="btn btn-success" role="button">HOMOLOGAÃ‡ÃƒO</a>
+			      <a class="btn btn-success" role="button">HOMOLOGAÇÃO</a>
 			    </div>
 			</div>
 		</div>
@@ -103,40 +103,17 @@ overflow: hidden;
 	<div class="container">
 	<div class="row clearfix">
 		<div class="col-md-4 col">
-				<label class="control-label">Item Id</label>
+			<label class="control-label">Item Id</label>
 				<div class="controls ">
 					<form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/>
 				</div>
-				
-				<label class="control-label">NÃºmeros de Parceiros</label>
-				<div class="controls ">
-					<form:input class="form-control" placeholder="Pesquisa por Id"  path="numPartner"/>
-				</div>
-				
-				<label class="control-label">NÃºmeros de Skus</label>
-				<div class="controls ">
-					<form:input class="form-control" placeholder="Pesquisa por Id"  path="numSkus"/>
-				</div>
-				<label class="control-label" >Origem do Item:</label>
-				<form:radiobutton class="radio-inline" path="type" value="100"/>100%
-				<form:radiobutton class="radio-inline" path="type" value="misto"/>misto
-				<form:radiobutton class="radio-inline" path="type" value="b2w"/>b2w
-				<br/>
-				
-				<label class="control-label" >Estoque:</label>
+				<label class="control-label" >Estoque:</label><br/>
 				<form:radiobutton class="radio-inline" path="stock" value="10"/>true
 				<form:radiobutton class="radio-inline" path="stock" value="false"/>false
 				<br/>
-				
-				<label class="control-label" >Moda:   </label>
-				<form:radiobutton class="radio-inline" path="fashion" value="10"/>true
-				<form:radiobutton class="radio-inline" path="fashion" value="false"/>false
-				<br/>
-				
 				<label class="control-label">Campos</label>	<br/>				
 				<form:select  class="checkbox" path="fields" items="${fields}"> 		
-	       		 </form:select>
-	       		 	  
+	       		 </form:select>  
 				<div class="form-actions"><br/>
 					<button type="submit" class="btn btn-success">Submit</button>
 					<button type="button" class="btn">Cancel</button>
@@ -145,7 +122,14 @@ overflow: hidden;
 		</div>
 		<div class="col-md-4 col2">
 		<label class="control-label" >Resultado da query:</label><br/>
-					<pre>${itemList}</pre>
+			<table> 
+			   <c:forEach items="${listIndexedItem}" var="item">			 
+					<tr>
+						<td>${item.name}</td>
+						
+					</tr>			 
+			   </c:forEach>
+		</table>			
 		</div>
 	</div>
 </div>

@@ -4,12 +4,9 @@
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Navegue</title>
+        <meta http-equiv="Content-Type" content="text/json; charset=UTF-8">
     </head>
     <body>
-        <h1>Pagina navegue</h1>
-        <p>Dados Salvos</p>
-        
+        ${itemList}        
     </body>
 </html>

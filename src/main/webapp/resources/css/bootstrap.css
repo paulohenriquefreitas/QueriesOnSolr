@@ -928,6 +928,8 @@ figure {
 }
 img {
   vertical-align: middle;
+  width: 7%;
+  height: 45px;
 }
 .img-responsive,
 .thumbnail > img,
@@ -1085,7 +1087,7 @@ h2,
 }
 h3,
 .h3 {
-  font-size: 24px;
+  font-size: 40px;
 }
 h4,
 .h4 {
@@ -1403,7 +1405,7 @@ pre code {
 }
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 1135px;
   }
 }
 @media (min-width: 1200px) {
@@ -1419,13 +1421,14 @@ pre code {
 }
 .row {
   margin-right: -15px;
-  margin-left: -15px;
+  margin-left: -15px;  
+  margin-bottom: 0px;
 }
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   position: relative;
   min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 1px;
+  padding-left: 1px;
 }
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
   float: left;
@@ -1748,6 +1751,11 @@ pre code {
   .col-md-12 {
     width: 100%;
   }
+  .col-md-13 {
+    width: 100%;
+    border: 2px solid #e3e3e3;
+	border-radius: 4px;
+  }
   .col-md-11 {
     width: 91.66666667%;
   }
@@ -1770,7 +1778,7 @@ pre code {
     width: 41.66666667%;
   }
   .col-md-4 {
-    width: 33.33333333%;
+    width: 25%;
   }
   .col-md-3 {
     width: 25%;
@@ -2335,6 +2343,7 @@ input[type="range"] {
 select[multiple],
 select[size] {
   height: auto;
+  width: 97%;
 }
 input[type="file"]:focus,
 input[type="radio"]:focus,
@@ -2353,7 +2362,7 @@ output {
 }
 .form-control {
   display: block;
-  width: 15%;
+  width: 97%;
   height: 34px;
   padding: 6px 12px;
   font-size: 14px;
@@ -2690,7 +2699,7 @@ select[multiple].input-lg {
   padding-top: 2px;
   padding-bottom: 6px;
   margin-top: 0;
-  margin-bottom: -5px;
+  margin-bottom: 2px;
   border-radius: 5px;
   padding-top: 8px;
   padding-left: 5px;
@@ -2819,8 +2828,20 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-primary {
   color: #fff;
-  background-color: #428bca;
+  background-color: #007EB8;
+  border-color: #062138;
+}
+
+.btn-soub {
+  color: #fff;
+  background-color: #670dd1;
   border-color: #357ebd;
+}
+
+.btn-shop {
+  color: #fff;
+  background-color: #FF8C00;
+  border-color: #FF8C00;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -2830,6 +2851,31 @@ fieldset[disabled] .btn-default.active {
   color: #fff;
   background-color: #3071a9;
   border-color: #285e8e;
+}
+
+.btn-shop:hover,
+.btn-shop:focus,
+.btn-shop:active,
+.btn-shop.active,
+.open > .dropdown-toggle.btn-shop {
+  color: #fff;
+  background-color: #ef8512;
+  border-color: #ef8512;
+}
+
+.font-group{
+	font-size:18px;
+}
+
+
+.btn-soub:hover,
+.btn-soub:focus,
+.btn-soub:active,
+.btn-soub.active,
+.open > .dropdown-toggle.btn-soub {
+  color: #fff;
+  background-color: #9370DB;
+  border-color: #9370DB;
 }
 .btn-primary:active,
 .btn-primary.active,
@@ -2983,7 +3029,7 @@ fieldset[disabled] .btn-warning.active {
 }
 .btn-danger {
   color: #fff;
-  background-color: #d9534f;
+  background-color: #e60014;
   border-color: #d43f3a;
 }
 .btn-danger:hover,
@@ -3065,14 +3111,14 @@ fieldset[disabled] .btn-link:focus {
 .btn-sm,
 .btn-group-sm > .btn {
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: 18px;
   line-height: 1.5;
   border-radius: 3px;
 }
 .btn-xs,
 .btn-group-xs > .btn {
   padding: 1px 5px;
-  font-size: 12px;
+  font-size: 18px;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -5033,12 +5079,13 @@ a.list-group-item-danger.active:focus {
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+          margin-bottom: 0px;	
 }
 .panel-body {
   padding: 15px;
 }
 .panel-heading {
-  padding: 10px 15px;
+  padding: 3px 4px;
   border-bottom: 1px solid transparent;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
@@ -5051,6 +5098,9 @@ a.list-group-item-danger.active:focus {
   margin-bottom: 0;
   font-size: 16px;
   color: inherit;
+  font-size: 27px;
+  color: rgb(129, 52, 68);
+  font-style: oblique;  
 }
 .panel-title > a {
   color: inherit;

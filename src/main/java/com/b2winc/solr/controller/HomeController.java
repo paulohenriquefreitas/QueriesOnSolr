@@ -10,6 +10,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +20,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.UpdateRequest;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,47 +35,48 @@ import com.b2w.catalogbackendcommons.index.IndexedItem;
 import com.b2w.catalogbackendcommons.index.IndexedMarketPlaceItem;
 import com.b2winc.solr.model.QueryForm;
 import com.b2winc.solr.repository.ItemSolrDao;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller
 public class HomeController {
 
 	@RequestMapping(value="/")
 	public ModelAndView test() throws IOException{
-		ModelAndView mav = new ModelAndView("home","query",new QueryForm());
-		Map<String,String> phones = new HashedMap();
-		IndexedItem indexedItem = new IndexedItem();
-		for(Field dados : IndexedItem.class.getDeclaredFields()){;
-		 
-		 phones.put(dados.getName(),dados.getName());
-		
-		}
-		mav.addObject("phonesMap",phones);
-		
-		
-		
+			ModelAndView mav = new ModelAndView("home","query",new QueryForm());		
+			mav.addObject("fields",getFields());	
 		return mav;
 	}
 	
-	@RequestMapping(value="/test", method=RequestMethod.POST)
-	public ModelAndView navegue(@ModelAttribute("query") QueryForm queryForm, Model model) throws IOException, SolrServerException{
+	private Object getFields() {
+		Map<String,String> fields = new HashedMap();
+		for(Field dados : IndexedItem.class.getDeclaredFields()){
+		 		 fields.put(dados.getName(),dados.getName());		
+		}
+		return fields;
+	}
+
+	@RequestMapping(value="/busca", method=RequestMethod.POST)
+	public ModelAndView navegue(@ModelAttribute("query") QueryForm queryForm, Model model) throws IOException, SolrServerException, JAXBException{
 		List<IndexedItem> listIndexedItem = new ArrayList<IndexedItem>();
-		/*indexedItem.setItemName(query.getId());
+			/*indexedItem.setItemName(query.getId());
 		indexedItem.setItemId(Long.valueOf(query.getStock()));*/
-		String solrUrl = "http://10.13.51.14:8080/solr" ;
+		String solrUrl = "http://10.13.146.27:8080/solr" ;
 		ItemSolrDao itemSolrDao = getItemSolrDao(solrUrl);
 		listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm);
-		
-		model.addAttribute("listIndexedItem",listIndexedItem);
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String json = gson.toJson(listIndexedItem);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
+		Object json2 = mapper.readValue(json, Object.class);
+		model.addAttribute("itemList",mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json2));
 		ModelAndView mv =  new ModelAndView("home");
-		mv.addObject("msg", "paulo marketplace");
-		Map<String,String> itens = new HashedMap();
-		for(Field dados : IndexedItem.class.getDeclaredFields()){		 
-		 itens.put(dados.getName(),dados.getName());		
-		}
-		mv.addObject("phonesMap",itens);		
+		System.out.println(json);
+				
+		mv.addObject("fields",getFields());		
 		
 		
-		//pega_produtos_no_solr(itemSolrDao,solrUrl);
+		
 		
 		
 		
@@ -91,50 +97,27 @@ public class HomeController {
 		return itemSolrDao;
 	}
 	
-	/*	public static MarketPlaceSolrDao getMarketPlaceItemSolrDao(String solrUrl) throws MalformedURLException{
-		CommonSolrTemplate solrTemplate =  new CommonSolrTemplate();
-		HttpSolrServer solrServer = new HttpSolrServer(solrUrl+"/idxMarketPlace");
-		solrTemplate.setServer(solrServer);
-		MarketPlaceSolrDao itemSolrDao = new MarketPlaceSolrDao();
-		itemSolrDao.setTemplate(solrTemplate);
-		
-		return itemSolrDao;
-	}*/
+	
 	
 	private List<IndexedItem> getItem(ItemSolrDao itemSolrDao,String solrUrl, QueryForm queryForm) throws SolrServerException, IOException{
 		String str = "";
 		if(StringUtils.isNotEmpty(System.getProperty("query")))
 				str = System.getProperty("query");
 		SolrQuery query = new SolrQuery(str);
-		query.addFilterQuery(queryForm.getId());
-		/*query.add("fl", "itemId");
-		query.add("rows", "100000");*/
+		String id = queryForm.getId();
+		if(!id.isEmpty()){
+			query = new SolrQuery("itemId:"+id);
+		}
+		//query.addFilterQuery(queryForm.getId());
+	/*	query.add("fl", "itemId");
+		query.add("rows", "10");*/
 		List<IndexedItem> indexedItem = itemSolrDao.query(query);
-		System.out.println(indexedItem.size());
+		System.out.println(indexedItem.get(0).getId());
 		
-	/*	if(produtos_sem_preco_no_idxItem != null && produtos_sem_preco_no_idxItem.size() > 0 ){
-			MarketPlaceSolrDao marketPlaceDao = getMarketPlaceItemSolrDao(solrUrl);
-			
-			for(IndexedItem item : produtos_sem_preco_no_idxItem){
-				SolrQuery qerymkt = new SolrQuery("+itemId:"+item.getItemId() + " AND partnerStatus:true AND itemStock:true");
-				
-				qerymkt.add("fl", "partnerStatus");
-				qerymkt.add("fl", "itemStock");
-				
-				List<IndexedMarketPlaceItem> lista_de_produtos_marketplace = marketPlaceDao.query(qerymkt);
-				
-				if(lista_de_produtos_marketplace == null || lista_de_produtos_marketplace.size() == 0){
-					System.out.println("Item sem preço no site: " + item.getItemId());
-					if(StringUtils.isNotBlank(System.getProperty("remove")) && System.getProperty("remove").equalsIgnoreCase("true")){
-						UpdateRequest req = new UpdateRequest();
-						req.deleteById(item.getId());
-						req.process(itemSolrDao.getTemplate().getServer());
-						System.out.println("Item removido do indice "+item.getId());
-					}
-				}
-			}
-		}*/
+	
 		return indexedItem;
 	}
+	
+	
 	
 }
