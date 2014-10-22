@@ -2342,7 +2342,7 @@ input[type="range"] {
 }
 select[multiple],
 select[size] {
-  height: auto;
+  height: 130px;
   width: 97%;
 }
 input[type="file"]:focus,
@@ -2430,7 +2430,7 @@ input[type="month"].input-lg {
 }
 .radio,
 .checkbox {
-  position: relative;
+  position: relative;7px
   display: block;
   min-height: 20px;
   margin-top: 10px;
@@ -2441,7 +2441,7 @@ input[type="month"].input-lg {
   padding-left: 20px;
   margin-bottom: 0;
   font-weight: normal;
-  cursor: pointer;
+  cursor: pointer;7px
 }
 .radio input[type="radio"],
 .radio-inline input[type="radio"],
@@ -2501,7 +2501,7 @@ fieldset[disabled] .checkbox label {
 }
 .input-sm,
 .form-horizontal .form-group-sm .form-control {
-  height: 30px;
+  height: 30px;7px
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
@@ -2701,7 +2701,7 @@ select[multiple].input-lg {
   margin-top: 0;
   margin-bottom: 2px;
   border-radius: 5px;
-  padding-top: 8px;
+  padding-top: 7px;
   padding-left: 5px;
 }
 }
@@ -2803,6 +2803,7 @@ fieldset[disabled] .btn {
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
   background-image: none;
+  
 }
 .btn-default.disabled,
 .btn-default[disabled],
@@ -2829,7 +2830,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary {
   color: #fff;
   background-color: #007EB8;
-  border-color: #062138;
+  border-color: #297ABE;;
 }
 
 .btn-soub {
@@ -2881,6 +2882,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
   background-image: none;
+  
 }
 .btn-primary.disabled,
 .btn-primary[disabled],
@@ -2963,6 +2965,7 @@ fieldset[disabled] .btn-success.active {
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
   background-image: none;
+  
 }
 .btn-info.disabled,
 .btn-info[disabled],
@@ -3004,6 +3007,7 @@ fieldset[disabled] .btn-info.active {
 .btn-warning.active,
 .open > .dropdown-toggle.btn-warning {
   background-image: none;
+  
 }
 .btn-warning.disabled,
 .btn-warning[disabled],
@@ -3217,7 +3221,6 @@ tbody.collapse.in {
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #333;
   white-space: nowrap;
 }
 .dropdown-menu > li > a:hover,
@@ -6285,3 +6288,13 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+h1 {
+  background-color: #565656;
+  color: transparent;
+  text-shadow: 0px 2px 3px rgba(255,255,255,0.5);
+  -webkit-background-clip: text;
+     -moz-background-clip: text;
+          background-clip: text;
+}
+

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -9,10 +10,18 @@
 <title>Solr Queries Simplifying</title>
 <link type="text/css" href="/resources/css/bootstrap.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/hover.css" rel="stylesheet"/>
+<link type="text/css" href="/resources/css/bootstrap-select.css" rel="stylesheet"/>
+<link href="bootstrap-switch.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
+<script src="/resources/js/bootstrap-select.js"></script>
+
 
 <style type="text/css">
+.btn-custom:active {
+    top: 5px;
+    border-bottom: 0;
+}
 	.imagem  {
 	background-image: url("img/apache-solr.jpg");
 	
@@ -48,13 +57,13 @@ border: 2px solid #e3e3e3;
 .col-wrap{
 overflow: hidden; 
 }
-	
+
 </style> 
 </head>
 <body >
 		<%-- <jsp:include page="/WEB-INF/views/header.jsp" /> --%>
 		
-		<div class="container">
+<div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<div class="panel panel-default">
@@ -69,87 +78,160 @@ overflow: hidden;
 	</div>
 </div>
 					
-		<form:form class="form-horizontal"  action="/busca" method="post" modelAttribute="query" >
-		<div class="container">
+<form:form class="form-horizontal"  action="/busca" method="post" modelAttribute="query" >
+	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">
-			    <div class="btn-group btn-group-justified font-group">
-			      <div class="btn-group">
-			        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-			          SUBMARINO <span class="caret"></span>
-			        </a>
-			        <ul class="dropdown-menu" role="menu">
-			          <li><a href="#">Produção</a></li>
-			          <li><a href="#">Staging</a></li>			         
-			        </ul>
-			      </div>
-			      <div class="btn-group">
-			        <a class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-			          AMERICANAS <span class="caret"></span>
-			        </a>
-			         <ul class="dropdown-menu" role="menu">
-			          <li><a href="#">Produção</a></li>
-			          <li><a href="#">Staging</a></li>			         
-			        </ul>
-			      </div>
-			      <a class="btn btn-shop" role="button">SHOPTIME</a>
-			      <a class="btn btn-soub" role="button">SOUBARATO</a>
-			      <a class="btn btn-success" role="button">HOMOLOGAÇÃO</a>
+			     <div id=mode-group class="btn-group btn-group-justified font-group " data-toggle="buttons">
+			      <label class="btn btn-primary " ><form:radiobutton path="brand" value="submarino"  checked="checked"/>SUBMARINO</label>			        
+			      <label class="btn btn-danger "><form:radiobutton path="brand" value="americanas" />AMERICANAS</label>			        
+			      <label class="btn btn-shop " ><form:radiobutton path="brand" value="shoptime"/>SHOPTIME</label>
+			      <label class="btn btn-soub" ><form:radiobutton path="brand" value="soubarato"/>SOUBARATO</label>
+			      <label class="btn btn-success" ><form:radiobutton path="brand" value="hml" />HOMOLOGAÇÃO</label>
 			    </div>
 			</div>
 		</div>
 	</div>
 	
 	<div class="container">
-	<div class="row clearfix">
-		<div class="col-md-4 col">
-				<label class="control-label">Item Id</label>
-				<div class="controls ">
-					<form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/>
-				</div>
-				
-				<label class="control-label">Números de Parceiros</label>
-				<div class="controls ">
-					<form:input class="form-control" placeholder="Pesquisa por Id"  path="numPartner"/>
-				</div>
-				
-				<label class="control-label">Números de Skus</label>
-				<div class="controls ">
-					<form:input class="form-control" placeholder="Pesquisa por Id"  path="numSkus"/>
-				</div>
-				<label class="control-label" >Origem do Item:</label>
-				<form:radiobutton class="radio-inline" path="type" value="100"/>100%
-				<form:radiobutton class="radio-inline" path="type" value="misto"/>misto
-				<form:radiobutton class="radio-inline" path="type" value="b2w"/>b2w
-				<br/>
-				
-				<label class="control-label" >Estoque:</label>
-				<form:radiobutton class="radio-inline" path="stock" value="10"/>true
-				<form:radiobutton class="radio-inline" path="stock" value="false"/>false
-				<br/>
-				
-				<label class="control-label" >Moda:   </label>
-				<form:radiobutton class="radio-inline" path="fashion" value="10"/>true
-				<form:radiobutton class="radio-inline" path="fashion" value="false"/>false
-				<br/>
-				
-				<label class="control-label">Campos</label>	<br/>				
-				<form:select  class="checkbox" path="fields" items="${fields}"> 		
-	       		 </form:select>
-	       		 	  
-				<div class="form-actions"><br/>
-					<button type="submit" class="btn btn-success">Submit</button>
-					<button type="button" class="btn">Cancel</button>
-				</div>	
+		<div class="row clearfix">
+			<div class="col-md-4 col">
+					<label class="control-label">Item Id</label>
+					<div class="controls ">
+						<form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/>
+					</div>
 					
-		</div>
-		<div class="col-md-4 col2">
-		<label class="control-label" >Resultado da query:</label><br/>
-					<pre>${itemList}</pre>
+					<label class="control-label">Números de Parceiros</label>
+					<div class="controls ">
+						<form:input class="form-control" placeholder="Quantidade de parceiros"  path="numPartner"/>
+					</div>
+					
+					<label class="control-label">Números de Skus</label>
+					<div class="controls ">
+						<form:input class="form-control" placeholder="Quantidade de Skus"  path="numSkus"/>
+					</div>
+					<label class="control-label" >Tipo:</label>
+					<form:radiobutton class="radio-inline" path="type" value="b2w"/>b2w
+					<form:radiobutton class="radio-inline" path="type" value="100"/>100%
+					<form:radiobutton class="radio-inline" path="type" value="misto"/>misto
+					<br/>
+					
+					<label class="control-label" >Estoque:</label>
+					<form:radiobutton class="radio-inline" path="stock" value="true"/>true
+					<form:radiobutton class="radio-inline" path="stock" value="false"/>false
+					<br/>
+					
+					<label class="control-label" >Moda:   </label>
+					<form:radiobutton class="radio-inline" path="fashion" value="10"/>true
+					<form:radiobutton class="radio-inline" path="fashion" value="false"/>false
+					<br/>
+					
+					<label class="control-label">Campos</label>	<br/>				
+					<form:select data-live-search="true" class="selectpicker show-menu-arrow" path="fields" items="${fields}"> 		
+		       		 </form:select>
+		       		 
+		       		 
+		       		 	  
+					<div class="form-actions"><br/>
+						<button type="submit" class="btn btn-success">Submit</button>
+						<button type="reset" class="btn">Cancel</button>
+					</div>	
+						
+			</div>
+			<c:if test="${fn:length(itemList) gt 0}">
+				<div class="col-md-4 col2">
+						<label class="control-label" >Resultado da query:</label><br/>
+						
+						<c:forEach var="item" items="${idList}">
+						  <a href="${link}${item.id}" target="_blank">${item.id}</a>
+						</c:forEach>
+						<pre>${itemList}</pre>		
+						
+				</div>
+			</c:if>
+			
 		</div>
 	</div>
-</div>
 			
-		</form:form>
+</form:form>
+
+<div class="container">
+  
+  <h4>More Switch Examples</h4>
+  <ul class="list-inline">
+    <li>
+      <div class="btn-group btn-toggle"> 
+    	<button class="btn btn-xs btn-default">ON</button>
+    	<button class="btn btn-xs btn-success active">OFF</button>
+    	</div>
+    </li>
+    <li>
+      <div class="btn-group btn-toggle"> 
+    	<button class="btn btn-xs btn-default">ON</button>
+    	<button class="btn btn-xs btn-danger active">OFF</button>
+    	</div>
+    </li>
+    <li>
+      <div class="btn-group btn-toggle"> 
+    	<button class="btn btn-xs btn-default">ON</button>
+    	<button class="btn btn-xs btn-info active">OFF</button>
+    	</div>
+    </li>
+    <li>
+      <div class="btn-group btn-toggle"> 
+    	<button class="btn btn-xs btn-success">Y</button>
+    	<button class="btn btn-xs btn-danger active">N</button>
+    	</div>
+    </li>
+    <li>
+      <div class="btn-group btn-toggle"> 
+    	<button class="btn btn-xs btn-default">1</button>
+    	<button class="btn btn-xs btn-primary active">0</button>
+    	</div>
+    </li>
+    <li>
+      <div class="btn-group btn-toggle"> 
+        <button class="btn btn-xs btn-primary active">Preview</button>
+    	<button class="btn btn-xs btn-default">Source Code</button>
+    	</div>
+    </li>
+    <li>
+      <div class="btn-group btn-toggle"> 
+    	<button class="btn btn-xs btn-info">Yes</button>
+    	<button class="btn btn-xs btn-primary active">No</button>
+    	</div>
+    </li>
+  </ul>
+  
+  <script type="text/javascript">
+  $('.btn-toggle').click(function() {
+	    $(this).find('.btn').toggleClass('active');  
+	    
+	    if ($(this).find('.btn-primary').size()>0) {
+	    	$(this).find('.btn').toggleClass('btn-primary');
+	    }
+	    if ($(this).find('.btn-danger').size()>0) {
+	    	$(this).find('.btn').toggleClass('btn-danger');
+	    }
+	    if ($(this).find('.btn-success').size()>0) {
+	    	$(this).find('.btn').toggleClass('btn-success');
+	    }
+	    if ($(this).find('.btn-info').size()>0) {
+	    	$(this).find('.btn').toggleClass('btn-info');
+	    }
+	    
+	    $(this).find('.btn').toggleClass('btn-default');
+	       
+	});
+
+	$('form').submit(function(){
+		alert($(this["options"]).val());
+	    return false;
+	});
+  
+  </script>
+    
+</div>
+  
 </body>
 </html>

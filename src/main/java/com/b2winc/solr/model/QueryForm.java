@@ -2,8 +2,12 @@ package com.b2winc.solr.model;
 
 import java.util.List;
 
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 public class QueryForm {
-	
+	private String brand;
+	@NumberFormat(style = Style.NUMBER)
 	private String id;
 	private String stock;
 	private List<String> fields;
@@ -67,6 +71,15 @@ public class QueryForm {
 	public void setNumSkus(String numSkus) {
 		this.numSkus = numSkus;
 	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
 		
+	
 
 }

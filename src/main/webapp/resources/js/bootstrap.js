@@ -122,6 +122,13 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         .emulateTransitionEnd(150) :
       removeElement()
   }
+  
+//unselect period when mode is selected
+  $("#mode-group .btn").on('click',function(){
+    
+    $("#period-group").button('reset');
+    
+  });
 
 
   // ALERT PLUGIN DEFINITION
