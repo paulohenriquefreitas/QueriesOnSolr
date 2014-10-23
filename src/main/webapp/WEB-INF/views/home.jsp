@@ -11,10 +11,14 @@
 <link type="text/css" href="/resources/css/bootstrap.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/hover.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/bootstrap-select.css" rel="stylesheet"/>
+<link type="text/css" href="/resources/css/toggle-switch.css" rel="stylesheet"/>
+<link type="text/css" href="/resources/css/select2.css" rel="stylesheet"/>
+
 <link href="bootstrap-switch.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
 <script src="/resources/js/bootstrap-select.js"></script>
+<script src="/resources/js/select2.js"></script>
 
 
 <style type="text/css">
@@ -111,22 +115,39 @@ overflow: hidden;
 						<form:input class="form-control" placeholder="Quantidade de Skus"  path="numSkus"/>
 					</div>
 					<label class="control-label" >Tipo:</label>
-					<form:radiobutton class="radio-inline" path="type" value="b2w"/>b2w
+					<form:radiobutton class="radio-inline " path="type" value="b2w" checked="checked"  />b2w
 					<form:radiobutton class="radio-inline" path="type" value="100"/>100%
 					<form:radiobutton class="radio-inline" path="type" value="misto"/>misto
 					<br/>
 					
 					<label class="control-label" >Estoque:</label>
-					<form:radiobutton class="radio-inline" path="stock" value="true"/>true
+					<form:radiobutton class="radio-inline" path="stock" value="true" checked="checked" />true
 					<form:radiobutton class="radio-inline" path="stock" value="false"/>false
-					<br/>
+					
+					 <ul class="list-inline">
+						 <li>
+					      <div class="btn-group btn-toggle"> 
+					    	<button class="btn btn-xs btn-default" path="stock" value="true">TRUE</button>
+					    	<button class="btn btn-xs btn-info active" path="stock" value="false">FALSE</button>
+					      </div>
+					    </li>
+				    </ul>
 					
 					<label class="control-label" >Moda:   </label>
 					<form:radiobutton class="radio-inline" path="fashion" value="10"/>true
 					<form:radiobutton class="radio-inline" path="fashion" value="false"/>false
 					<br/>
 					
-					<label class="control-label">Campos</label>	<br/>				
+					<div class="switch-toggle well">
+					  <input id="week" name="view" type="radio" checked>
+					  <label for="week" onclick="">Week</label>
+					
+					  <input id="month" name="view" type="radio">
+					  <label for="month" onclick="">Month</label>
+					
+					  <a class="btn btn-primary"></a>
+					</div>
+					<label class="control-label select2">Campos</label>	<br/>				
 					<form:select data-live-search="true" class="selectpicker show-menu-arrow" path="fields" items="${fields}"> 		
 		       		 </form:select>
 		       		 
@@ -202,9 +223,14 @@ overflow: hidden;
     	</div>
     </li>
   </ul>
-  
+
   <script type="text/javascript">
-  $('.btn-toggle').click(function() {
+  
+  $("#e2").select2({
+	    placeholder: "Select a State",
+	    allowClear: true
+	});
+<!--  $('.btn-toggle').click(function() {
 	    $(this).find('.btn').toggleClass('active');  
 	    
 	    if ($(this).find('.btn-primary').size()>0) {
@@ -220,16 +246,16 @@ overflow: hidden;
 	    	$(this).find('.btn').toggleClass('btn-info');
 	    }
 	    
-	    $(this).find('.btn').toggleClass('btn-default');
+	   
 	       
 	});
-
+-->
 	$('form').submit(function(){
 		alert($(this["options"]).val());
 	    return false;
 	});
   
-  </script>
+  </script> 
     
 </div>
   
