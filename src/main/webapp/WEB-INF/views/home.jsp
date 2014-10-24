@@ -102,8 +102,11 @@ overflow: hidden;
 			<div class="col-md-4 col">
 					<label class="control-label">Item Id</label>
 					<div class="controls ">
-						<form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/>
+						<%-- <form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/> --%>
+						<input type="text" name="id" id="id" class="form-control"  placeholder="Pesquisa por Id"  />
 					</div>
+					
+					
 					
 					<label class="control-label">Números de Parceiros</label>
 					<div class="controls ">
@@ -114,39 +117,31 @@ overflow: hidden;
 					<div class="controls ">
 						<form:input class="form-control" placeholder="Quantidade de Skus"  path="numSkus"/>
 					</div>
+					<div class="switch-toggle switch-3 well">
 					<label class="control-label" >Tipo:</label>
-					<form:radiobutton class="radio-inline " path="type" value="b2w" checked="checked"  />b2w
-					<form:radiobutton class="radio-inline" path="type" value="100"/>100%
-					<form:radiobutton class="radio-inline" path="type" value="misto"/>misto
-					<br/>
+					<input id="b2w" type="radio"  name="type" value="b2w" checked /><label for="b2w" onclick="">B2W</label>
+					<input id="misto" type="radio"  name="type" value="misto"/><label for="misto" onclick="">MISTO</label>
+					<input id="100" type="radio"  name="type" value="100"/><label for="100" onclick="">100%</label>
+					<a class="btn btn-primary"></a>					
+					</div>
 					
-					<label class="control-label" >Estoque:</label>
-					<form:radiobutton class="radio-inline" path="stock" value="true" checked="checked" />true
-					<form:radiobutton class="radio-inline" path="stock" value="false"/>false
-					
-					 <ul class="list-inline">
-						 <li>
-					      <div class="btn-group btn-toggle"> 
-					    	<button class="btn btn-xs btn-default" path="stock" value="true">TRUE</button>
-					    	<button class="btn btn-xs btn-info active" path="stock" value="false">FALSE</button>
-					      </div>
-					    </li>
-				    </ul>
-					
-					<label class="control-label" >Moda:   </label>
-					<form:radiobutton class="radio-inline" path="fashion" value="10"/>true
-					<form:radiobutton class="radio-inline" path="fashion" value="false"/>false
-					<br/>
+					<label class="control-label" >Estoque:</label>				
 					
 					<div class="switch-toggle well">
-					  <input id="week" name="view" type="radio" checked>
-					  <label for="week" onclick="">Week</label>
-					
-					  <input id="month" name="view" type="radio">
-					  <label for="month" onclick="">Month</label>
-					
+					  <input id="true" type="radio" name="stock" value="true" checked> <label for="true" onclick="">TRUE</label>
+					  <input id="false" type="radio" name="stock" value="false" > <label for="false" onclick="">FALSE</label>
 					  <a class="btn btn-primary"></a>
-					</div>
+					</div> 
+					 
+					
+					<label class="control-label" >Moda:   </label>
+					<div class="switch-toggle well">
+					  <input id="fashionTrue" type="radio" name="fashion" value="true" checked> <label for="fashionTrue" onclick="">TRUE</label>
+					  <input id="fashionFalse" type="radio" name="fashion" value="false" > <label for="fashionFalse" onclick="">FALSE</label>
+					  <a class="btn btn-primary"></a>
+					</div> 
+					<br/>
+					
 					<label class="control-label select2">Campos</label>	<br/>				
 					<form:select data-live-search="true" class="selectpicker show-menu-arrow" path="fields" items="${fields}"> 		
 		       		 </form:select>
@@ -177,85 +172,7 @@ overflow: hidden;
 </form:form>
 
 <div class="container">
-  
-  <h4>More Switch Examples</h4>
-  <ul class="list-inline">
-    <li>
-      <div class="btn-group btn-toggle"> 
-    	<button class="btn btn-xs btn-default">ON</button>
-    	<button class="btn btn-xs btn-success active">OFF</button>
-    	</div>
-    </li>
-    <li>
-      <div class="btn-group btn-toggle"> 
-    	<button class="btn btn-xs btn-default">ON</button>
-    	<button class="btn btn-xs btn-danger active">OFF</button>
-    	</div>
-    </li>
-    <li>
-      <div class="btn-group btn-toggle"> 
-    	<button class="btn btn-xs btn-default">ON</button>
-    	<button class="btn btn-xs btn-info active">OFF</button>
-    	</div>
-    </li>
-    <li>
-      <div class="btn-group btn-toggle"> 
-    	<button class="btn btn-xs btn-success">Y</button>
-    	<button class="btn btn-xs btn-danger active">N</button>
-    	</div>
-    </li>
-    <li>
-      <div class="btn-group btn-toggle"> 
-    	<button class="btn btn-xs btn-default">1</button>
-    	<button class="btn btn-xs btn-primary active">0</button>
-    	</div>
-    </li>
-    <li>
-      <div class="btn-group btn-toggle"> 
-        <button class="btn btn-xs btn-primary active">Preview</button>
-    	<button class="btn btn-xs btn-default">Source Code</button>
-    	</div>
-    </li>
-    <li>
-      <div class="btn-group btn-toggle"> 
-    	<button class="btn btn-xs btn-info">Yes</button>
-    	<button class="btn btn-xs btn-primary active">No</button>
-    	</div>
-    </li>
-  </ul>
-
-  <script type="text/javascript">
-  
-  $("#e2").select2({
-	    placeholder: "Select a State",
-	    allowClear: true
-	});
-<!--  $('.btn-toggle').click(function() {
-	    $(this).find('.btn').toggleClass('active');  
-	    
-	    if ($(this).find('.btn-primary').size()>0) {
-	    	$(this).find('.btn').toggleClass('btn-primary');
-	    }
-	    if ($(this).find('.btn-danger').size()>0) {
-	    	$(this).find('.btn').toggleClass('btn-danger');
-	    }
-	    if ($(this).find('.btn-success').size()>0) {
-	    	$(this).find('.btn').toggleClass('btn-success');
-	    }
-	    if ($(this).find('.btn-info').size()>0) {
-	    	$(this).find('.btn').toggleClass('btn-info');
-	    }
-	    
-	   
-	       
-	});
--->
-	$('form').submit(function(){
-		alert($(this["options"]).val());
-	    return false;
-	});
-  
-  </script> 
+ 
     
 </div>
   

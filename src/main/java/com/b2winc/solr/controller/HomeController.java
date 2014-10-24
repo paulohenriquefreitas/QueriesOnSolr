@@ -124,6 +124,7 @@ public class HomeController {
 			String type = queryForm.getType();
 			queryString.append(getQueryType(type));
 			String stock = queryForm.getStock();
+			String fashion = queryForm.getFashion();
 			if(stock != null)
 				queryString.append("AND itemStock:"+stock);
 		}
