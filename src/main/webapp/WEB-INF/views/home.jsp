@@ -117,8 +117,8 @@ overflow: hidden;
 					<div class="controls ">
 						<form:input class="form-control" placeholder="Quantidade de Skus"  path="numSkus"/>
 					</div>
-					<div class="switch-toggle switch-3 well">
 					<label class="control-label" >Tipo:</label>
+					<div class="switch-toggle switch-3 well">
 					<input id="b2w" type="radio"  name="type" value="b2w" checked /><label for="b2w" onclick="">B2W</label>
 					<input id="misto" type="radio"  name="type" value="misto"/><label for="misto" onclick="">MISTO</label>
 					<input id="100" type="radio"  name="type" value="100"/><label for="100" onclick="">100%</label>
