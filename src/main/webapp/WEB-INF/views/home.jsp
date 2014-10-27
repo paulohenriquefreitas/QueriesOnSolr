@@ -80,6 +80,10 @@ input.full-width {
     height: 30px;
 }
 
+#mode-group .btn:not(.active) {
+	opacity: 0.3;
+}
+
 </style> 
 </head>
 <body >
@@ -105,7 +109,7 @@ input.full-width {
 		<div class="row clearfix">
 			<div class="col-md-12 column">
 			     <div id=mode-group class="btn-group btn-group-justified font-group " data-toggle="buttons">
-			      <label class="btn btn-primary " ><form:radiobutton path="brand" value="submarino"  checked="checked"/>SUBMARINO</label>			        
+			      <label class="btn btn-primary active" ><form:radiobutton path="brand" value="submarino"  checked="checked"/>SUBMARINO</label>			        
 			      <label class="btn btn-danger "><form:radiobutton path="brand" value="americanas" />AMERICANAS</label>			        
 			      <label class="btn btn-shop " ><form:radiobutton path="brand" value="shoptime"/>SHOPTIME</label>
 			      <label class="btn btn-soub" ><form:radiobutton path="brand" value="soubarato"/>SOUBARATO</label>
