@@ -13,14 +13,26 @@
 <link type="text/css" href="/resources/css/bootstrap-select.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/toggle-switch.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/select2.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="/resources/css/jquery.tokenize.css" />
 
 <link href="bootstrap-switch.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
 <script src="/resources/js/bootstrap-select.js"></script>
 <script src="/resources/js/select2.js"></script>
+<script type="text/javascript" src="/resources/js/jquery.tokenize.js"></script>
+
+<link rel="stylesheet" href="/resources/css/style.css">
+  <link rel="stylesheet" href="/resources/css/prism.css">
+  <link rel="stylesheet" href="/resources/css/chosen.css">
 
 
+
+
+ <style type="text/css" media="all">
+    /* fix rtl for demo */
+    .chosen-rtl .chosen-drop { left: -9000px; }
+  </style>
 <style type="text/css">
 .btn-custom:active {
     top: 5px;
@@ -54,12 +66,18 @@ margin-bottom: 0px;
 padding-bottom: 5px;
 padding-left: 7px;
 border-radius: 8px;
-width: 75%;
+width: 78%;
 border: 2px solid #e3e3e3;
 }
 
 .col-wrap{
 overflow: hidden; 
+}
+
+input.full-width {
+    box-sizing: border-box;
+    width: 100%;
+    height: 30px;
 }
 
 </style> 
@@ -73,7 +91,7 @@ overflow: hidden;
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						<img alt="40x40" src="/resources/image/solr.png" class="img-rounded" />
+						<img alt="40x40" src="/resources/image/java_solr.png" class="img-rounded" />
 						<span>QueriesOnSolr</span>
 					</h3>
 				</div>
@@ -142,18 +160,48 @@ overflow: hidden;
 					</div> 
 					<br/>
 					
-					<label class="control-label select2">Campos</label>	<br/>				
-					<form:select data-live-search="true" class="selectpicker show-menu-arrow" path="fields" items="${fields}"> 		
+					 <label class="control-label select2">Campos</label>	<br/>
+					     <div class="side-by-side clearfix">
+				       <form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " 
+				                     class="chosen-select" tabindex="8" path="fields" items="${fields}"> 		
+					   </form:select>
+			          
+					  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+					  <script src="/resources/js/chosen.jquery.js" type="text/javascript"></script>
+					  <script src="/resources/js/prism.js" type="text/javascript" charset="utf-8"></script>
+					  <script type="text/javascript">
+					    var config = {
+					      '.chosen-select'           : {},
+					      '.chosen-select-deselect'  : {allow_single_deselect:true},
+					      '.chosen-select-no-single' : {disable_search_threshold:10},
+					      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+					      '.chosen-select-width'     : {width:"95%"}
+					    }
+					    for (var selector in config) {
+					      $(selector).chosen(config[selector]);
+					    }
+					  </script>
+									
+				</div>
+									
+					<%--<form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " class="tokenize-sample" path="fields" items="${fields}"> 		
 		       		 </form:select>
-		       		 
-		       		 
+
+	 				<label class="control-label select2">Campos</label>     <br/>                           
+-                                       <form:select id="tokenize" data-live-search="true" class="selectpicker tokenize-sample" path="fields" items="${fields}"></form:select>
+					<script type="text/javascript">
+					    $('#tokenize').tokenize();
+					</script>
+					     		  --%>
 		       		 	  
 					<div class="form-actions"><br/>
 						<button type="submit" class="btn btn-success">Submit</button>
 						<button type="reset" class="btn">Cancel</button>
 					</div>	
 						
-			</div>
+						
+			 
+	</div>
 			<c:if test="${fn:length(itemList) gt 0}">
 				<div class="col-md-4 col2">
 						<label class="control-label" >Resultado da query:</label><br/>

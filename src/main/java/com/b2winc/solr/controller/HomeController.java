@@ -11,7 +11,7 @@ import java.util.TreeSet;
 
 import javax.xml.bind.JAXBException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -129,7 +129,7 @@ public class HomeController {
 				queryString.append("AND itemStock:"+stock);
 		}
 		SolrQuery query = new SolrQuery(queryString.toString());
-		query.add("rows", "10");
+		query.add("rows", "10");	
 		
 		if(fields!=null){
 			query.add("fl",StringUtils.join(fields, ","));

@@ -81,7 +81,7 @@
   width: 100%;
   text-align: left;
 }
-.bootstrap-select.btn-group .btn .caret {
+.bootstrap-select.btn-group .btn .caret a.Close{
   position: absolute;
   top: 50%;
   right: 12px;

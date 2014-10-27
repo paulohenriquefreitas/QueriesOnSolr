@@ -27,6 +27,12 @@
 			<artifactId>catalogbackendcommons</artifactId>
 			<version>1.15.2</version>			
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+		
 		<!-- Spring core & mvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>

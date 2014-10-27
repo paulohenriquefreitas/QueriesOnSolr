@@ -107,6 +107,7 @@
     height: 1.875em;
     /* Outline the toggles when the inputs are focused
   */
+  	width: 14.9em;
     position: relative;
     /* For callout panels in foundation
   */
