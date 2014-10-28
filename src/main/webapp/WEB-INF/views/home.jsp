@@ -81,7 +81,7 @@ input.full-width {
 }
 
 #mode-group .btn:not(.active) {
-	opacity: 0.3;
+	opacity: 0.5;
 }
 
 </style> 
@@ -95,7 +95,7 @@ input.full-width {
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						<img alt="40x40" src="/resources/image/java_solr.png" class="img-rounded" />
+						<img alt="40x40" src="/resources/image/Java_Log2o.png" class="img-rounded" />
 						<span>QueriesOnSolr</span>
 					</h3>
 				</div>
@@ -104,7 +104,7 @@ input.full-width {
 	</div>
 </div>
 					
-<form:form class="form-horizontal"  action="/busca" method="post" modelAttribute="query" >
+<form:form class="form-horizontal"  action="/busca" method="get" modelAttribute="query" >
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">

@@ -2860,8 +2860,8 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
   color: #fff;
-  background-color: #3071a9;
-  border-color: #285e8e;
+  background-color: #004CEF;
+  border-color: #3992e2;
 }
 
 .btn-shop:hover,
@@ -2885,7 +2885,7 @@ fieldset[disabled] .btn-default.active {
 .btn-soub.active,
 .open > .dropdown-toggle.btn-soub {
   color: #fff;
-  background-color: #9370DB;
+  background-color: #6131C4;
   border-color: #9370DB;
 }
 .btn-primary:active,
@@ -5108,8 +5108,7 @@ a.list-group-item-danger.active:focus {
 }
 .panel-title {
   margin-top: 0;
-  margin-bottom: 0;
-  font-size: 16px;
+  margin-bottom: 0;  
   color: inherit;
   font-size: 27px;
   color: rgb(129, 52, 68);
@@ -5424,7 +5423,7 @@ a.list-group-item-danger.active:focus {
 .well {
   min-height: 20px;
   padding: 19px;
-  margin-bottom: 3px;
+  margin-bottom: -20px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
   border-radius: 4px;

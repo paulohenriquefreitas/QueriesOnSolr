@@ -56,7 +56,7 @@ public class HomeController {
 		return keys;
 	}
 
-	@RequestMapping(value="/busca", method=RequestMethod.POST)
+	@RequestMapping(value="/busca", method=RequestMethod.GET)
 	public ModelAndView navegue(@ModelAttribute("query") QueryForm queryForm, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException{
 		if(result.hasFieldErrors()){
 			 ModelAndView mv =  new ModelAndView("teste");
@@ -129,7 +129,7 @@ public class HomeController {
 				queryString.append("AND itemStock:"+stock);
 		}
 		SolrQuery query = new SolrQuery(queryString.toString());
-		query.add("rows", "10");	
+		query.add("rows", "20");	
 		
 		if(fields!=null){
 			query.add("fl",StringUtils.join(fields, ","));
