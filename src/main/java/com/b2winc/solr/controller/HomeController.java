@@ -135,6 +135,10 @@ public class HomeController {
 		List<String> fields = queryForm.getFields();
 		if(StringUtils.isNumeric(id) && StringUtils.isNotEmpty(id) ) {
 			queryString.append("itemId:"+id);
+			SolrQuery query = new SolrQuery(queryString.toString());
+			query.add("rows", "20");	
+			List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
+			return listIndexedItems;
 		}else{
 			String type = queryForm.getType();
 			queryString.append(getQueryType(type));
@@ -166,7 +170,7 @@ public class HomeController {
 						}
 					}
 				}
-				if(listIndexedItems.size() > 19)
+				if(listIndexedItems.size() > 20)
 					return listIndexedItems;
 			}
 		}
