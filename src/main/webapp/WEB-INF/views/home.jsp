@@ -147,11 +147,19 @@ input.full-width {
 					<a class="btn btn-primary"></a>					
 					</div>
 					
-					<label class="control-label" >Estoque:</label>				
+					<label class="control-label" >Estoque do Item:</label>				
 					
 					<div class="switch-toggle well">
 					  <input id="true" type="radio" name="stock" value="true" checked> <label for="true" onclick="">TRUE</label>
 					  <input id="false" type="radio" name="stock" value="false" > <label for="false" onclick="">FALSE</label>
+					  <a class="btn btn-primary"></a>
+					</div> 
+					
+					<label class="control-label" >Estoque do Parceiro:</label>				
+					
+					<div class="switch-toggle well">
+					  <input id="truePartner" type="radio" name="stockPartner" value="true" checked> <label for="truePartner" onclick="">TRUE</label>
+					  <input id="falsePartner" type="radio" name="stockPartner" value="false" > <label for="falsePartner" onclick="">FALSE</label>
 					  <a class="btn btn-primary"></a>
 					</div> 
 					 
