@@ -216,7 +216,7 @@ input.full-width {
 	</div>
 			<c:if test="${fn:length(itemList) gt 0}">
 				<div class="col-md-4 col2">
-						<label class="control-label" >Resultado da query:</label><br/>
+						<label class="control-label" >Resultado da query: ${size}</label><br/>
 						
 						<c:forEach var="item" items="${idList}">
 						  <a href="${link}${item.id}" target="_blank">${item.id}</a>

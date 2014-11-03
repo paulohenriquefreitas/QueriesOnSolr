@@ -40,6 +40,8 @@ import com.b2winc.solr.repository.MarketPlaceSolrDao;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import flexjson.JSONSerializer;
+
 @Controller
 public class HomeController {
 
@@ -74,22 +76,26 @@ public class HomeController {
 			ModelAndView mv =  new ModelAndView("home");
 			mv.addObject("fields",getFields());			
 			listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner);
-			model.addAttribute("itemList",toJson(listIndexedItem));
+			String[] fieldsArray = queryForm.getFields();
 			model.addAttribute("idList",listIndexedItem);
+			model.addAttribute("itemList",toJson(listIndexedItem,fieldsArray));
 			model.addAttribute("link",getLink(queryForm.getBrand()));
+			model.addAttribute("size",listIndexedItem.size());
 			return mv;
 		}
 			
 	}
 
-	private String toJson(List<IndexedItem> listIndexedItem)
+	private String toJson(List<IndexedItem> listIndexedItem, String[] fieldsArray)
 			throws IOException, JsonParseException, JsonMappingException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.enable(SerializationConfig.Feature.INDENT_OUTPUT);
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String json = gson.toJson(listIndexedItem);
-		
-		return json;
+		if(fieldsArray.length == 0 ){
+			Gson gson = new GsonBuilder() .setPrettyPrinting().create();
+			String json = gson.toJson(listIndexedItem);			
+			return json;
+		}else{
+			JSONSerializer postDetailsSerializer = new JSONSerializer().include(fieldsArray).exclude("*").prettyPrint(true);
+			return postDetailsSerializer.serialize(listIndexedItem);
+		}
 	}
 	
 
@@ -132,50 +138,58 @@ public class HomeController {
 		if(StringUtils.isNotEmpty(System.getProperty("query")))
 			queryString.append(System.getProperty("query"));
 		String id = queryForm.getId();
-		List<String> fields = queryForm.getFields();
+		String type = queryForm.getType();
 		if(StringUtils.isNumeric(id) && StringUtils.isNotEmpty(id) ) {
 			queryString.append("itemId:"+id);
-			SolrQuery query = new SolrQuery(queryString.toString());
-			query.add("rows", "20");	
-			List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
-			return listIndexedItems;
-		}else{
-			String type = queryForm.getType();
+			return getItensById(itemSolrDao, queryString);
+		}else if (type.equals("b2w")){			
 			queryString.append(getQueryType(type));
 			String stock = queryForm.getStock();						
-			String fashion = queryForm.getFashion();
-			if(stock != null)
-				queryString.append(" AND itemStock:"+stock);
-		}
-		SolrQuery query = new SolrQuery(queryString.toString());
-		query.add("rows", "200");	
-		
-		if(fields!=null){
-			query.add("fl",StringUtils.join(fields, ","));
-		}
-		List<IndexedItem> indexedItems = itemSolrDao.query(query);
-		String stockPartner = queryFormPartner.getStockPartner();
-		if(indexedItems != null && indexedItems.size() > 0){
-			List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
-			MarketPlaceSolrDao marketPlaceDao = getMarketPlaceItemSolrDao(solrUrl);
-			for(IndexedItem indexedItem : indexedItems){
-				StringBuffer queryStringPartner= new StringBuffer();
-				queryStringPartner.append("itemId:"+indexedItem.getId()+" AND itemStock:"+stockPartner);
-				SolrQuery queryPartner = new SolrQuery(queryStringPartner.toString());
-				List<IndexedMarketPlaceItem> indexedMarketPlaceItems = marketPlaceDao.query(queryPartner);
-				if(indexedMarketPlaceItems !=null && indexedMarketPlaceItems.size() > 0 ){
-					for(IndexedMarketPlaceItem indexedMarketPlaceItem : indexedMarketPlaceItems){
-						if(indexedMarketPlaceItem.getItemId().toString().equalsIgnoreCase(indexedItem.getItemId().toString())){
-							listIndexedItems.add(indexedItem);
+			queryString.append(" AND itemStock:"+stock);		
+			return getItensById(itemSolrDao, queryString);
+		}else {
+			queryString.append(getQueryType(type));	
+			String stock = queryForm.getStock();						
+			queryString.append(" AND itemStock:"+stock);
+			SolrQuery query = new SolrQuery(queryString.toString());
+			query.add("rows", "500");		
+			
+			List<IndexedItem> indexedItems = itemSolrDao.query(query);
+			String stockPartner = queryFormPartner.getStockPartner();
+			if(indexedItems != null && indexedItems.size() > 0){
+				List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
+				MarketPlaceSolrDao marketPlaceDao = getMarketPlaceItemSolrDao(solrUrl);
+				for(IndexedItem indexedItem : indexedItems){
+					StringBuffer queryStringPartner= new StringBuffer();
+					queryStringPartner.append("itemId:"+indexedItem.getId());
+					SolrQuery queryPartner = new SolrQuery(queryStringPartner.toString());
+					List<IndexedMarketPlaceItem> indexedMarketPlaceItems = marketPlaceDao.query(queryPartner);
+					System.out.println(indexedMarketPlaceItems.size());
+					if(indexedMarketPlaceItems !=null && indexedMarketPlaceItems.size() > 0 ){
+						for(IndexedMarketPlaceItem indexedMarketPlaceItem : indexedMarketPlaceItems){
+							if((indexedMarketPlaceItem.getItemId().toString().equalsIgnoreCase(indexedItem.getItemId().toString()) &&
+									indexedMarketPlaceItem.getItemStock() == Boolean.valueOf(stockPartner))){
+								listIndexedItems.add(indexedItem);
+								break;
+							}
 						}
 					}
+					if(listIndexedItems.size() >= 20)
+						return listIndexedItems;
 				}
-				if(listIndexedItems.size() > 20)
-					return listIndexedItems;
 			}
 		}
 		
 		return Collections.EMPTY_LIST;
+	}
+
+	private List<IndexedItem> getItensById(ItemSolrDao itemSolrDao,
+			StringBuffer queryString) {
+		SolrQuery query = new SolrQuery(queryString.toString());
+		query.add("rows", "3");
+		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
+		List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
+		return listIndexedItems;
 	}
 
 	private String getQueryType(String type) {

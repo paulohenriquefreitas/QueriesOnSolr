@@ -10,7 +10,7 @@ public class QueryForm {
 	@NumberFormat(style = Style.NUMBER)
 	private String id;
 	private String stock;
-	private List<String> fields;
+	private String[] fields;
 	private String fashion;
 	private String type;
 	private String numPartner;
@@ -32,11 +32,11 @@ public class QueryForm {
 		this.stock = stock;
 	}
 
-	public List<String> getFields() {
+	public String[] getFields() {
 		return fields;
 	}
 
-	public void setFields(List<String> fields) {
+	public void setFields(String[] fields) {
 		this.fields = fields;
 	}
 
