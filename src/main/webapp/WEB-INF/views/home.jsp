@@ -89,6 +89,49 @@ input.full-width {
 <body >
 		<%-- <jsp:include page="/WEB-INF/views/header.jsp" /> --%>
 		
+<!-- 		<div class="bs-example">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">1. What is HTML?</a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p>HTML stands for HyperText Markup Language. HTML is the main markup language for describing the structure of Web pages. <a href="http://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">2. What is Twitter Bootstrap?</a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>Twitter Bootstrap is a powerful front-end framework for faster and easier web development. It is a collection of CSS and HTML conventions. <a href="http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">3. What is CSS?</a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+		
+		
+		
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -122,61 +165,107 @@ input.full-width {
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-4 col">
-					<label class="control-label">Item Id</label>
-					<div class="controls ">
-						<%-- <form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/> --%>
-						<input type="text" name="id" id="id" class="form-control"  placeholder="Pesquisa por Id"  />
+			    <div class="panel-group" id="accordion">
+			    	<div class="panel panel-default">
+			    		 <div class="panel-heading">
+			                <h5 class="panel-title link">
+			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Busca de Itens</a>
+			                </h5>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+                			<div class="panel-body">
+								<label class="control-label">Item Id</label>
+								<div class="controls ">
+									<%-- <form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/> --%>
+									<input type="text" name="id" id="id" class="form-control"  placeholder="Pesquisa por Id"  />
+								</div>
+								<label class="control-label">Números de Parceiros</label>
+								<div class="controls ">
+									<form:input class="form-control" placeholder="Quantidade de parceiros"  path="numPartner"/>
+								</div>
+								
+								<label class="control-label">Números de Skus</label>
+								<div class="controls ">
+									<form:input class="form-control" placeholder="Quantidade de Skus"  path="numSkus"/>
+								</div>
+							</div>
+						</div>		
 					</div>
-					
-					
-					
-					<label class="control-label">Números de Parceiros</label>
-					<div class="controls ">
-						<form:input class="form-control" placeholder="Quantidade de parceiros"  path="numPartner"/>
+					<div class="panel panel-default">	
+						<div class="panel-heading">
+			                <h5 class="panel-title">
+			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Busca de tipo</a>
+			                </h5>
+			            </div>
+			            <div id="collapseTwo" class="panel-collapse collapse">
+               				 <div class="panel-body">
+								<label class="control-label" >Tipo:</label>
+								<div class="switch-toggle switch-3 well">
+								<input id="b2w" type="radio"  name="type" value="b2w" checked /><label for="b2w" onclick="">B2W</label>
+								<input id="misto" type="radio"  name="type" value="misto"/><label for="misto" onclick="">MISTO</label>
+								<input id="100" type="radio"  name="type" value="100"/><label for="100" onclick="">100%</label>
+								<a class="btn btn-primary"></a>					
+								</div>
+								
+								<label class="control-label" >Estoque do Item:</label>				
+								
+								<div class="switch-toggle well">
+								  <input id="true" type="radio" name="stock" value="true" checked> <label for="true" onclick="">TRUE</label>
+								  <input id="false" type="radio" name="stock" value="false" > <label for="false" onclick="">FALSE</label>
+								  <a class="btn btn-primary"></a>
+								</div> 
+								
+								<label class="control-label" >Estoque do Parceiro:</label>				
+								
+								<div class="switch-toggle well">
+								  <input id="truePartner" type="radio" name="stockPartner" value="true" checked> <label for="truePartner" onclick="">TRUE</label>
+								  <input id="falsePartner" type="radio" name="stockPartner" value="false" > <label for="falsePartner" onclick="">FALSE</label>
+								  <a class="btn btn-primary"></a>
+								</div> 
+							</div>
+						</div>		
 					</div>
-					
-					<label class="control-label">Números de Skus</label>
-					<div class="controls ">
-						<form:input class="form-control" placeholder="Quantidade de Skus"  path="numSkus"/>
-					</div>
-					<label class="control-label" >Tipo:</label>
-					<div class="switch-toggle switch-3 well">
-					<input id="b2w" type="radio"  name="type" value="b2w" checked /><label for="b2w" onclick="">B2W</label>
-					<input id="misto" type="radio"  name="type" value="misto"/><label for="misto" onclick="">MISTO</label>
-					<input id="100" type="radio"  name="type" value="100"/><label for="100" onclick="">100%</label>
-					<a class="btn btn-primary"></a>					
-					</div>
-					
-					<label class="control-label" >Estoque do Item:</label>				
-					
-					<div class="switch-toggle well">
-					  <input id="true" type="radio" name="stock" value="true" checked> <label for="true" onclick="">TRUE</label>
-					  <input id="false" type="radio" name="stock" value="false" > <label for="false" onclick="">FALSE</label>
-					  <a class="btn btn-primary"></a>
-					</div> 
-					
-					<label class="control-label" >Estoque do Parceiro:</label>				
-					
-					<div class="switch-toggle well">
-					  <input id="truePartner" type="radio" name="stockPartner" value="true" checked> <label for="truePartner" onclick="">TRUE</label>
-					  <input id="falsePartner" type="radio" name="stockPartner" value="false" > <label for="falsePartner" onclick="">FALSE</label>
-					  <a class="btn btn-primary"></a>
-					</div> 
-					 
-					
-					<label class="control-label" >Moda:   </label>
-					<div class="switch-toggle well">
-					  <input id="fashionTrue" type="radio" name="fashion" value="true" checked> <label for="fashionTrue" onclick="">TRUE</label>
-					  <input id="fashionFalse" type="radio" name="fashion" value="false" > <label for="fashionFalse" onclick="">FALSE</label>
-					  <a class="btn btn-primary"></a>
-					</div> 
-					<br/>
-					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+			                <h5 class="panel-title">
+			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Itens de Moda</a>
+			                </h5>
+			            </div>
+	            		<div id="collapseThree" class="panel-collapse collapse">
+	               			 <div class="panel-body">											
+								<label class="control-label" >Moda:   </label>
+								<div class="switch-toggle well">
+								  <input id="fashionTrue" type="radio" name="fashion" value="true" checked> <label for="fashionTrue" onclick="">TRUE</label>
+								  <input id="fashionFalse" type="radio" name="fashion" value="false" > <label for="fashionFalse" onclick="">FALSE</label>
+								  <a class="btn btn-primary"></a>
+								</div> 
+								<br/>
+							</div>
+						</div>		
+					</div>	
+					<div class="panel panel-default">
+						<div class="panel-heading">
+			                <h5 class="panel-title">
+			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Kit</a>
+			                </h5>
+			            </div>
+	            		<div id="collapseFour" class="panel-collapse collapse">
+	               			 <div class="panel-body">											
+								<label class="control-label" >Kit:   </label>
+								<div class="switch-toggle well">
+								  <input id="fashionTrue" type="radio" name="fashion" value="true" checked> <label for="fashionTrue" onclick="">TRUE</label>
+								  <input id="fashionFalse" type="radio" name="fashion" value="false" > <label for="fashionFalse" onclick="">FALSE</label>
+								  <a class="btn btn-primary"></a>
+								</div> 
+								<br/>
+							</div>
+						</div>		
+					</div>	
 					 <label class="control-label select2">Campos</label>	<br/>
-					     <div class="side-by-side clearfix">
-				       <form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " 
-				                     class="chosen-select" tabindex="8" path="fields" items="${fields}"> 		
-					   </form:select>
+					 <div class="side-by-side clearfix">
+			         <form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " 
+			                     class="chosen-select" tabindex="8" path="fields" items="${fields}"> 		
+				     </form:select>
 			          
 					  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
 					  <script src="/resources/js/chosen.jquery.js" type="text/javascript"></script>
@@ -194,18 +283,8 @@ input.full-width {
 					    }
 					  </script>
 									
-				</div>
-									
-					<%--<form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " class="tokenize-sample" path="fields" items="${fields}"> 		
-		       		 </form:select>
-
-	 				<label class="control-label select2">Campos</label>     <br/>                           
--                                       <form:select id="tokenize" data-live-search="true" class="selectpicker tokenize-sample" path="fields" items="${fields}"></form:select>
-					<script type="text/javascript">
-					    $('#tokenize').tokenize();
-					</script>
-					     		  --%>
-		       		 	  
+				     </div>
+					       		 	  
 					<div class="form-actions"><br/>
 						<button type="submit" class="btn btn-success">Submit</button>
 						<button type="reset" class="btn">Cancel</button>
@@ -213,28 +292,22 @@ input.full-width {
 						
 						
 			 
-	</div>
-			<c:if test="${fn:length(itemList) gt 0}">
-				<div class="col-md-4 col2">
-						<label class="control-label" >Resultado da query: ${size}</label><br/>
-						
-						<c:forEach var="item" items="${idList}">
-						  <a href="${link}${item.id}" target="_blank">${item.id}</a>
-						</c:forEach>
-						<pre>${itemList}</pre>		
-						
-				</div>
-			</c:if>
-			
+	
+					<c:if test="${fn:length(itemList) gt 0}">
+						<div class="col-md-4 col2">
+								<label class="control-label" >Resultado da query: ${size}</label><br/>
+								
+								<c:forEach var="item" items="${idList}">
+								  <a href="${link}${item.id}" target="_blank">${item.id}</a>
+								</c:forEach>
+								<pre>${itemList}</pre>		
+								
+						</div>
+					</c:if>
+				</div>	
+			</div>
 		</div>
-	</div>
-			
+	</div>			
 </form:form>
-
-<div class="container">
- 
-    
-</div>
-  
 </body>
 </html>

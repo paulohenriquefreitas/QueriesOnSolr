@@ -146,13 +146,13 @@ public class HomeController {
 			queryString.append(getQueryType(type));
 			String stock = queryForm.getStock();						
 			queryString.append(" AND itemStock:"+stock);		
-			return getItensById(itemSolrDao, queryString);
+			return getItens(itemSolrDao, queryString);
 		}else {
 			queryString.append(getQueryType(type));	
 			String stock = queryForm.getStock();						
 			queryString.append(" AND itemStock:"+stock);
 			SolrQuery query = new SolrQuery(queryString.toString());
-			query.add("rows", "500");		
+			query.add("rows", "100");		
 			
 			List<IndexedItem> indexedItems = itemSolrDao.query(query);
 			String stockPartner = queryFormPartner.getStockPartner();
@@ -184,6 +184,14 @@ public class HomeController {
 	}
 
 	private List<IndexedItem> getItensById(ItemSolrDao itemSolrDao,
+			StringBuffer queryString) {
+		SolrQuery query = new SolrQuery(queryString.toString());
+		query.add("rows", "3");
+		List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
+		return listIndexedItems;
+	}
+	
+	private List<IndexedItem> getItens(ItemSolrDao itemSolrDao,
 			StringBuffer queryString) {
 		SolrQuery query = new SolrQuery(queryString.toString());
 		query.add("rows", "3");
