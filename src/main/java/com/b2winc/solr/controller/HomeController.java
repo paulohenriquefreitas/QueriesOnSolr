@@ -21,6 +21,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -83,6 +85,30 @@ public class HomeController {
 			model.addAttribute("size",listIndexedItem.size());
 			return mv;
 		}
+			
+	}
+	
+	
+	@RequestMapping(value="/busca2", method=RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public ResponseEntity<String> naveguetemp(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException{
+//		if(result.hasFieldErrors()){
+//			 ModelAndView mv =  new ModelAndView("teste");
+//			 mv.addObject("msg","Ocorreu um erro");
+//			 return mv;
+//		}else{
+			List<IndexedItem> listIndexedItem = new ArrayList<IndexedItem>();		
+			String solrUrl = getSolrBrand(queryForm) ;
+			ItemSolrDao itemSolrDao = getItemSolrDao(solrUrl);
+			ModelAndView mv =  new ModelAndView("home");
+			mv.addObject("fields",getFields());			
+			listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner);
+			String[] fieldsArray = queryForm.getFields();
+			model.addAttribute("idList",listIndexedItem);
+			model.addAttribute("itemList",toJson(listIndexedItem,fieldsArray));
+			model.addAttribute("link",getLink(queryForm.getBrand()));
+			model.addAttribute("size",listIndexedItem.size());
+			return new ResponseEntity<String>(toJson(listIndexedItem,fieldsArray), HttpStatus.OK);
+//		}
 			
 	}
 

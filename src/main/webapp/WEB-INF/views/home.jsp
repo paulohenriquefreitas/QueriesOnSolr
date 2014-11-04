@@ -27,6 +27,29 @@
   <link rel="stylesheet" href="/resources/css/chosen.css">
 
 
+<script type="text/javascript">
+
+$(document).ready( function() {
+	  var form = $('#query');
+
+	  form.submit( function(event) {
+	    $.ajax( {
+	      type: "GET",
+	      url: form.attr( 'action' ),
+	      data: form.serialize(),
+	      success: function( response ) {
+	    	var resu = $(resultado);
+	    	resu.find('total').text(response.totalEncontrados)
+	        $('.itemList pre').text(JSON.stringify(response));
+	      }
+	    } );
+	    event.preventDefault();
+	  } );
+
+	} );
+
+
+</script>
 
 
  <style type="text/css" media="all">
@@ -147,7 +170,7 @@ input.full-width {
 	</div>
 </div>
 					
-<form:form class="form-horizontal"  action="/busca" method="get" modelAttribute="query" >
+<form:form class="form-horizontal"  action="/busca2" method="get" modelAttribute="query" >
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">
@@ -300,11 +323,17 @@ input.full-width {
 								<c:forEach var="item" items="${idList}">
 								  <a href="${link}${item.id}" target="_blank">${item.id}</a>
 								</c:forEach>
+								
 								<pre>${itemList}</pre>		
 								
 						</div>
 					</c:if>
 				</div>	
+			</div>
+			<div class="col-md-4 col2">
+				<div class="itemList">
+					<pre>${itemList}</pre>		
+				</div>
 			</div>
 		</div>
 	</div>			
