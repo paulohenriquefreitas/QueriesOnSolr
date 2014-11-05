@@ -79,7 +79,7 @@ $(document).ready( function() {
 .col{
 margin-bottom: 0px;
 padding-bottom: 5px;
-padding-left: 7px;
+padding-left: 0px;
 border-radius: 8px;
 border: 2px solid #e3e3e3;
 }

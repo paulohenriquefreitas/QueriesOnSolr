@@ -1,4 +1,4 @@
-/*!
+	/*!
  * Bootstrap v3.2.0 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -5095,7 +5095,7 @@ a.list-group-item-danger.active:focus {
           margin-bottom: 0px;	
 }
 .panel-body {
-  padding: 15px;
+  padding: 6px;
 }
 .panel-heading {
   padding: 3px 4px;
@@ -5115,7 +5115,10 @@ a.list-group-item-danger.active:focus {
   font-style: oblique;  
 }
 .panel-title > a {
-  color: inherit;
+	color: #007EB8;
+	font-size: 20px;
+	font-style: normal;
+	font-family: monospace;
 }
 .panel-footer {
   padding: 10px 15px;
@@ -5289,7 +5292,7 @@ a.list-group-item-danger.active:focus {
   border-bottom: 1px solid #ddd;
 }
 .panel-default {
-  border-color: #ddd;
+  
 }
 .panel-default > .panel-heading {
   color: #333;
