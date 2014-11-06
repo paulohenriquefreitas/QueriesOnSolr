@@ -6,8 +6,10 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -21,6 +23,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,7 @@ import br.com.ideais.metasolr.template.CommonSolrTemplate;
 
 import com.b2w.catalogbackendcommons.index.IndexedItem;
 import com.b2w.catalogbackendcommons.index.IndexedMarketPlaceItem;
+import com.b2winc.solr.model.BrandSolr;
 import com.b2winc.solr.model.QueryForm;
 import com.b2winc.solr.model.QueryFormPartner;
 import com.b2winc.solr.repository.ItemSolrDao;
@@ -46,6 +50,8 @@ import flexjson.JSONSerializer;
 
 @Controller
 public class HomeController {
+	@Autowired
+	private BrandSolr brandSolr;
 
 	@RequestMapping(value="/")
 	public ModelAndView test() throws IOException{
@@ -90,7 +96,7 @@ public class HomeController {
 	
 	
 	@RequestMapping(value="/busca2", method=RequestMethod.GET, produces = "application/json; charset=utf-8")
-	public ResponseEntity<String> naveguetemp(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException{
+	public ResponseEntity<Map<String,String>> naveguetemp(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException{
 //		if(result.hasFieldErrors()){
 //			 ModelAndView mv =  new ModelAndView("teste");
 //			 mv.addObject("msg","Ocorreu um erro");
@@ -107,7 +113,12 @@ public class HomeController {
 			model.addAttribute("itemList",toJson(listIndexedItem,fieldsArray));
 			model.addAttribute("link",getLink(queryForm.getBrand()));
 			model.addAttribute("size",listIndexedItem.size());
-			return new ResponseEntity<String>(toJson(listIndexedItem,fieldsArray), HttpStatus.OK);
+			
+			Map<String, String> resultados = new HashMap<String, String>();
+			resultados.put("itemList", toJson(listIndexedItem,fieldsArray));
+			resultados.put("totalEncontrados", Integer.valueOf(listIndexedItem.size()).toString());
+			System.out.println(brandSolr.getIpList());
+			return new ResponseEntity<Map<String, String>>(resultados, HttpStatus.OK);
 //		}
 			
 	}
@@ -237,6 +248,15 @@ public class HomeController {
 		}
 		return "";
 	}
+
+	public BrandSolr getBrandSolr() {
+		return brandSolr;
+	}
+
+	public void setBrandSolr(BrandSolr brandSolr) {
+		this.brandSolr = brandSolr;
+	}
+	
 	
 	
 	

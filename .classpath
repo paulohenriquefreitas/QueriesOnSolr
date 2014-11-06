@@ -38,6 +38,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/IDEAIS/paulo.freitas/Downloads/flexjson-2.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

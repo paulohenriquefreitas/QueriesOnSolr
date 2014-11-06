@@ -38,9 +38,9 @@ $(document).ready( function() {
 	      url: form.attr( 'action' ),
 	      data: form.serialize(),
 	      success: function( response ) {
-	    	var resu = $(resultado);
-	    	resu.find('total').text(response.totalEncontrados)
-	        $('.itemList pre').text(JSON.stringify(response));
+	    	var resultado = $('.resultadoBusca');
+	    	resultado.find('.totalEncontrados').text(response.totalEncontrados);
+	    	resultado.find('.itemList').text(response.itemList);
 	      }
 	    } );
 	    event.preventDefault();
@@ -48,7 +48,7 @@ $(document).ready( function() {
 
 	} );
 
-
+	
 </script>
 
 
@@ -330,7 +330,9 @@ input.full-width {
 					</c:if>
 				</div>	
 			</div>
-			<div class="col-md-4 col2">
+			<div class="resultadoBusca col-md-4 col2">
+			    Total Encontrados: <span class="totalEncontrados"></span>
+			    <span class="itemIdLink"></span>
 				<div class="itemList">
 					<pre>${itemList}</pre>		
 				</div>
