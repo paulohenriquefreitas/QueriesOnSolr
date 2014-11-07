@@ -50,7 +50,6 @@ import flexjson.JSONSerializer;
 
 @Controller
 public class HomeController {
-	@Autowired
 	private BrandSolr brandSolr;
 
 	@RequestMapping(value="/")
@@ -117,7 +116,7 @@ public class HomeController {
 			Map<String, String> resultados = new HashMap<String, String>();
 			resultados.put("itemList", toJson(listIndexedItem,fieldsArray));
 			resultados.put("totalEncontrados", Integer.valueOf(listIndexedItem.size()).toString());
-			System.out.println(brandSolr.getIpList());
+			//System.out.println(brandSolr.getIpList());
 			return new ResponseEntity<Map<String, String>>(resultados, HttpStatus.OK);
 //		}
 			

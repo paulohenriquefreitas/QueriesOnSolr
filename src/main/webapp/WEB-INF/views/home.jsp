@@ -185,6 +185,24 @@ input.full-width {
 		</div>
 	</div>
 	
+	<script type="text/javascript">
+	$('.add-loading').click(function () {
+		  target.loadingOverlay();
+		});
+		$('.remove-loading').click(function () {
+		  target.loadingOverlay('remove');
+		});
+	
+	</script>
+	
+	<div id="target" class="loading">
+	  <div class="loading-overlay">
+	    <p class="loading-spinner">
+	      <span class="loading-icon"></span>
+	      <span class="loading-text">loading</span>
+	    </p>
+	  </div>
+	</div>
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-4 col">
