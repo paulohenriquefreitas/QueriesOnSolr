@@ -15,6 +15,7 @@ public class QueryForm {
 	private String type;
 	private String numPartner;
 	private String numSkus;
+	private String kit;
 	
 	public String getId() {
 		return id;
@@ -79,6 +80,16 @@ public class QueryForm {
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
+
+	public String getKit() {
+		return kit;
+	}
+
+	public void setKit(String kit) {
+		this.kit = kit;
+	}
+	
+	
 		
 	
 

@@ -48,6 +48,13 @@ $(document).ready( function() {
 
 	} );
 
+$(document).ajaxSend(function(event, request, settings) {
+	  $('#loading-indicator').show();
+	});
+
+	$(document).ajaxComplete(function(event, request, settings) {
+	  $('#loading-indicator').hide();
+	});
 	
 </script>
 
@@ -107,53 +114,16 @@ input.full-width {
 	opacity: 0.5;
 }
 
+#loading-indicator {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
 </style> 
 </head>
 <body >
-		<%-- <jsp:include page="/WEB-INF/views/header.jsp" /> --%>
-		
-<!-- 		<div class="bs-example">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">1. What is HTML?</a>
-                </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <p>HTML stands for HyperText Markup Language. HTML is the main markup language for describing the structure of Web pages. <a href="http://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">2. What is Twitter Bootstrap?</a>
-                </h4>
-            </div>
-            <div id="collapseTwo" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <p>Twitter Bootstrap is a powerful front-end framework for faster and easier web development. It is a collection of CSS and HTML conventions. <a href="http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank">Learn more.</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">3. What is CSS?</a>
-                </h4>
-            </div>
-            <div id="collapseThree" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-		
-		
+	
 		
 <div class="container">
 	<div class="row clearfix">
@@ -175,34 +145,17 @@ input.full-width {
 		<div class="row clearfix">
 			<div class="col-md-12 column">
 			     <div id=mode-group class="btn-group btn-group-justified font-group " data-toggle="buttons">
-			      <label class="btn btn-primary active" ><form:radiobutton path="brand" value="submarino"  checked="checked"/>SUBMARINO</label>			        
-			      <label class="btn btn-danger "><form:radiobutton path="brand" value="americanas" />AMERICANAS</label>			        
-			      <label class="btn btn-shop " ><form:radiobutton path="brand" value="shoptime"/>SHOPTIME</label>
-			      <label class="btn btn-soub" ><form:radiobutton path="brand" value="soubarato"/>SOUBARATO</label>
-			      <label class="btn btn-success" ><form:radiobutton path="brand" value="hml" />HOMOLOGAÇÃO</label>
+			      <label class="btn btn-primary active" ><form:radiobutton path="brand" value="03"  checked="checked"/>SUBMARINO</label>			        
+			      <label class="btn btn-danger "><form:radiobutton path="brand" value="02" />AMERICANAS</label>			        
+			      <label class="btn btn-shop " ><form:radiobutton path="brand" value="04"/>SHOPTIME</label>
+			      <label class="btn btn-soub" ><form:radiobutton path="brand" value="07"/>SOUBARATO</label>
+			      <label class="btn btn-success" ><form:radiobutton path="brand" value="01" />HOMOLOGAÇÃO</label>
 			    </div>
 			</div>
 		</div>
 	</div>
 	
-	<script type="text/javascript">
-	$('.add-loading').click(function () {
-		  target.loadingOverlay();
-		});
-		$('.remove-loading').click(function () {
-		  target.loadingOverlay('remove');
-		});
 	
-	</script>
-	
-	<div id="target" class="loading">
-	  <div class="loading-overlay">
-	    <p class="loading-spinner">
-	      <span class="loading-icon"></span>
-	      <span class="loading-text">loading</span>
-	    </p>
-	  </div>
-	</div>
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-4 col">
@@ -219,12 +172,7 @@ input.full-width {
 								<div class="controls ">
 									<%-- <form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/> --%>
 									<input type="text" name="id" id="id" class="form-control"  placeholder="Pesquisa por Id"  />
-								</div>
-								<label class="control-label">Números de Parceiros</label>
-								<div class="controls ">
-									<form:input class="form-control" placeholder="Quantidade de parceiros"  path="numPartner"/>
-								</div>
-								
+								</div>								
 								<label class="control-label">Números de Skus</label>
 								<div class="controls ">
 									<form:input class="form-control" placeholder="Quantidade de Skus"  path="numSkus"/>
@@ -235,11 +183,15 @@ input.full-width {
 					<div class="panel panel-default">	
 						<div class="panel-heading">
 			                <h5 class="panel-title">
-			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Busca de tipo</a>
+			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Itens Marketplace</a>
 			                </h5>
 			            </div>
 			            <div id="collapseTwo" class="panel-collapse collapse">
                				 <div class="panel-body">
+               				 	<label class="control-label">Números de Parceiros</label>
+								<div class="controls ">
+									<form:input class="form-control" placeholder="Quantidade de parceiros"  path="numPartner"/>
+								</div>               				 	
 								<label class="control-label" >Tipo:</label>
 								<div class="switch-toggle switch-3 well">
 								<input id="b2w" type="radio"  name="type" value="b2w" checked /><label for="b2w" onclick="">B2W</label>
@@ -276,8 +228,8 @@ input.full-width {
 	               			 <div class="panel-body">											
 								<label class="control-label" >Moda:   </label>
 								<div class="switch-toggle well">
-								  <input id="fashionTrue" type="radio" name="fashion" value="true" checked> <label for="fashionTrue" onclick="">TRUE</label>
-								  <input id="fashionFalse" type="radio" name="fashion" value="false" > <label for="fashionFalse" onclick="">FALSE</label>
+								  <input id="fashionTrue" type="radio" name="fashion" value="true" > <label for="fashionTrue" onclick="">TRUE</label>
+								  <input id="fashionFalse" type="radio" name="fashion" value="false" checked> <label for="fashionFalse" onclick="">FALSE</label>
 								  <a class="btn btn-primary"></a>
 								</div> 
 								<br/>
@@ -294,8 +246,8 @@ input.full-width {
 	               			 <div class="panel-body">											
 								<label class="control-label" >Kit:   </label>
 								<div class="switch-toggle well">
-								  <input id="fashionTrue" type="radio" name="fashion" value="true" checked> <label for="fashionTrue" onclick="">TRUE</label>
-								  <input id="fashionFalse" type="radio" name="fashion" value="false" > <label for="fashionFalse" onclick="">FALSE</label>
+								  <input id="kitTrue" type="radio" name="kit" value="true" > <label for="kitTrue" onclick="">TRUE</label>
+								  <input id="kitFalse" type="radio" name="kit" value="false" checked> <label for="kitFalse" onclick="">FALSE</label>
 								  <a class="btn btn-primary"></a>
 								</div> 
 								<br/>
@@ -349,6 +301,7 @@ input.full-width {
 				</div>	
 			</div>
 			<div class="resultadoBusca col-md-4 col2">
+			<img src="/resources/image/ajax-loader.gif" id="loading-indicator"  style="display:none"/>
 			    Total Encontrados: <span class="totalEncontrados"></span>
 			    <span class="itemIdLink"></span>
 				<div class="itemList">

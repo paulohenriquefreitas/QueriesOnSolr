@@ -51,6 +51,8 @@ import flexjson.JSONSerializer;
 @Controller
 public class HomeController {
 	private BrandSolr brandSolr;
+	private int start = 0;
+	private int a = 0;
 
 	@RequestMapping(value="/")
 	public ModelAndView test() throws IOException{
@@ -143,8 +145,21 @@ public class HomeController {
 	}
 
 	private String getSolrBrand(QueryForm queryForm) {
-		String solrUrl = "http://10.13.147.14:8080/solr" ;
-		return solrUrl;
+		int brand = Integer.valueOf(queryForm.getBrand());
+		switch (brand) {
+		case 01:
+			return "http://vmhmlwl1:8080/solr";
+		case 02:
+			return "http://10.13.51.14:8080/solr";
+		case 03:
+			return "http://10.13.147.14:8080/solr" ;
+		case 04:
+			return "http://10.13.67.14:8080/solr";
+		case 07:
+			return "http://10.13.91.21:8080/solr";
+		default:			
+			return "http://10.13.147.14:8080/solr" ;
+		}	
 	}
 
 	public static ItemSolrDao getItemSolrDao(String solrUrl) throws MalformedURLException{
@@ -175,14 +190,23 @@ public class HomeController {
 			queryString.append(System.getProperty("query"));
 		String id = queryForm.getId();
 		String type = queryForm.getType();
-		if(StringUtils.isNumeric(id) && StringUtils.isNotEmpty(id) ) {
-			queryString.append("itemId:"+id);
+		if(StringUtils.isNotEmpty(id) ) {
+			queryString.append("itemId:("+id+")");
 			return getItensById(itemSolrDao, queryString);
+		}else if(queryForm.getKit().equalsIgnoreCase("true")){
+			String stock = queryForm.getStock();						
+			queryString.append("itemStock:"+stock);	
+			return getKits(itemSolrDao, queryString,queryForm.getNumSkus());
+		}else if (StringUtils.isNotEmpty(queryForm.getNumSkus())){			
+			String stock = queryForm.getStock();						
+			queryString.append("itemStock:"+stock);		
+			return getItensBySkuQuantity(itemSolrDao, queryString,Integer.valueOf(queryForm.getNumSkus()));
 		}else if (type.equals("b2w")){			
 			queryString.append(getQueryType(type));
 			String stock = queryForm.getStock();						
 			queryString.append(" AND itemStock:"+stock);		
-			return getItens(itemSolrDao, queryString);
+			return getItens(itemSolrDao, queryString,"3","0");
+			
 		}else {
 			queryString.append(getQueryType(type));	
 			String stock = queryForm.getStock();						
@@ -219,18 +243,75 @@ public class HomeController {
 		return Collections.EMPTY_LIST;
 	}
 
+	private List<IndexedItem> getKits(ItemSolrDao itemSolrDao,
+			StringBuffer queryString,String skuQuantity) {
+		Integer skuQty = StringUtils.isEmpty(skuQuantity) ? 1 : Integer.valueOf(skuQuantity);
+		List<IndexedItem> listIndexedItemsKit = new ArrayList<IndexedItem>();
+		while(listIndexedItemsKit.size() < 2){
+			List<IndexedItem> listIndexedItems = getItens(itemSolrDao, queryString, "10",getStart());
+			for(IndexedItem indexedItem : listIndexedItems){
+				if(skuQty > 1){
+					if(indexedItem.isKit() && indexedItem.getSkuList().size() == skuQty){
+						listIndexedItemsKit.add(indexedItem);
+						if(listIndexedItemsKit.size() == 2){
+							return listIndexedItemsKit;
+						}
+					}
+				}else{
+					if(indexedItem.isKit()){
+						listIndexedItemsKit.add(indexedItem);
+						if(listIndexedItemsKit.size() == 2){
+							return listIndexedItemsKit;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	private List<IndexedItem> getItensBySkuQuantity(ItemSolrDao itemSolrDao,StringBuffer queryString, int skuQuantity) {
+		List<IndexedItem> listIndexedItemsBysku = new ArrayList<IndexedItem>();
+		while(listIndexedItemsBysku.size() < 20){
+			List<IndexedItem> listIndexedItems = getItens(itemSolrDao, queryString, "10",getStart());
+			for(IndexedItem indexedItem : listIndexedItems){
+				if(indexedItem.getSkuList().size() == skuQuantity){
+					listIndexedItemsBysku.add(indexedItem);
+					if(listIndexedItemsBysku.size() == 20){
+						return listIndexedItemsBysku;
+					}
+				}
+				
+			}
+		}
+		return listIndexedItemsBysku;
+	}
+
+	private String getStart() {
+		if(a == 0 ){
+			a = start;
+			a =+ 100;
+			return String.valueOf(start);
+		}else{
+			start =  a;
+			a = a + 100;
+			return String.valueOf(start);
+		}
+		
+	}
+
 	private List<IndexedItem> getItensById(ItemSolrDao itemSolrDao,
 			StringBuffer queryString) {
 		SolrQuery query = new SolrQuery(queryString.toString());
-		query.add("rows", "3");
 		List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
 		return listIndexedItems;
 	}
 	
 	private List<IndexedItem> getItens(ItemSolrDao itemSolrDao,
-			StringBuffer queryString) {
+			StringBuffer queryString,String quantity, String start) {
 		SolrQuery query = new SolrQuery(queryString.toString());
-		query.add("rows", "3");
+		query.add("rows",quantity);
+		query.add("start",start);
 		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
 		List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
 		return listIndexedItems;
