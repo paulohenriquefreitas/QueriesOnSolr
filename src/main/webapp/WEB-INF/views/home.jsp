@@ -31,22 +31,30 @@
 
 $(document).ready( function() {
 	  var form = $('#query');
-
+	  var resultado = $('.resultadoBusca');
+	  resultado.empty();
+	  // habilita loading
 	  form.submit( function(event) {
 	    $.ajax( {
 	      type: "GET",
 	      url: form.attr( 'action' ),
 	      data: form.serialize(),
 	      success: function( response ) {
-	    	var resultado = $('.resultadoBusca');
-	    	resultado.find('.totalEncontrados').text(response.totalEncontrados);
-	    	resultado.find('.itemList').text(response.itemList);
+	    	resultado.html(response);
+	    	 // desabilita loading
 	      }
 	    } );
 	    event.preventDefault();
 	  } );
 
 	} );
+
+
+function teste(itemId) {
+	return "<ul id=\"collapseOne_" + itemId + "\" class=\"panel-collapse collapse in list-group\">" + 
+           "<li class=\"list-group-item\"><a href=\"#\">2144252525</a>teste</li>" +
+           "</ul>"
+}
 
 $(document).ajaxSend(function(event, request, settings) {
 	  $('#loading-indicator').show();
@@ -304,8 +312,8 @@ input.full-width {
 			<img src="/resources/image/ajax-loader.gif" id="loading-indicator"  style="display:none"/>
 			    Total Encontrados: <span class="totalEncontrados"></span>
 			    
-			    <div class="panel-group" id="accordion">
-				  <div class="panel panel-default">
+			    <div class="panel-group " id="accordion">
+				  <div class="panel panel-default itemList">
 				    <div class="panel-heading">
 				      <h4 class="panel-title">
 				       
@@ -313,16 +321,12 @@ input.full-width {
 				        </i>
 				      </h4>
 				    </div>
-				    <ul id="collapseOne" class="panel-collapse collapse in list-group">
-				      <li class="list-group-item"><a href="#">2144252525</a></li>
-				     
-				    </ul>
+
+				    
 				  </div>	
 				</div>
 			    <span class="link"></span>
-				<div class="itemList">
-					<pre>${itemList}</pre>		
-				</div> 
+				
 			</div>
 		</div>
 	</div>			

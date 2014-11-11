@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -21,9 +20,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -41,6 +37,7 @@ import com.b2w.catalogbackendcommons.index.IndexedMarketPlaceItem;
 import com.b2winc.solr.model.BrandSolr;
 import com.b2winc.solr.model.QueryForm;
 import com.b2winc.solr.model.QueryFormPartner;
+import com.b2winc.solr.modeljson.QueryResult;
 import com.b2winc.solr.repository.ItemSolrDao;
 import com.b2winc.solr.repository.MarketPlaceSolrDao;
 import com.google.gson.Gson;
@@ -96,8 +93,8 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value="/busca2", method=RequestMethod.GET, produces = "application/json; charset=utf-8")
-	public ResponseEntity<Map<String,String>> naveguetemp(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException{
+	@RequestMapping(value="/busca2", method=RequestMethod.GET)
+	public ModelAndView naveguetemp(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException{
 //		if(result.hasFieldErrors()){
 //			 ModelAndView mv =  new ModelAndView("teste");
 //			 mv.addObject("msg","Ocorreu um erro");
@@ -106,7 +103,7 @@ public class HomeController {
 			List<IndexedItem> listIndexedItem = new ArrayList<IndexedItem>();		
 			String solrUrl = getSolrBrand(queryForm) ;
 			ItemSolrDao itemSolrDao = getItemSolrDao(solrUrl);
-			ModelAndView mv =  new ModelAndView("home");
+			ModelAndView mv =  new ModelAndView("resultado");
 			mv.addObject("fields",getFields());			
 			listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner);
 			String[] fieldsArray = queryForm.getFields();
@@ -114,16 +111,17 @@ public class HomeController {
 			model.addAttribute("itemList",toJson(listIndexedItem,fieldsArray));
 			model.addAttribute("link",getLink(queryForm.getBrand()));
 			model.addAttribute("size",listIndexedItem.size());
+			return mv;
 			
-			Map<String, String> resultados = new HashMap<String, String>();
-			resultados.put("itemList", toJson(listIndexedItem,fieldsArray));
-			resultados.put("totalEncontrados", Integer.valueOf(listIndexedItem.size()).toString());
-			resultados.put("link", (String) getLink(queryForm.getBrand().toString()));
-			/*for (IndexedItem indexedItem : listIndexedItem){
-				resultados.put(indexedItem.getId(), indexedItem);
-			}*/
-			//System.out.println(brandSolr.getIpList());
-			return new ResponseEntity<Map<String, String>>(resultados, HttpStatus.OK);
+//			Map<String, String> resultados = new HashMap<String, String>();
+//			resultados.put("itemList", toJson(listIndexedItem,fieldsArray));
+//			resultados.put("totalEncontrados", Integer.valueOf(listIndexedItem.size()).toString());
+//			resultados.put("link", (String) getLink(queryForm.getBrand().toString()));
+//			/*for (IndexedItem indexedItem : listIndexedItem){
+//				resultados.put(indexedItem.getId(), indexedItem);
+//			}*/
+//			//System.out.println(brandSolr.getIpList());
+//			return new ResponseEntity<QueryResult>(new QueryResult(listIndexedItem, getLink(queryForm.getBrand().toString())), HttpStatus.OK);
 //		}
 			
 	}
@@ -142,7 +140,7 @@ public class HomeController {
 	
 
 
-	private Object getLink(String marca) {
+	private String getLink(String marca) {
 		if(marca.equalsIgnoreCase("hml"))
 			return "http://hml.www.americanas.com.br/produto/";
 		return "http://www."+marca+".com.br/produto/";
