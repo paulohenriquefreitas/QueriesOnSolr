@@ -303,10 +303,26 @@ input.full-width {
 			<div class="resultadoBusca col-md-4 col2">
 			<img src="/resources/image/ajax-loader.gif" id="loading-indicator"  style="display:none"/>
 			    Total Encontrados: <span class="totalEncontrados"></span>
-			    <span class="itemIdLink"></span>
+			    
+			    <div class="panel-group" id="accordion">
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				       
+				        <i class="pull-right glyphicon glyphicon-chevron-down accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+				        </i>
+				      </h4>
+				    </div>
+				    <ul id="collapseOne" class="panel-collapse collapse in list-group">
+				      <li class="list-group-item"><a href="#">2144252525</a></li>
+				     
+				    </ul>
+				  </div>	
+				</div>
+			    <span class="link"></span>
 				<div class="itemList">
 					<pre>${itemList}</pre>		
-				</div>
+				</div> 
 			</div>
 		</div>
 	</div>			

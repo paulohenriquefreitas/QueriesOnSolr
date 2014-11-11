@@ -118,6 +118,10 @@ public class HomeController {
 			Map<String, String> resultados = new HashMap<String, String>();
 			resultados.put("itemList", toJson(listIndexedItem,fieldsArray));
 			resultados.put("totalEncontrados", Integer.valueOf(listIndexedItem.size()).toString());
+			resultados.put("link", (String) getLink(queryForm.getBrand().toString()));
+			/*for (IndexedItem indexedItem : listIndexedItem){
+				resultados.put(indexedItem.getId(), indexedItem);
+			}*/
 			//System.out.println(brandSolr.getIpList());
 			return new ResponseEntity<Map<String, String>>(resultados, HttpStatus.OK);
 //		}
