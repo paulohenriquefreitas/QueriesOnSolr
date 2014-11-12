@@ -50,12 +50,6 @@ $(document).ready( function() {
 	} );
 
 
-function teste(itemId) {
-	return "<ul id=\"collapseOne_" + itemId + "\" class=\"panel-collapse collapse in list-group\">" + 
-           "<li class=\"list-group-item\"><a href=\"#\">2144252525</a>teste</li>" +
-           "</ul>"
-}
-
 $(document).ajaxSend(function(event, request, settings) {
 	  $('#loading-indicator').show();
 	});
@@ -153,11 +147,11 @@ input.full-width {
 		<div class="row clearfix">
 			<div class="col-md-12 column">
 			     <div id=mode-group class="btn-group btn-group-justified font-group " data-toggle="buttons">
-			      <label class="btn btn-primary active" ><form:radiobutton path="brand" value="03"  checked="checked"/>SUBMARINO</label>			        
-			      <label class="btn btn-danger "><form:radiobutton path="brand" value="02" />AMERICANAS</label>			        
-			      <label class="btn btn-shop " ><form:radiobutton path="brand" value="04"/>SHOPTIME</label>
-			      <label class="btn btn-soub" ><form:radiobutton path="brand" value="07"/>SOUBARATO</label>
-			      <label class="btn btn-success" ><form:radiobutton path="brand" value="01" />HOMOLOGAÇÃO</label>
+			      <label class="btn btn-primary active" ><form:radiobutton path="brand" value="submarino"  checked="checked"/>SUBMARINO</label>			        
+			      <label class="btn btn-danger "><form:radiobutton path="brand" value="americanas" />AMERICANAS</label>			        
+			      <label class="btn btn-shop " ><form:radiobutton path="brand" value="shoptime"/>SHOPTIME</label>
+			      <label class="btn btn-soub" ><form:radiobutton path="brand" value="soubarato"/>SOUBARATO</label>
+			      <label class="btn btn-success" ><form:radiobutton path="brand" value="americanas" />HOMOLOGAÇÃO</label>
 			    </div>
 			</div>
 		</div>

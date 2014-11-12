@@ -141,27 +141,22 @@ public class HomeController {
 
 
 	private String getLink(String marca) {
-		if(marca.equalsIgnoreCase("hml"))
-			return "http://hml.www.americanas.com.br/produto/";
+		/*if(marca.equalsIgnoreCase("hml"))
+			return "http://hml.www.americanas.com.br/produto/";*/
 		return "http://www."+marca+".com.br/produto/";
 	}
 
 	private String getSolrBrand(QueryForm queryForm) {
-		int brand = Integer.valueOf(queryForm.getBrand());
-		switch (brand) {
-		case 01:
-			return "http://vmhmlwl1:8080/solr";
-		case 02:
+		if(queryForm.getBrand().equals("submarino"))
+			return "http://10.13.147.14:8080/solr" ;
+		else if(queryForm.getBrand().equals("americanas"))
 			return "http://10.13.51.14:8080/solr";
-		case 03:
-			return "http://10.13.147.14:8080/solr" ;
-		case 04:
+		else if(queryForm.getBrand().equals("shoptime"))
 			return "http://10.13.67.14:8080/solr";
-		case 07:
+		else if(queryForm.getBrand().equals("soubarato"))
 			return "http://10.13.91.21:8080/solr";
-		default:			
-			return "http://10.13.147.14:8080/solr" ;
-		}	
+		else
+			return "http://vmhmlwl1:8080/solr";
 	}
 
 	public static ItemSolrDao getItemSolrDao(String solrUrl) throws MalformedURLException{
