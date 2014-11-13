@@ -126,16 +126,23 @@ public class HomeController {
 			
 	}
 
-	private String toJson(List<IndexedItem> listIndexedItem, String[] fieldsArray)
+	private Map<String,String> toJson(List<IndexedItem> listIndexedItem, String[] fieldsArray)
 			throws IOException, JsonParseException, JsonMappingException {
-		if(fieldsArray.length == 0 ){
-			Gson gson = new GsonBuilder() .setPrettyPrinting().create();
-			String json = gson.toJson(listIndexedItem);			
-			return json;
-		}else{
-			JSONSerializer postDetailsSerializer = new JSONSerializer().include(fieldsArray).exclude("*").prettyPrint(true);
-			return postDetailsSerializer.serialize(listIndexedItem);
+		Map<String,String> array= new HashMap<String, String>();
+		for (IndexedItem indexedItem : listIndexedItem){			
+		    array.put("itemId", indexedItem.getId());
+		    array.put("name", indexedItem.getItemName());
+			if(fieldsArray.length == 0 ){
+				Gson gson = new GsonBuilder() .setPrettyPrinting().create();
+				String json = gson.toJson(indexedItem);			
+				array.put("itemJson", json);
+			}else{
+				JSONSerializer postDetailsSerializer = new JSONSerializer().include(fieldsArray).exclude("*").prettyPrint(true);
+				array.put("itemJson",postDetailsSerializer.serialize(indexedItem));
+			}
+			
 		}
+		return array;
 	}
 	
 

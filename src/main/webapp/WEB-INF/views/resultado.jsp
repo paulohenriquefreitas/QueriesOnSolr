@@ -17,19 +17,20 @@
 				  <a href="${link}${item.id}" target="_blank">${item.id}</a>
 				</c:forEach>
 				<div class="panel-group" id="accordion"> 
-			        <c:forEach var="item" items="${idList}">
-				        <div class="panel panel-default">
+			        <c:forEach var="entry" items="${itemList}">
+				        <%-- <div class="panel panel-default">
 				            <div class="panel-heading">
 				                <h4 class="panel-title">
-				                    <a data-toggle="collapse" data-parent="#accordion"href='<%= "#collapse_#{item.id}" %>'>${item.itemId} - ${item.itemName}</a>
+				                    <a data-toggle="collapse" data-parent="#accordion" href="#${entry['itemId']}">${entry[itemId]}</a>
 				                </h4>
 				            </div>
-				            <div id='<%= "collapse_#{item.id}" %>' class="panel-collapse collapse in">
+				            <div id="${entry[itemId]}" class="panel-collapse collapse">
 				                <div class="panel-body">
-				                    <p>${itemList}</p>
+				                    <p>${entry[itemJson]}</p>
 				                </div>
 				            </div>
-				        </div> 
+				        </div>  --%>
+				        <p>${entry}</p>
 			        </c:forEach>
 			    </div>
 				
