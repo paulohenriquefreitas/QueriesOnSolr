@@ -52,6 +52,7 @@ public class HomeController {
 	private BrandSolr brandSolr;
 	private int start = 0;
 	private int a = 0;
+	private QueryForm queryForm;
 
 	@RequestMapping(value="/")
 	public ModelAndView test() throws IOException{
@@ -103,6 +104,7 @@ public class HomeController {
 //			 mv.addObject("msg","Ocorreu um erro");
 //			 return mv;
 //		}else{
+		    this.queryForm = queryForm;
 			List<IndexedItem> listIndexedItem = new ArrayList<IndexedItem>();		
 			String solrUrl = getSolrBrand(queryForm) ;
 			ItemSolrDao itemSolrDao = getItemSolrDao(solrUrl);
@@ -290,12 +292,12 @@ public class HomeController {
 
 	private List<IndexedItem> getItensBySkuQuantity(ItemSolrDao itemSolrDao,StringBuffer queryString, int skuQuantity, String[] fieldsArray) {
 		List<IndexedItem> listIndexedItemsBysku = new ArrayList<IndexedItem>();
-		while(listIndexedItemsBysku.size() < 20){
+		while(listIndexedItemsBysku.size() < 2){
 			List<IndexedItem> listIndexedItems = getItens(itemSolrDao, queryString, "10",getStart(),fieldsArray);
 			for(IndexedItem indexedItem : listIndexedItems){
 				if(indexedItem.getSkuList().size() == skuQuantity){
 					listIndexedItemsBysku.add(indexedItem);
-					if(listIndexedItemsBysku.size() == 20){
+					if(listIndexedItemsBysku.size() == 2){
 						return listIndexedItemsBysku;
 					}
 				}
@@ -306,14 +308,18 @@ public class HomeController {
 	}
 
 	private String getStart() {
-		if(a == 0 ){
-			a = start;
-			a =+ 100;
-			return String.valueOf(start);
+		if(StringUtils.isEmpty(queryForm.getStart())){			
+			if(a == 0 ){
+				a = start;
+				a =+ 100;
+				return String.valueOf(start);
+			}else{
+				start =  a;
+				a = a + 100;
+				return String.valueOf(start);
+			}
 		}else{
-			start =  a;
-			a = a + 100;
-			return String.valueOf(start);
+			return queryForm.getStart();
 		}
 		
 	}
@@ -360,6 +366,12 @@ public class HomeController {
 	}
 	
 	
-	
+	public QueryForm getQueryForm() {
+		return queryForm;
+	}
+
+	public void setQueryForm(QueryForm queryForm) {
+		this.queryForm = queryForm;
+	}
 	
 }

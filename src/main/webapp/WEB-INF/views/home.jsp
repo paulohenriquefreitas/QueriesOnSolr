@@ -253,8 +253,12 @@ input.full-width {
 								<br/>
 							</div>
 						</div>		
-					</div>	
-					 <label class="control-label select2">Campos</label>	<br/>
+					</div>
+					<br/><hr/>
+					<div class="panel-body ">
+						<form:input class="smallfield" placeholder="Start"  path="start"/>
+						<form:input class="smallfield" placeholder="Rows"  path="rows"/>
+					</div>  	
 					 <div class="side-by-side clearfix">
 			         <form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " 
 			                     class="chosen-select" tabindex="8" path="fields" items="${fields}"> 		

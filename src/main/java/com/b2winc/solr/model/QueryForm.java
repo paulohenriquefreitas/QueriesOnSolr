@@ -1,6 +1,5 @@
 package com.b2winc.solr.model;
 
-import java.util.List;
 
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -16,6 +15,8 @@ public class QueryForm {
 	private String numPartner;
 	private String numSkus;
 	private String kit;
+	private String start;
+	private String rows;
 	
 	public String getId() {
 		return id;
@@ -88,9 +89,23 @@ public class QueryForm {
 	public void setKit(String kit) {
 		this.kit = kit;
 	}
-	
-	
-		
+
+	public String getStart() {
+		return start;
+	}
+
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
+	}
 	
 
+	
 }
