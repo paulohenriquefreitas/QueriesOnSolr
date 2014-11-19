@@ -32,16 +32,19 @@
 $(document).ready( function() {
 	  var form = $('#query');
 	  var resultado = $('.resultadoBusca');
+	  
 	  resultado.empty();
 	  // habilita loading
 	  form.submit( function(event) {
+		  resultado.children().each(function() { $(this).remove(); });
+		  $('#loading-indicator').show();
 	    $.ajax( {
 	      type: "GET",
 	      url: form.attr( 'action' ),
 	      data: form.serialize(),
 	      success: function( response ) {
 	    	resultado.html(response);
-	    	 // desabilita loading
+	    	$('#loading-indicator').hide();
 	      }
 	    } );
 	    event.preventDefault();
@@ -50,11 +53,6 @@ $(document).ready( function() {
 	} );
 
 
-
-
-	$(document).ajaxComplete(function(event, request, settings) {
-	  $('#loading-indicator').hide();
-	});
 	
 </script>
 
@@ -115,9 +113,11 @@ input.full-width {
 }
 
 #loading-indicator {
-  position: absolute;
+/*  position: absolute;
   left: 10px;
-  top: 10px;
+  top: 10px;*/
+  border: 100px 10px 100px 100px;
+  display: none;
 }
 
 </style> 
@@ -304,8 +304,9 @@ input.full-width {
 					</c:if>
 				</div>	
 			</div>
+			<img src="/resources/image/ajax-loader.gif" id="loading-indicator" >
 			<div class="resultadoBusca col-md-4 col2">
-			<img src="/resources/image/ajax-loader.gif" id="loading-indicator"  style="display:none"/>
+				
 			    Total Encontrados: <span class="totalEncontrados"></span>
 			    
 			    <div class="panel-group " id="accordion">
