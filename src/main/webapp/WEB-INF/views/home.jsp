@@ -21,10 +21,11 @@
 <script src="/resources/js/bootstrap-select.js"></script>
 <script src="/resources/js/select2.js"></script>
 <script type="text/javascript" src="/resources/js/jquery.tokenize.js"></script>
+<script src="/resources/js/heartcode-canvasloader.js"></script>
 
 <link rel="stylesheet" href="/resources/css/style.css">
-  <link rel="stylesheet" href="/resources/css/prism.css">
-  <link rel="stylesheet" href="/resources/css/chosen.css">
+<link rel="stylesheet" href="/resources/css/prism.css">
+<link rel="stylesheet" href="/resources/css/chosen.css">
 
 
 <script type="text/javascript">
@@ -34,7 +35,6 @@ $(document).ready( function() {
 	  var resultado = $('.resultadoBusca');
 	  
 	  resultado.empty();
-	  // habilita loading
 	  form.submit( function(event) {
 		  resultado.children().each(function() { $(this).remove(); });
 		  $('#loading-indicator').show();
@@ -56,16 +56,11 @@ $(document).ready( function() {
 	
 </script>
 
-
- <style type="text/css" media="all">
-    /* fix rtl for demo */
-    .chosen-rtl .chosen-drop { left: -9000px; }
-  </style>
 <style type="text/css">
-.btn-custom:active {
-    top: 5px;
-    border-bottom: 0;
-}
+	.btn-custom:active {
+	    top: 5px;
+	    border-bottom: 0;
+	}
 	.imagem  {
 	background-image: url("img/apache-solr.jpg");
 	
@@ -81,45 +76,48 @@ $(document).ready( function() {
     border-left: thick solid #ff0000;
 	}	
 	
-.col{
-margin-bottom: 0px;
-padding-bottom: 5px;
-padding-left: 0px;
-border-radius: 8px;
-border: 2px solid #e3e3e3;
-}
+	.col{
+	margin-bottom: 0px;
+	padding-bottom: 5px;
+	padding-left: 0px;
+	border-radius: 8px;
+	border: 2px solid #e3e3e3;
+	}
+	
+	.col2{
+	margin-bottom: 0px;
+	padding-bottom: 5px;
+	padding-left: 7px;
+	border-radius: 8px;
+	width: 78%;
+	border: 2px solid #e3e3e3;
+	}
+	
+	.col-wrap{
+	overflow: hidden; 
+	}
+	
+	input.full-width {
+	    box-sizing: border-box;
+	    width: 100%;
+	    height: 30px;
+	}
+	
+	#mode-group .btn:not(.active) {
+		opacity: 0.5;
+	}
+	
+	#loading-indicator {
+	   border: 100px 10px 100px 100px;
+	   display: none;
+	}
+	.wrapper {
+	   position:absolute;
+	   top:50%;
+	   left:60%;
+	}
 
-.col2{
-margin-bottom: 0px;
-padding-bottom: 5px;
-padding-left: 7px;
-border-radius: 8px;
-width: 78%;
-border: 2px solid #e3e3e3;
 }
-
-.col-wrap{
-overflow: hidden; 
-}
-
-input.full-width {
-    box-sizing: border-box;
-    width: 100%;
-    height: 30px;
-}
-
-#mode-group .btn:not(.active) {
-	opacity: 0.5;
-}
-
-#loading-indicator {
-/*  position: absolute;
-  left: 10px;
-  top: 10px;*/
-  border: 100px 10px 100px 100px;
-  display: none;
-}
-
 </style> 
 </head>
 <body >
@@ -172,11 +170,7 @@ input.full-width {
 								<div class="controls ">
 									<%-- <form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/> --%>
 									<input type="text" name="id" id="id" class="form-control"  placeholder="Pesquisa por Id"  />
-								</div>								
-								<label class="control-label">Números de Skus</label>
-								<div class="controls ">
-									<form:input class="form-control" placeholder="Quantidade de Skus"  path="numSkus"/>
-								</div>
+								</div>		
 							</div>
 						</div>		
 					</div>
@@ -256,8 +250,8 @@ input.full-width {
 					</div>
 					<br/><hr/>
 					<div class="panel-body ">
+						<form:input class="smallfield" placeholder="Nº Skus"  path="numSkus"/>
 						<form:input class="smallfield" placeholder="Start"  path="start"/>
-						<form:input class="smallfield" placeholder="Rows"  path="rows"/>
 					</div>  	
 					 <div class="side-by-side clearfix">
 			         <form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " 
@@ -304,7 +298,26 @@ input.full-width {
 					</c:if>
 				</div>	
 			</div>
-			<img src="/resources/image/ajax-loader.gif" id="loading-indicator" >
+			<div class="container" id="loading-indicator">
+				<!-- Create a div which will be the canvasloader wrapper -->	
+				<div id="canvasloader-container" class="wrapper"></div>
+			</div>
+			 <script type="text/javascript">
+						var cl = new CanvasLoader('canvasloader-container');
+						cl.setColor('#819e0b'); // default is '#000000'
+						cl.setShape('spiral'); // default is 'oval'
+						cl.setDiameter(137); // default is 40
+						cl.setDensity(32); // default is 40
+						cl.setRange(0.9); // default is 1.3
+						cl.setFPS(15); // default is 24
+						cl.show(); // Hidden by default
+							
+							// This bit is only for positioning - not necessary
+							  var loaderObj = document.getElementById("canvasLoader");
+					  		loaderObj.style.position = "absolute";
+					  		loaderObj.style["top"] = cl.getDiameter() * -0.5 + "px";
+					  		loaderObj.style["left"] = cl.getDiameter() * -0.5 + "px";
+		   </script>
 			<div class="resultadoBusca col-md-4 col2">
 				
 			    Total Encontrados: <span class="totalEncontrados"></span>

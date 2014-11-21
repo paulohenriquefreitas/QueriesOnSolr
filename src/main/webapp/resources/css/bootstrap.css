@@ -2353,7 +2353,7 @@ input[type="range"] {
 select[multiple],
 select[size] {
   height: 130px;
-  width: 97%;
+  width: 94.5%;
 }
 input[type="file"]:focus,
 input[type="radio"]:focus,
@@ -2938,6 +2938,7 @@ fieldset[disabled] .btn-primary.active {
   color: #fff;
   background-color: #5cb85c;
   border-color: #4cae4c;
+  margin-left: 6.8px;
 }
 .btn-success:hover,
 .btn-success:focus,
