@@ -298,26 +298,7 @@ $(document).ready( function() {
 					</c:if>
 				</div>	
 			</div>
-			<div class="container" id="loading-indicator">
-				<!-- Create a div which will be the canvasloader wrapper -->	
-				<div id="canvasloader-container" class="wrapper"></div>
-			</div>
-			 <script type="text/javascript">
-						var cl = new CanvasLoader('canvasloader-container');
-						cl.setColor('#819e0b'); // default is '#000000'
-						cl.setShape('spiral'); // default is 'oval'
-						cl.setDiameter(137); // default is 40
-						cl.setDensity(32); // default is 40
-						cl.setRange(0.9); // default is 1.3
-						cl.setFPS(15); // default is 24
-						cl.show(); // Hidden by default
-							
-							// This bit is only for positioning - not necessary
-							  var loaderObj = document.getElementById("canvasLoader");
-					  		loaderObj.style.position = "absolute";
-					  		loaderObj.style["top"] = cl.getDiameter() * -0.5 + "px";
-					  		loaderObj.style["left"] = cl.getDiameter() * -0.5 + "px";
-		   </script>
+			
 			<div class="resultadoBusca col-md-4 col2">
 				
 			    Total Encontrados: <span class="totalEncontrados"></span>
@@ -338,6 +319,26 @@ $(document).ready( function() {
 			    <span class="link"></span>
 				
 			</div>
+			<div class="container" id="loading-indicator">
+				<!-- Create a div which will be the canvasloader wrapper -->	
+				<div id="canvasloader-container" class="wrapper"></div>
+			</div>
+			 <script type="text/javascript">
+						var cl = new CanvasLoader('canvasloader-container');
+						cl.setColor('#819e0b'); // default is '#000000'
+						cl.setShape('spiral'); // default is 'oval'
+						cl.setDiameter(137); // default is 40
+						cl.setDensity(32); // default is 40
+						cl.setRange(0.9); // default is 1.3
+						cl.setFPS(15); // default is 24
+						cl.show(); // Hidden by default
+							
+							// This bit is only for positioning - not necessary
+							  var loaderObj = document.getElementById("canvasLoader");
+					  		loaderObj.style.position = "absolute";
+					  		loaderObj.style["top"] = cl.getDiameter() * -0.5 + "px";
+					  		loaderObj.style["left"] = cl.getDiameter() * -0.5 + "px";
+		   </script>
 		</div>
 	</div>			
 </form:form>
