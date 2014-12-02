@@ -31,9 +31,10 @@
 				            </div>
 				            <div id="${item.id}" class="panel-collapse collapse">
 				                <div class="panel-body">				                    
-										<json:object>
+										<%-- <json:object>
 											<json:property name="item" value="${item}"/>
-										</json:object>
+										</json:object> --%>
+										<h4>${item}</h4>
 				                </div>
 				            </div>
 				        </div> 

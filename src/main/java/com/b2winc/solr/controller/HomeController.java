@@ -53,7 +53,7 @@ public class HomeController {
 	private Integer aux;
 	private int a = 0;
 	private QueryForm queryForm = new QueryForm();
-	private static final Integer QUANTITY = 3; 
+	private static Integer QUANTITY = 5; 
 	private static final String SEPARATOR = "\\s\\^\\s";
 	private int brandStart;
 
@@ -91,7 +91,6 @@ public class HomeController {
 			listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner,fieldsArray);
 			model.addAttribute("idList",listIndexedItem);
 			/*model.addAttribute("itemList",toJson(listIndexedItem,fieldsArray));*/
-			model.addAttribute("itemList",listIndexedItem);
 			model.addAttribute("link",getLink(queryForm.getBrand()));
 			model.addAttribute("size",listIndexedItem.size());
 			return mv;
@@ -99,8 +98,22 @@ public class HomeController {
 			
 	}
 	
+	private Object removeNull(List<IndexedItem> listIndexedItem) throws ClassNotFoundException {
+		List<IndexedItem> listItens = new ArrayList<IndexedItem>();
+		for (IndexedItem indexedItem : listIndexedItem) {
+			for (IndexedItem indexedItem1 : listItens) {
+				Class cls = Class.forName("indexedItem");
+				Field fieldlist[] = cls.getDeclaredFields();
+				for (Field field : fieldlist) {
+					System.out.println(field);
+				}
+			}
+		}
+		return listIndexedItem;
+	}
+
 	@RequestMapping(value="/busca2", method=RequestMethod.GET)
-	public ModelAndView naveguetemp(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException{
+	public ModelAndView naveguetemp(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException, ClassNotFoundException{
 		this.queryForm.setNumSkus(queryForm.getNumSkus());
 //		if(result.hasFieldErrors()){
 //			 ModelAndView mv =  new ModelAndView("teste");
@@ -108,6 +121,12 @@ public class HomeController {
 //			 return mv;
 //		}else{
 		    this.queryForm = queryForm;
+		    if(StringUtils.isNotEmpty(queryForm.getRows())){
+		    	QUANTITY = Integer.valueOf(queryForm.getRows());
+		    }else{
+		    	QUANTITY = 5;
+		    }
+		    	
 			List<IndexedItem> listIndexedItem = new ArrayList<IndexedItem>();		
 			String solrUrl = getSolrBrand(queryForm) ;
 			ItemSolrDao itemSolrDao = getItemSolrDao(solrUrl);
@@ -261,7 +280,6 @@ public class HomeController {
 								}
 							}
 						}
-						System.out.println(listIndexedItems.size());
 						if(listIndexedItems.size() >= QUANTITY)
 							return listIndexedItems;
 					}

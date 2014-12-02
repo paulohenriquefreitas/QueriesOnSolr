@@ -252,6 +252,7 @@ $(document).ready( function() {
 					<div class="panel-body ">
 						<form:input class="smallfield" placeholder="Nº Skus"  path="numSkus"/>
 						<form:input class="smallfield" placeholder="Start"  path="start"/>
+						<form:input class="smallfield" placeholder="Rows"  path="rows"/>
 					</div>  	
 					 <div class="side-by-side clearfix">
 			         <form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " 
