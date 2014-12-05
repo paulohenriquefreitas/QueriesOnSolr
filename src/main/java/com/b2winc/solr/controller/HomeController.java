@@ -144,6 +144,7 @@ public class HomeController {
 			model.addAttribute("itemList",listIndexedItem);
 			model.addAttribute("link",getLink(queryForm.getBrand()));
 			model.addAttribute("size",listIndexedItem.size());
+			model.addAttribute("solrLink",getSolrBrand(queryForm)+"/idxItem/select?q=itemId%3A");
 			return mv;
 			
 //			Map<String, String> resultados = new HashMap<String, String>();
@@ -187,7 +188,8 @@ public class HomeController {
 			return "http://hml.www.americanas.com.br/produto/";
 		return "http://www."+marca+".com.br/produto/";
 	}
-
+	
+	
 	private String getSolrBrand(QueryForm queryForm) {
 		if(queryForm.getBrand().equals("submarino")){
 			brandStart=20000;

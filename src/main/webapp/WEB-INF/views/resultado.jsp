@@ -9,6 +9,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+corn {
+    border-left: thick solid #ff0000;
+}	
+</style>	
 </head>
 <body>
 
@@ -30,11 +35,49 @@
 				                </h4>
 				            </div>
 				            <div id="${item.id}" class="panel-collapse collapse">
-				                <div class="panel-body">				                    
-										<%-- <json:object>
-											<json:property name="item" value="${item}"/>
-										</json:object> --%>
-										<h4>${item}</h4>
+				                <div class="panel-body">
+				                <ul class="list-unstyled">				                  
+								  <li><span class="text-danger">ItemStock :</span> ${item.inStock}</li>
+								  <li><span class="text-danger">ItemStockQuantity :</span> ${item.itemStockQuantity}</li>
+								  <li><span class="text-danger">ItemStockQuantityNew :</span> ${item.itemStockQuantityNew}</li>
+								  <li><span class="text-danger">ItemStockQuantityRewrapped :</span> ${item.itemStockQuantityRewrapped}</li>
+								  <li><span class="text-danger">DefaultPrice :</span> ${item.defaultPrice}</li>
+								  <li><span class="text-danger">SalesPrice :</span> ${item.salesPrice}</li>
+								  <li><span class="text-danger">AdminTagList :</span> ${item.adminTagList}</li>
+								  <li><span class="text-danger">SiteStructure :</span> ${item.siteStructure}</li>
+								  <c:if test="${item.isMarketPlace}">
+								  <li><span class="text-danger">MainSellerId :</span> ${item.mainSellerId}</li>
+								  <li><span class="text-danger">MainSellerName :</span> ${item.mainSellerName}</li>
+								  <li><span class="text-danger">PartnerList :</span> ${item.partnerList}</li>
+								  <li><span class="text-danger">PartnerListId :</span> ${item.partnerListIdt}</li>
+								  <li><span class="text-danger">PartnerListName :</span> ${item.partnerListName}</li>
+								  <li><span class="text-danger">PartnerSmallestDefaultPrice :</span> ${item.partnerSmallestDefaultPrice}</li>
+								  <li><span class="text-danger">PartnerSmallestSalesPrice :</span> ${item.partnerSmallestSalesPrice}</li>
+								  </c:if>
+								  <li><span class="text-danger">FlatGroupId :</span> ${item.flatGroupsIds}</li>
+								  <li><span class="text-danger">SkuStock :</span> ${item.skuStock}</li>
+								  <li><span class="text-danger">SkuStockQuantity :</span> ${item.skuStockQuantity}</li>
+								  
+								  <li><span class="text-danger">SkuList :</span> ${item.skuList}</li>
+								  <li><span class="text-danger">ImageSkuUrlList :</span> ${item.imageSkuUrlList}</li>
+								  <li><span class="text-danger">IsKit :</span> ${item.isKit	}</li>
+								  <c:if test="${item.isKit}">
+								  <li><span class="text-danger">SkuKitList :</span> ${item.skuKitList}</li>
+								  </c:if>
+								  <li><span class="text-danger">IsMarketPlace :</span> ${item.isMarketPlace}</li>
+								  <li><span class="text-danger">IsExclusiveMarketPlace :</span> ${item.isExclusiveMarketPlace}</li>
+								   <c:if test="${item.numReviews gt 0}">
+								  <li><span class="text-danger">AverageOverallRating :</span> ${item.averageOverallRating}</li>
+								  <li><span class="text-danger">NumReviews :</span> ${item.numReviews}</li>
+								  </c:if>
+								       	
+								</ul>
+								<div class="corner">
+				                	<span class="text-primary"> ... veja + em 
+					                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a>	
+										<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
+									</span>	
+								</div>
 				                </div>
 				            </div>
 				        </div> 

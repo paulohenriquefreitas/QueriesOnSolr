@@ -147,7 +147,7 @@ $(document).ready( function() {
 			      <label class="btn btn-danger "><form:radiobutton path="brand" value="americanas" />AMERICANAS</label>			        
 			      <label class="btn btn-shop " ><form:radiobutton path="brand" value="shoptime"/>SHOPTIME</label>
 			      <label class="btn btn-soub" ><form:radiobutton path="brand" value="soubarato"/>SOUBARATO</label>
-			      <label class="btn btn-success" ><form:radiobutton path="brand" value="americanas" />HOMOLOGAÇÃO</label>
+			      <label class="btn btn-success" ><form:radiobutton path="brand" value="homolog" />HOMOLOGAÇÃO</label>
 			    </div>
 			</div>
 		</div>
