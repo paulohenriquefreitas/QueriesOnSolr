@@ -10,8 +10,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-corn {
-    border-left: thick solid #ff0000;
+.corner {
+   float:right;
 }	
 </style>	
 </head>
@@ -41,7 +41,9 @@ corn {
 								  <li><span class="text-danger">ItemStockQuantity :</span> ${item.itemStockQuantity}</li>
 								  <li><span class="text-danger">ItemStockQuantityNew :</span> ${item.itemStockQuantityNew}</li>
 								  <li><span class="text-danger">ItemStockQuantityRewrapped :</span> ${item.itemStockQuantityRewrapped}</li>
+								  <c:if test="${item.defaultPrice ne null}">
 								  <li><span class="text-danger">DefaultPrice :</span> ${item.defaultPrice}</li>
+								  </c:if>
 								  <li><span class="text-danger">SalesPrice :</span> ${item.salesPrice}</li>
 								  <li><span class="text-danger">AdminTagList :</span> ${item.adminTagList}</li>
 								  <li><span class="text-danger">SiteStructure :</span> ${item.siteStructure}</li>
@@ -50,7 +52,6 @@ corn {
 								  <li><span class="text-danger">MainSellerName :</span> ${item.mainSellerName}</li>
 								  <li><span class="text-danger">PartnerList :</span> ${item.partnerList}</li>
 								  <li><span class="text-danger">PartnerListId :</span> ${item.partnerListIdt}</li>
-								  <li><span class="text-danger">PartnerListName :</span> ${item.partnerListName}</li>
 								  <li><span class="text-danger">PartnerSmallestDefaultPrice :</span> ${item.partnerSmallestDefaultPrice}</li>
 								  <li><span class="text-danger">PartnerSmallestSalesPrice :</span> ${item.partnerSmallestSalesPrice}</li>
 								  </c:if>
@@ -60,9 +61,10 @@ corn {
 								  
 								  <li><span class="text-danger">SkuList :</span> ${item.skuList}</li>
 								  <li><span class="text-danger">ImageSkuUrlList :</span> ${item.imageSkuUrlList}</li>
-								  <li><span class="text-danger">IsKit :</span> ${item.isKit	}</li>
 								  <c:if test="${item.isKit}">
+								  <li><span class="text-danger">IsKit :</span> ${item.isKit	}</li>
 								  <li><span class="text-danger">SkuKitList :</span> ${item.skuKitList}</li>
+								  <li><span class="text-danger">Filhos do Kit :</span> ${item.kitItemList}</li>
 								  </c:if>
 								  <li><span class="text-danger">IsMarketPlace :</span> ${item.isMarketPlace}</li>
 								  <li><span class="text-danger">IsExclusiveMarketPlace :</span> ${item.isExclusiveMarketPlace}</li>
@@ -74,7 +76,7 @@ corn {
 								</ul>
 								<div class="corner">
 				                	<span class="text-primary"> ... veja + em 
-					                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a>	
+					                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
 										<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
 									</span>	
 								</div>

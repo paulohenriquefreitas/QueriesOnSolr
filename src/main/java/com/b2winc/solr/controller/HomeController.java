@@ -56,6 +56,7 @@ public class HomeController {
 	private static Integer QUANTITY = 5; 
 	private static final String SEPARATOR = "\\s\\^\\s";
 	private int brandStart;
+	private Map<String,String> kitGroup = new HashMap<String, String>();
 
 	@RequestMapping(value="/")
 	public ModelAndView test() throws IOException{
@@ -352,6 +353,10 @@ public class HomeController {
 	private Integer getNumPartner() {
 		return Integer.valueOf(StringUtils.isEmpty(queryForm.getNumPartner()) ? "1" : queryForm.getNumPartner());
 	}
+	
+	private String getStart2() {
+		return StringUtils.isEmpty(queryForm.getStart()) ? "0" : queryForm.getStart();
+	}
 
 	private String getRandom() {
 		if(StringUtils.isEmpty(queryForm.getStart())){
@@ -366,23 +371,28 @@ public class HomeController {
 			StringBuffer queryString,String skuQuantity, String[] fieldsArray) {
 		Integer skuQty = StringUtils.isEmpty(skuQuantity) ? 1 : Integer.valueOf(skuQuantity);
 		List<IndexedItem> listIndexedItemsKit = new ArrayList<IndexedItem>();
+		aux=Integer.valueOf(getRandom());
 		while(listIndexedItemsKit.size() < QUANTITY){
-			List<IndexedItem> listIndexedItems = getItens(itemSolrDao, queryString, QUANTITY,getIncrement(aux),fieldsArray);
+			queryString.append(" AND isKit:true");
+			SolrQuery query = new SolrQuery(queryString.toString());
+			query.add("rows", "20");	
+			query.add("start",getStart());
+			List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
 			for(IndexedItem indexedItem : listIndexedItems){
 				if(skuQty > 1){
-					if(indexedItem.isKit() && indexedItem.getSkuList().size() == skuQty){
+					if(indexedItem.getSkuList().size() == skuQty){
 						listIndexedItemsKit.add(indexedItem);
 						if(listIndexedItemsKit.size() == QUANTITY){
 							return listIndexedItemsKit;
 						}
 					}
-				}else{
-					if(indexedItem.isKit()){
-						listIndexedItemsKit.add(indexedItem);
-						if(listIndexedItemsKit.size() == QUANTITY){
-							return listIndexedItemsKit;
-						}
+				}else{					
+					listIndexedItemsKit.add(indexedItem);
+					if(listIndexedItemsKit.size() == QUANTITY){
+						kitGroup = getKitGroupList(listIndexedItemsKit);
+						return listIndexedItemsKit;
 					}
+					
 				}
 			}
 		}
@@ -404,7 +414,27 @@ public class HomeController {
 			}
 		}
 		return listIndexedItemsBysku;
+		if (getSkuKitInfoList() != null) {
+			for (String skuKitInfo : getSkuKitInfoList()) {
+				String kitInfos[] = skuKitInfo.split("\\^");
+				if (skuId.equalsIgnoreCase(kitInfos[0].trim()))
 	}*/
+
+	private Map<String, String> getKitGroupList(List<IndexedItem> listIndexedItemsKit) {
+		
+		for (IndexedItem indexedItem : listIndexedItemsKit) {
+			if(indexedItem.getKitItemList() != null){
+				for(String kitItem : indexedItem.getKitItemList()){
+					String kitInfos[] = kitItem.split("\\^");
+					if(!kitInfos[2].trim().isEmpty()){
+						kitGroup.put(indexedItem.getId(), kitInfos[2].trim());
+					}
+				}
+			}
+		}
+		System.out.println(kitGroup);
+		return kitGroup;
+	}
 
 	private String getStart() {
 		if(StringUtils.isEmpty(queryForm.getStart())){			
@@ -522,6 +552,15 @@ public class HomeController {
 	public void setBrandStart(int brandStart) {
 		this.brandStart = brandStart;
 	}
+
+	public Map<String, String> getKitGroup() {
+		return kitGroup;
+	}
+
+	public void setKitGroup(Map<String, String> kitGroup) {
+		this.kitGroup = kitGroup;
+	}
+	
 	
 	
 }
