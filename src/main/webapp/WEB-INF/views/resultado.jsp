@@ -10,9 +10,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-.corner {
+.cornerRight {
    float:right;
-}	
+}
+
+.cornerLeft {
+   float:left;
+   margin-left: 15px;
+}		
 </style>	
 </head>
 <body>
@@ -74,10 +79,29 @@
 								  </c:if>
 								       	
 								</ul>
-								<div class="corner">
+								<div class="cornerRight">
 				                	<span class="text-primary"> ... veja + em 
 					                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
 										<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
+									</span>	
+								</div>
+								<div class="cornerLeft">
+									<span class="text-danger">Filhos:</span>
+				                	<span class="text-primary"> 
+				                		<table>
+						                	<c:forEach items="${kitGroups}" var="itemKitGroup">				                	
+							                	<c:if test="${item.id eq itemKitGroup.key}">
+								                	<c:forEach items="${itemKitGroup.value}" var="itemKit">
+								                	<tr>link</tr>
+								                		<td><a href="${link}${itemKit}" target="_blank">${itemKit}</a></td> 
+								                	<tr>json</tr>	
+								                		<td><a href="${solrLink}${itemKit}&wt=json&indent=true" target="_blank">${itemKit}</a></td>      	
+								                	<tr>xml</tr>
+								                	 <td><a href="${solrLink}${itemKit}&wt=xml&indent=true" target="_blank">${itemKit}</a></td>
+								                	</c:forEach>
+							                	</c:if>
+						                	</c:forEach>
+						                </table>	
 									</span>	
 								</div>
 				                </div>

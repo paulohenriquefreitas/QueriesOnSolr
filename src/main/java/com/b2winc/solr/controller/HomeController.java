@@ -56,7 +56,7 @@ public class HomeController {
 	private static Integer QUANTITY = 5; 
 	private static final String SEPARATOR = "\\s\\^\\s";
 	private int brandStart;
-	private Map<String,String> kitGroup = new HashMap<String, String>();
+	private Map<String,List<String>> kitGroup = new HashMap<String, List<String>>();
 
 	@RequestMapping(value="/")
 	public ModelAndView test() throws IOException{
@@ -146,6 +146,7 @@ public class HomeController {
 			model.addAttribute("link",getLink(queryForm.getBrand()));
 			model.addAttribute("size",listIndexedItem.size());
 			model.addAttribute("solrLink",getSolrBrand(queryForm)+"/idxItem/select?q=itemId%3A");
+			model.addAttribute("kitGroups", getKitGroup());
 			return mv;
 			
 //			Map<String, String> resultados = new HashMap<String, String>();
@@ -382,7 +383,7 @@ public class HomeController {
 				if(skuQty > 1){
 					if(indexedItem.getSkuList().size() == skuQty){
 						listIndexedItemsKit.add(indexedItem);
-						if(listIndexedItemsKit.size() == QUANTITY){
+						if(listIndexedItemsKit.size() == QUANTITY){							
 							return listIndexedItemsKit;
 						}
 					}
@@ -420,19 +421,20 @@ public class HomeController {
 				if (skuId.equalsIgnoreCase(kitInfos[0].trim()))
 	}*/
 
-	private Map<String, String> getKitGroupList(List<IndexedItem> listIndexedItemsKit) {
+	private Map<String, List<String>> getKitGroupList(List<IndexedItem> listIndexedItemsKit) {
 		
 		for (IndexedItem indexedItem : listIndexedItemsKit) {
+			List<String> memberKits = new ArrayList<String>();
 			if(indexedItem.getKitItemList() != null){
 				for(String kitItem : indexedItem.getKitItemList()){
 					String kitInfos[] = kitItem.split("\\^");
 					if(!kitInfos[2].trim().isEmpty()){
-						kitGroup.put(indexedItem.getId(), kitInfos[2].trim());
+						memberKits.add(kitInfos[2].trim());						
 					}
 				}
+				kitGroup.put(indexedItem.getId(), memberKits);	
 			}
-		}
-		System.out.println(kitGroup);
+		}		
 		return kitGroup;
 	}
 
@@ -553,11 +555,11 @@ public class HomeController {
 		this.brandStart = brandStart;
 	}
 
-	public Map<String, String> getKitGroup() {
+	public Map<String, List<String>> getKitGroup() {
 		return kitGroup;
 	}
 
-	public void setKitGroup(Map<String, String> kitGroup) {
+	public void setKitGroup(Map<String, List<String>> kitGroup) {
 		this.kitGroup = kitGroup;
 	}
 	
