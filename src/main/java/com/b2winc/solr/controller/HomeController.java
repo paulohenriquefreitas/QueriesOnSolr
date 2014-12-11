@@ -186,7 +186,7 @@ public class HomeController {
 
 
 	private String getLink(String marca) {
-		if(marca.equalsIgnoreCase("hml"))
+		if(marca.equalsIgnoreCase("homolog"))
 			return "http://hml.www.americanas.com.br/produto/";
 		return "http://www."+marca+".com.br/produto/";
 	}
@@ -261,6 +261,7 @@ public class HomeController {
 			queryString.append(getQueryType(type));	
 			String stock = queryForm.getStock();						
 			queryString.append(" AND itemStock:"+stock);
+			queryString.append(" AND partnerList:[1 TO *]");
 			SolrQuery query = new SolrQuery(queryString.toString());
 			query.add("rows", "500");	
 			List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
@@ -515,7 +516,7 @@ public class HomeController {
 		query.add("start",start2);
 		if(fieldsArray.length > 0)
 			query.addField(StringUtils.join(fieldsArray,","));
-		//query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
+		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
 		System.out.println(start2);
 		return  itemSolrDao.query(query);
 		

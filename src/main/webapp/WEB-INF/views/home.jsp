@@ -38,7 +38,7 @@ $(document).ready( function() {
 	  form.submit( function(event) {
 		  resultado.children().each(function() { $(this).remove(); });
 		  $('#loading-indicator').show();
-	    $.ajax( {
+	   var request=  $.ajax( {
 	      type: "GET",
 	      url: form.attr( 'action' ),
 	      data: form.serialize(),
@@ -51,7 +51,8 @@ $(document).ready( function() {
 	  } );
 
 	} );
-
+    
+    
 
 	
 </script>

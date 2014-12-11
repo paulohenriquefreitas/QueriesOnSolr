@@ -56,7 +56,7 @@
 								  <li><span class="text-danger">MainSellerId :</span> ${item.mainSellerId}</li>
 								  <li><span class="text-danger">MainSellerName :</span> ${item.mainSellerName}</li>
 								  <li><span class="text-danger">PartnerList :</span> ${item.partnerList}</li>
-								  <li><span class="text-danger">PartnerListId :</span> ${item.partnerListIdt}</li>
+								  <li><span class="text-danger">PartnerListId :</span> ${item.partnerListId}</li>
 								  <li><span class="text-danger">PartnerSmallestDefaultPrice :</span> ${item.partnerSmallestDefaultPrice}</li>
 								  <li><span class="text-danger">PartnerSmallestSalesPrice :</span> ${item.partnerSmallestSalesPrice}</li>
 								  </c:if>
