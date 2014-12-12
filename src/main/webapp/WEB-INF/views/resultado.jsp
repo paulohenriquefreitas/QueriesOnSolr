@@ -10,13 +10,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-.cornerRight {
-   float:right;
-}
 
 .cornerLeft {
    float:left;
    margin-left: 15px;
+}		
+.cornerRight {
+   float:right;
+   margin-top: -22px;
 }		
 </style>	
 </head>
@@ -41,69 +42,77 @@
 				            </div>
 				            <div id="${item.id}" class="panel-collapse collapse">
 				                <div class="panel-body">
-				                <ul class="list-unstyled">				                  
-								  <li><span class="text-danger">ItemStock :</span> ${item.inStock}</li>
-								  <li><span class="text-danger">ItemStockQuantity :</span> ${item.itemStockQuantity}</li>
-								  <li><span class="text-danger">ItemStockQuantityNew :</span> ${item.itemStockQuantityNew}</li>
-								  <li><span class="text-danger">ItemStockQuantityRewrapped :</span> ${item.itemStockQuantityRewrapped}</li>
-								  <c:if test="${item.defaultPrice ne null}">
-								  <li><span class="text-danger">DefaultPrice :</span> ${item.defaultPrice}</li>
-								  </c:if>
-								  <li><span class="text-danger">SalesPrice :</span> ${item.salesPrice}</li>
-								  <li><span class="text-danger">AdminTagList :</span> ${item.adminTagList}</li>
-								  <li><span class="text-danger">SiteStructure :</span> ${item.siteStructure}</li>
-								  <c:if test="${item.isMarketPlace}">
-								  <li><span class="text-danger">MainSellerId :</span> ${item.mainSellerId}</li>
-								  <li><span class="text-danger">MainSellerName :</span> ${item.mainSellerName}</li>
-								  <li><span class="text-danger">PartnerList :</span> ${item.partnerList}</li>
-								  <li><span class="text-danger">PartnerListId :</span> ${item.partnerListIdt}</li>
-								  <li><span class="text-danger">PartnerSmallestDefaultPrice :</span> ${item.partnerSmallestDefaultPrice}</li>
-								  <li><span class="text-danger">PartnerSmallestSalesPrice :</span> ${item.partnerSmallestSalesPrice}</li>
-								  </c:if>
-								  <li><span class="text-danger">FlatGroupId :</span> ${item.flatGroupsIds}</li>
-								  <li><span class="text-danger">SkuStock :</span> ${item.skuStock}</li>
-								  <li><span class="text-danger">SkuStockQuantity :</span> ${item.skuStockQuantity}</li>
-								  
-								  <li><span class="text-danger">SkuList :</span> ${item.skuList}</li>
-								  <li><span class="text-danger">ImageSkuUrlList :</span> ${item.imageSkuUrlList}</li>
-								  <c:if test="${item.isKit}">
-								  <li><span class="text-danger">IsKit :</span> ${item.isKit	}</li>
-								  <li><span class="text-danger">SkuKitList :</span> ${item.skuKitList}</li>
-								  <li><span class="text-danger">Filhos do Kit :</span> ${item.kitItemList}</li>
-								  </c:if>
-								  <li><span class="text-danger">IsMarketPlace :</span> ${item.isMarketPlace}</li>
-								  <li><span class="text-danger">IsExclusiveMarketPlace :</span> ${item.isExclusiveMarketPlace}</li>
-								   <c:if test="${item.numReviews gt 0}">
-								  <li><span class="text-danger">AverageOverallRating :</span> ${item.averageOverallRating}</li>
-								  <li><span class="text-danger">NumReviews :</span> ${item.numReviews}</li>
-								  </c:if>
-								       	
-								</ul>
-								<div class="cornerRight">
-				                	<span class="text-primary"> ... veja + em 
-					                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
-										<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
-									</span>	
-								</div>
-								<div class="cornerLeft">
-									<span class="text-danger">Filhos:</span>
-				                	<span class="text-primary"> 
-				                		<table>
-						                	<c:forEach items="${kitGroups}" var="itemKitGroup">				                	
-							                	<c:if test="${item.id eq itemKitGroup.key}">
-								                	<c:forEach items="${itemKitGroup.value}" var="itemKit">
-								                	<tr>link</tr>
-								                		<td><a href="${link}${itemKit}" target="_blank">${itemKit}</a></td> 
-								                	<tr>json</tr>	
-								                		<td><a href="${solrLink}${itemKit}&wt=json&indent=true" target="_blank">${itemKit}</a></td>      	
-								                	<tr>xml</tr>
-								                	 <td><a href="${solrLink}${itemKit}&wt=xml&indent=true" target="_blank">${itemKit}</a></td>
-								                	</c:forEach>
-							                	</c:if>
-						                	</c:forEach>
-						                </table>	
-									</span>	
-								</div>
+					                <ul class="list-unstyled">				                  
+									  <li><span class="text-danger">ItemStock :</span> ${item.inStock}</li>
+									  <li><span class="text-danger">ItemStockQuantity :</span> ${item.itemStockQuantity}</li>
+									  <li><span class="text-danger">ItemStockQuantityNew :</span> ${item.itemStockQuantityNew}</li>
+									  <li><span class="text-danger">ItemStockQuantityRewrapped :</span> ${item.itemStockQuantityRewrapped}</li>
+									  <c:if test="${item.defaultPrice ne null}">
+									  <li><span class="text-danger">DefaultPrice :</span> ${item.defaultPrice}</li>
+									  </c:if>
+									  <li><span class="text-danger">SalesPrice :</span> ${item.salesPrice}</li>
+									  <li><span class="text-danger">AdminTagList :</span> ${item.adminTagList}</li>
+									  <li><span class="text-danger">SiteStructure :</span> ${item.siteStructure}</li>
+									  <c:if test="${item.isMarketPlace}">
+									  <li><span class="text-danger">MainSellerId :</span> ${item.mainSellerId}</li>
+									  <li><span class="text-danger">MainSellerName :</span> ${item.mainSellerName}</li>
+									  <li><span class="text-danger">PartnerList :</span> ${item.partnerList}</li>
+									  <li><span class="text-danger">PartnerListId :</span> ${item.partnerListId}</li>
+									  <li><span class="text-danger">PartnerSmallestDefaultPrice :</span> ${item.partnerSmallestDefaultPrice}</li>
+									  <li><span class="text-danger">PartnerSmallestSalesPrice :</span> ${item.partnerSmallestSalesPrice}</li>
+									  </c:if>
+									  <li><span class="text-danger">FlatGroupId :</span> ${item.flatGroupsIds}</li>
+									  <li><span class="text-danger">SkuStock :</span> ${item.skuStock}</li>
+									  <li><span class="text-danger">SkuStockQuantity :</span> ${item.skuStockQuantity}</li>
+									  
+									  <li><span class="text-danger">SkuList :</span> ${item.skuList}</li>
+									  <li><span class="text-danger">ImageSkuUrlList :</span> ${item.imageSkuUrlList}</li>
+									  <c:if test="${item.isKit}">
+									  <li><span class="text-danger">IsKit :</span> ${item.isKit	}</li>
+									  <li><span class="text-danger">SkuKitList :</span> ${item.skuKitList}</li>
+									  <li><span class="text-danger">Filhos do Kit :</span> ${item.kitItemList}</li>
+									  </c:if>
+									  <li><span class="text-danger">IsMarketPlace :</span> ${item.isMarketPlace}</li>
+									  <li><span class="text-danger">IsExclusiveMarketPlace :</span> ${item.isExclusiveMarketPlace}</li>
+									   <c:if test="${item.numReviews gt 0}">
+									  <li><span class="text-danger">AverageOverallRating :</span> ${item.averageOverallRating}</li>
+									  <li><span class="text-danger">NumReviews :</span> ${item.numReviews}</li>
+									  </c:if>									       	
+									</ul>
+									<div class="cornerRight">
+					                	<span class="text-primary"> ... veja + em 
+						                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
+											<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
+										</span>	
+									</div>
+									<c:if test="${item.isKit}">
+										<hr>
+										<div class="cornerLeft">
+											<span class="text-danger">Filhos:</span>
+												<table class="table table-bordered table-hover">
+												    <thead>
+												        <tr>
+												            <th data-field="link">link</th>
+												            <th data-field="xml">xml</th>
+												            <th data-field="json">json</th>
+												        </tr>
+												    </thead>
+													<tbody>
+														<c:forEach items="${kitGroups}" var="itemKitGroup">	
+															<c:if test="${item.id eq itemKitGroup.key}">
+																<c:forEach items="${itemKitGroup.value}" var="itemKit">	
+																	<tr>
+																		<td><a href="${link}${itemKit}" target="_blank">${itemKit}</a></td>
+																		<td><a href="${solrLink}${itemKit}&wt=json&indent=true" target="_blank">${itemKit}</a></td>
+																		<td><a href="${solrLink}${itemKit}&wt=xml&indent=true" target="_blank">${itemKit}</a></td>
+																	</tr>
+																</c:forEach>	
+															</c:if>
+														</c:forEach>
+													</tbody>				                	
+												</table>	
+										</div>
+									</c:if>
 				                </div>
 				            </div>
 				        </div> 
