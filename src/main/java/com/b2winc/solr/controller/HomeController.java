@@ -299,10 +299,10 @@ public class HomeController {
 			StringBuffer queryString, String numSkus, String[] fieldsArray) {
 		List<IndexedItem> listIndexedItemsFashion = new ArrayList<IndexedItem>();
 		aux=Integer.valueOf(getRandom());
-		while(listIndexedItemsFashion.size() < QUANTITY){
+		while(listIndexedItemsFashion.size() < QUANTITY && aux < 50000){
+			System.out.println(aux);
 			List<IndexedItem> listIndexedItems = getItens(itemSolrDao, queryString, QUANTITY,getIncrement(aux),fieldsArray);
 			for(IndexedItem indexedItem : listIndexedItems){
-				System.out.println(aux);
 				if(isFashion(indexedItem)){
 					
 					listIndexedItemsFashion.add(indexedItem);
@@ -313,7 +313,7 @@ public class HomeController {
 			}
 		}
 		
-		return null;
+		return listIndexedItemsFashion;
 	}
 
 	private boolean isFashion(IndexedItem indexedItem) {
