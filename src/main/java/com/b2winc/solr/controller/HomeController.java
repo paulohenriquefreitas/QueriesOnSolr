@@ -57,6 +57,18 @@ public class HomeController {
 	private static final String SEPARATOR = "\\s\\^\\s";
 	private int brandStart;
 	private Map<String,List<String>> kitGroup = new HashMap<String, List<String>>();
+	private static final String fashionDepAcom = "10009073 10009074 10009075 10009076 10009077 10009078 10009079";
+	private static final String fashionDepSuba = "10009073 10009074 10009075 10009076 10009077 10009078 10009079 10009069";
+	
+/*	{erpDepartamentId:(10009069
+			10009073
+			10009074
+			10009075
+			10009076
+			10009077
+			10009078
+			10009079) AND isMarketPlace:false
+			AND isExclusiveMarketPlace:false}*/
 
 	@RequestMapping(value="/")
 	public ModelAndView test() throws IOException{
