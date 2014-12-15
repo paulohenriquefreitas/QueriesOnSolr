@@ -162,7 +162,7 @@ $(document).ready( function() {
 			    	<div class="panel panel-default">
 			    		 <div class="panel-heading">
 			                <h5 class="panel-title link">
-			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Busca de Itens</a>
+			                    <a data-toggle="collapse"  href="#collapseOne">Busca de Itens</a>
 			                </h5>
 			            </div>
 			            <div id="collapseOne" class="panel-collapse collapse in">
@@ -178,7 +178,7 @@ $(document).ready( function() {
 					<div class="panel panel-default">	
 						<div class="panel-heading">
 			                <h5 class="panel-title">
-			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Itens Marketplace</a>
+			                    <a data-toggle="collapse"  href="#collapseTwo">Itens Marketplace</a>
 			                </h5>
 			            </div>
 			            <div id="collapseTwo" class="panel-collapse collapse">
@@ -216,7 +216,7 @@ $(document).ready( function() {
 					<div class="panel panel-default">
 						<div class="panel-heading">
 			                <h5 class="panel-title">
-			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Itens de Moda</a>
+			                    <a data-toggle="collapse"  href="#collapseThree">Itens de Moda</a>
 			                </h5>
 			            </div>
 	            		<div id="collapseThree" class="panel-collapse collapse">
@@ -234,7 +234,7 @@ $(document).ready( function() {
 					<div class="panel panel-default">
 						<div class="panel-heading">
 			                <h5 class="panel-title">
-			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Kit</a>
+			                    <a data-toggle="collapse"  href="#collapsefour">Kit</a>
 			                </h5>
 			            </div>
 	            		<div id="collapseFour" class="panel-collapse collapse">
@@ -310,7 +310,7 @@ $(document).ready( function() {
 				    <div class="panel-heading">
 				      <h4 class="panel-title">
 				       
-				        <i class="pull-right glyphicon glyphicon-chevron-down accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+				        <i class="pull-right glyphicon glyphicon-chevron-down accordion-toggle" data-toggle="collapse"  href="#collapseOne">
 				        </i>
 				      </h4>
 				    </div>
