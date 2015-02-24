@@ -249,13 +249,13 @@ $(document).ready( function() {
 							</div>
 						</div>		
 					</div>
-					<br/><hr/>
+					<hr/>
 					<div class="panel-body ">
 						<form:input class="smallfield" placeholder="Nº Skus"  path="numSkus"/>
 						<form:input class="smallfield" placeholder="Start"  path="start"/>
 						<form:input class="smallfield" placeholder="Rows"  path="rows"/>
 					</div>  	
-					 <div class="side-by-side clearfix">
+					<%--  <div class="side-by-side clearfix">
 			         <form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " 
 			                     class="chosen-select" tabindex="8" path="fields" items="${fields}"> 		
 				     </form:select>
@@ -276,7 +276,7 @@ $(document).ready( function() {
 					    }
 					  </script>
 									
-				     </div>
+				     </div> --%>
 					       		 	  
 					<div class="form-actions"><br/>
 						<button type="submit" class="btn btn-success">Submit</button>

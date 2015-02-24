@@ -42,7 +42,8 @@
 				            </div>
 				            <div id="${item.id}" class="panel-collapse collapse">
 				                <div class="panel-body">
-					                <ul class="list-unstyled">				                  
+					                <ul class="list-unstyled">
+					                  <li><span class="text-danger">ItemId :</span> ${item.itemId}</li>				                  
 									  <li><span class="text-danger">ItemStock :</span> ${item.inStock}</li>
 									  <li><span class="text-danger">ItemStockQuantity :</span> ${item.itemStockQuantity}</li>
 									  <li><span class="text-danger">ItemStockQuantityNew :</span> ${item.itemStockQuantityNew}</li>
@@ -66,6 +67,7 @@
 									  <li><span class="text-danger">SkuStockQuantity :</span> ${item.skuStockQuantity}</li>
 									  
 									  <li><span class="text-danger">SkuList :</span> ${item.skuList}</li>
+									  <li><span class="text-danger">SkuDiffs :</span> ${item.skuDiffs}</li>
 									  <li><span class="text-danger">ImageSkuUrlList :</span> ${item.imageSkuUrlList}</li>
 									  <c:if test="${item.isKit}">
 									  <li><span class="text-danger">IsKit :</span> ${item.isKit	}</li>
