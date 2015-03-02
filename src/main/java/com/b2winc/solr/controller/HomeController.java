@@ -104,6 +104,9 @@ public class HomeController {
 		ItemSolrDao itemSolrDao = getItemSolrDao(solrUrl);
 		ModelAndView mv =  new ModelAndView("resultado");
 		listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner);
+		if(listIndexedItem.isEmpty()){
+			model.addAttribute("msg","Nenhum item foi encontrado !");
+		}
 		model.addAttribute("idList",listIndexedItem);
 		model.addAttribute("itemList",listIndexedItem);
 		model.addAttribute("link",getLink(queryForm.getBrand()));
@@ -217,9 +220,13 @@ public class HomeController {
 			
 		}else {
 			Integer numPartner = getNumPartner();	
+			String stock = queryForm.getStock();
 			queryString.append(getQueryType(type));	
-			String stock = queryForm.getStock();						
-			queryString.append(" AND itemStock:"+stock);
+			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");
+			/*if(stock.equals("true"))
+				queryString.append(" AND itemStockQuantity:[1 TO *]");
+			else
+				queryString.append(" AND itemStockQuantity:[0 TO 0]");*/
 			queryString.append(" AND partnerList:[1 TO *]");
 			List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 	    	while(listIndexedItems.size() < QUANTITY){
@@ -228,27 +235,30 @@ public class HomeController {
 					MarketPlaceSolrDao marketPlaceDao = getMarketPlaceItemSolrDao(solrUrl);
 					if(indexedItemList != null &&  indexedItemList.size() > 0){
 						for(IndexedItem indexedItem : indexedItemList){
-							StringBuffer queryStringPartner= new StringBuffer();
+							/*StringBuffer queryStringPartner= new StringBuffer();
 							queryStringPartner.append("itemId:"+indexedItem.getId());
 							SolrQuery queryPartner = new SolrQuery(queryStringPartner.toString());
 							List<IndexedMarketPlaceItem> indexedMarketPlaceItems = marketPlaceDao.query(queryPartner);
 							if(indexedMarketPlaceItems !=null && indexedMarketPlaceItems.size() > 0 ){
 								for(IndexedMarketPlaceItem indexedMarketPlaceItem : indexedMarketPlaceItems){
-									if((indexedMarketPlaceItem.getItemId().toString().equalsIgnoreCase(indexedItem.getItemId().toString()) &&
-											indexedMarketPlaceItem.getItemStock() == Boolean.valueOf(stockPartner) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == numPartner )){
+									if(indexedMarketPlaceItem.getItemStock() == Boolean.valueOf(stockPartner) &&
+											indexedMarketPlaceItem.getPartnerStatus() == Boolean.valueOf(stockPartner) &&*/ 
+												if(indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == numPartner && 
+													indexedItem.getSkuList().size() ==  Integer.valueOf(queryForm.getNumSkus().isEmpty() ? "1" : queryForm.getNumSkus())){
+										System.out.println("Quant" +indexedItem.getItemStockQuantity() + "skusize"+ indexedItem.getSkuList().size()  );
 										listIndexedItems.add(indexedItem);
 										break;
-									}
+									}/*else{
+										return listIndexedItems;
+									}*/
+								
 								}
 							}
 							if(listIndexedItems.size() >= QUANTITY)
 								return listIndexedItems;
-						}
-					}else{
-						return listIndexedItems;
+						
 					}
-				
-			}
+			
 			return listIndexedItems;
 		}
 		
@@ -256,7 +266,7 @@ public class HomeController {
 	
 	private List<IndexedItem> getItens(ItemSolrDao itemSolrDao,
 			StringBuffer queryString,Integer quantity, String start) throws SolrServerException {
-		List<IndexedItem> listIndexedItems;
+		List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 		SolrQuery query = new SolrQuery(queryString.toString());
 		if(StringUtils.isNotEmpty(this.queryForm.getNumSkus())){
 			listIndexedItems = getItensB2wBySku(itemSolrDao,queryString,start,Integer.valueOf(this.queryForm.getNumSkus()));
@@ -264,8 +274,12 @@ public class HomeController {
 			query.add("rows",String.valueOf(quantity));
 			query.add("start",start);		
 			query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
-			listIndexedItems = itemSolrDao.query(query);
-			log.warn("TotalResults "+ itemSolrDao.getTotalResults());
+			try{
+				listIndexedItems = itemSolrDao.query(query);
+				log.warn("TotalResults "+ itemSolrDao.getTotalResults());
+			}catch(Exception e){
+				log.warn("Ocorreu exceção "+ e.getMessage());
+			}
 		}
 		return listIndexedItems;
 	}
@@ -461,8 +475,15 @@ public class HomeController {
 
 	private List<IndexedItem> getItensById(ItemSolrDao itemSolrDao,
 			StringBuffer queryString) {
-		SolrQuery query = new SolrQuery(queryString.toString());		
-		List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
+		SolrQuery query = new SolrQuery(queryString.toString());	
+		List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
+		try{
+			listIndexedItems = itemSolrDao.query(query);
+			log.warn("TotalResults "+ itemSolrDao.getTotalResults());
+		}catch (Exception e) {
+			log.error("Ocorreu uma exceção. " + e.getMessage());
+			return listIndexedItems;
+		}	
 		return listIndexedItems;
 	}	
 	
@@ -474,18 +495,24 @@ public class HomeController {
 		}else{
 			aux=aux+500;
 			
-			return String.valueOf(aux);
+			return String.valueOf(aux);	
 		}
 	}
 
 	private List<IndexedItem> getSimpleItens(ItemSolrDao itemSolrDao,StringBuffer queryString, int quantity, String start2) {
 		SolrQuery query = new SolrQuery(queryString.toString());
+		List<IndexedItem> indexedItemList = null;
 		query.add("rows",String.valueOf(quantity));
 		query.add("start",start2);		
 		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
-		log.warn("Start " +start2);
-		List<IndexedItem> indexedItemList = itemSolrDao.query(query);
-		log.warn("TotalResults "+ itemSolrDao.getTotalResults());
+		log.warn("Start " +start2);		
+		try{
+			indexedItemList = itemSolrDao.query(query);
+			log.warn("TotalResults "+ itemSolrDao.getTotalResults());
+		}catch(Exception e){
+			log.error("Ocorreu uma exceção. " + e.getMessage());
+			return indexedItemList;
+		}
 		return  indexedItemList;
 		
 		
@@ -495,8 +522,10 @@ public class HomeController {
 		if(type!=null){
 			if(type.equalsIgnoreCase("100"))
 				return("isExclusiveMarketPlace:true");
-			else if(type.equalsIgnoreCase("misto"))
+			else if(type.equalsIgnoreCase("misto") && queryForm.getStock().equals("true"))
 				return("isMarketPlace:true AND isExclusiveMarketPlace:false");
+			else if(type.equalsIgnoreCase("misto") && queryForm.getStock().equals("false"))
+				return("isMarketPlace:true AND isExclusiveMarketPlace:true");
 			else
 				return("isMarketPlace:false");
 		}

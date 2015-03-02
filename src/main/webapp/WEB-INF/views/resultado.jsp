@@ -121,6 +121,9 @@
 			       </c:forEach> 
 			    </div>			
 		</div>
-	 </c:if>	 
+	 </c:if>
+	 <c:if test="${fn:length(itemList) eq 0}">	 
+	 	<label class="control-label" >${msg}</label><br/>
+	 </c:if>
 </body>
 </html>

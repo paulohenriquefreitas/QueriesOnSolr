@@ -52,8 +52,14 @@ $(document).ready( function() {
 
 	} );
     
-    
-
+function enabledFunction() {
+    var div = document.getElementById('numPartnerDiv');
+    div.style.display = 'block';
+}
+function disabledFunction() {
+	var div = document.getElementById('numPartnerDiv');
+    div.style.display = 'none';
+}
 	
 </script>
 
@@ -117,6 +123,9 @@ $(document).ready( function() {
 	   top:50%;
 	   left:60%;
 	}
+	div.numPartnerDiv{
+	display: none;
+	}
 
 }
 </style> 
@@ -139,7 +148,7 @@ $(document).ready( function() {
 	</div>
 </div>
 					
-<form:form class="form-horizontal"  action="/busca2" method="get" modelAttribute="query" >
+<form:form class="form-horizontal"  action="/busca2" method="get" modelAttribute="query" name="formQuery" >
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">
@@ -165,7 +174,7 @@ $(document).ready( function() {
 			                    <a data-toggle="collapse"  href="#collapseOne">Busca de Itens</a>
 			                </h5>
 			            </div>
-			            <div id="collapseOne" class="panel-collapse collapse in">
+			            <div id="collapseOne" class="panel-collapse collapse ">
                 			<div class="panel-body">
 								<label class="control-label">Item Id</label>
 								<div class="controls ">
@@ -181,20 +190,22 @@ $(document).ready( function() {
 			                    <a data-toggle="collapse"  href="#collapseTwo">Itens Marketplace</a>
 			                </h5>
 			            </div>
-			            <div id="collapseTwo" class="panel-collapse collapse">
+			            <div id="collapseTwo" class="panel-collapse collapse in">
                				 <div class="panel-body">
-               				 	<label class="control-label">Números de Parceiros</label>
-								<div class="controls ">
-									<form:input class="form-control" placeholder="Quantidade de parceiros"  path="numPartner"/>
-								</div>               				 	
 								<label class="control-label" >Tipo:</label>
 								<div class="switch-toggle switch-3 well">
-								<input id="b2w" type="radio"  name="type" value="b2w" checked /><label for="b2w" onclick="">B2W</label>
-								<input id="misto" type="radio"  name="type" value="misto"/><label for="misto" onclick="">MISTO</label>
-								<input id="100" type="radio"  name="type" value="100"/><label for="100" onclick="">100%</label>
+								<input id="b2w" type="radio"  name="type" value="b2w" checked /><label for="b2w" onclick="disabledFunction()">B2W</label>
+								<input id="misto" type="radio"  name="type" value="misto"/><label for="misto" onclick="enabledFunction()">MISTO</label>
+								<input id="100" type="radio"  name="type" value="100"/><label for="100" onclick="enabledFunction()">100%</label>
 								<a class="btn btn-primary"></a>					
 								</div>
 								
+	               				 <div id="numPartnerDiv" class="numPartnerDiv">
+	               				 	<label class="control-label">Números de Parceiros</label>
+									<div class="controls ">
+										<form:input id="numPartner" class="form-control" placeholder="Quantidade de parceiros" path="numPartner"/>
+									</div>           
+								</div>	    				 	
 								<label class="control-label" >Estoque do Item:</label>				
 								
 								<div class="switch-toggle well">
@@ -234,7 +245,7 @@ $(document).ready( function() {
 					<div class="panel panel-default">
 						<div class="panel-heading">
 			                <h5 class="panel-title">
-			                    <a data-toggle="collapse"  href="#collapsefour">Kit</a>
+			                    <a data-toggle="collapse"  href="#collapseFour">Kit</a>
 			                </h5>
 			            </div>
 	            		<div id="collapseFour" class="panel-collapse collapse">
