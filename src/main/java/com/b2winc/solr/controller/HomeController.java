@@ -231,8 +231,8 @@ public class HomeController {
 			List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 	    	while(listIndexedItems.size() < QUANTITY){
 	    		List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(Integer.valueOf(getRandom(brandStart)))));
-				String stockPartner = queryFormPartner.getStockPartner();
-					MarketPlaceSolrDao marketPlaceDao = getMarketPlaceItemSolrDao(solrUrl);
+				//String stockPartner = queryFormPartner.getStockPartner();
+					//MarketPlaceSolrDao marketPlaceDao = getMarketPlaceItemSolrDao(solrUrl);
 					if(indexedItemList != null &&  indexedItemList.size() > 0){
 						for(IndexedItem indexedItem : indexedItemList){
 							/*StringBuffer queryStringPartner= new StringBuffer();
@@ -247,15 +247,17 @@ public class HomeController {
 													indexedItem.getSkuList().size() ==  Integer.valueOf(queryForm.getNumSkus().isEmpty() ? "1" : queryForm.getNumSkus())){
 										System.out.println("Quant" +indexedItem.getItemStockQuantity() + "skusize"+ indexedItem.getSkuList().size()  );
 										listIndexedItems.add(indexedItem);
-										break;
+										if(listIndexedItems.size() >= QUANTITY)
+											return listIndexedItems;
+										//break;
 									}/*else{
 										return listIndexedItems;
 									}*/
 								
 								}
-							}
-							if(listIndexedItems.size() >= QUANTITY)
+							}else{
 								return listIndexedItems;
+							}
 						
 					}
 			
