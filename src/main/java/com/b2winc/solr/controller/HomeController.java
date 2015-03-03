@@ -210,6 +210,7 @@ public class HomeController {
 		}else if(queryForm.getKit().equalsIgnoreCase("true")){
 			String stock = queryForm.getStock();						
 			queryString.append("itemStock:"+stock);	
+			queryString.append(" AND isKit:true");
 			return getKits(itemSolrDao, queryString,queryForm.getNumSkus());
 		}else if (type.equals("b2w")){			
 			queryString.append(getQueryType(type));
@@ -392,13 +393,16 @@ public class HomeController {
 			StringBuffer queryString,String skuQuantity) {
 		Integer skuQty = StringUtils.isEmpty(skuQuantity) ? 1 : Integer.valueOf(skuQuantity);
 		List<IndexedItem> listIndexedItemsKit = new ArrayList<IndexedItem>();
-		aux=Integer.valueOf(getRandom(brandStart));
+		//aux=Integer.valueOf(getRandom(brandStart));
 		while(listIndexedItemsKit.size() < QUANTITY){
-			queryString.append(" AND isKit:true");
 			SolrQuery query = new SolrQuery(queryString.toString());
-			query.add("rows", "20");	
-			query.add("start",getStart());
-			List<IndexedItem> listIndexedItems = itemSolrDao.query(query);
+			query.add("rows",String.valueOf(QUANTITY));
+			//query.add("start",getStart());
+			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(Integer.valueOf(getRandom(brandStart)))));
+			if(itemSolrDao.getTotalResults() <= aux ){
+				return listIndexedItems;
+			}
+			System.out.println(itemSolrDao.getTotalResults());
 			for(IndexedItem indexedItem : listIndexedItems){
 				if(skuQty > 1){
 					if(indexedItem.getSkuList().size() == skuQty){
@@ -462,11 +466,11 @@ public class HomeController {
 		if(StringUtils.isEmpty(queryForm.getStart())){			
 			if(a == 0 ){
 				a = start;
-				a =+ 100;
+				a =+ 500;
 				return String.valueOf(start);
 			}else{
 				start =  a;
-				a = a + 100;
+				a = a + 500;
 				return String.valueOf(start);
 			}
 		}else{
@@ -505,12 +509,14 @@ public class HomeController {
 		SolrQuery query = new SolrQuery(queryString.toString());
 		List<IndexedItem> indexedItemList = null;
 		query.add("rows",String.valueOf(quantity));
-		query.add("start",start2);		
+		query.add("start",start2);
 		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
+		query.addField("itemId,itemName,isKit,skuList");
 		log.warn("Start " +start2);		
 		try{
+			long initExecutionTime = System.currentTimeMillis();
 			indexedItemList = itemSolrDao.query(query);
-			log.warn("TotalResults "+ itemSolrDao.getTotalResults());
+			log.warn("TotalResults "+ (initExecutionTime - System.currentTimeMillis()));
 		}catch(Exception e){
 			log.error("Ocorreu uma exceção. " + e.getMessage());
 			return indexedItemList;
