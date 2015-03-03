@@ -103,16 +103,19 @@ public class HomeController {
 		String solrUrl = getSolrBrand(queryForm) ;
 		ItemSolrDao itemSolrDao = getItemSolrDao(solrUrl);
 		ModelAndView mv =  new ModelAndView("resultado");
+		long initExecutionTime = System.currentTimeMillis();
 		listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner);
 		if(listIndexedItem.isEmpty()){
 			model.addAttribute("msg","Nenhum item foi encontrado !");
+		}else{
+			model.addAttribute("idList",listIndexedItem);
+			model.addAttribute("itemList",getItensById(itemSolrDao, getIdList(listIndexedItem)));
+			model.addAttribute("link",getLink(queryForm.getBrand()));
+			model.addAttribute("size",listIndexedItem.size());
+			model.addAttribute("solrLink",getSolrBrand(queryForm)+"/idxItem/select?q=itemId%3A");
+			model.addAttribute("kitGroups", getKitGroup());
 		}
-		model.addAttribute("idList",listIndexedItem);
-		model.addAttribute("itemList",listIndexedItem);
-		model.addAttribute("link",getLink(queryForm.getBrand()));
-		model.addAttribute("size",listIndexedItem.size());
-		model.addAttribute("solrLink",getSolrBrand(queryForm)+"/idxItem/select?q=itemId%3A");
-		model.addAttribute("kitGroups", getKitGroup());
+		log.warn("tempo total "+ (initExecutionTime - System.currentTimeMillis()));
 		return mv;
 		
 //			Map<String, String> resultados = new HashMap<String, String>();
@@ -149,6 +152,16 @@ public class HomeController {
 		return array.toString();
 	}
 	*/
+
+	private StringBuffer getIdList(List<IndexedItem> listIndexedItem) {
+		StringBuffer idList = new StringBuffer();
+		idList.append("itemId:(");
+		for (IndexedItem indexedItem : listIndexedItem) {
+			idList.append(indexedItem.getId()+" ");
+		}
+		idList.append(")");
+		return idList;
+	}
 
 	private String getSolrBrand(QueryForm queryForm) {
 		if(queryForm.getBrand().equals("submarino")){
