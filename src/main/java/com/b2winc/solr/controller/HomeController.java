@@ -410,7 +410,7 @@ public class HomeController {
 			StringBuffer queryString,String skuQuantity) {
 		Integer skuQty = StringUtils.isEmpty(skuQuantity) ? 1 : Integer.valueOf(skuQuantity);
 		List<IndexedItem> listIndexedItemsKit = new ArrayList<IndexedItem>();
-		String fields = "itemId,itemName,isKit,skuList";
+		String fields = "itemId,itemName,isKit,skuList,kitItemList";
 		//aux=Integer.valueOf(getRandom(brandStart));
 		while(listIndexedItemsKit.size() < QUANTITY){
 			SolrQuery query = new SolrQuery(queryString.toString());
