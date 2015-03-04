@@ -244,7 +244,8 @@ public class HomeController {
 			queryString.append(" AND partnerList:[1 TO *]");
 			List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 	    	while(listIndexedItems.size() < QUANTITY){
-	    		List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(Integer.valueOf(getRandom(brandStart)))));
+	    		String fields = "itemId,isMarketPlace,isExclusiveMarketPlace,partnerList,skuList";
+	    		List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(Integer.valueOf(getRandom(brandStart)))),fields);
 				//String stockPartner = queryFormPartner.getStockPartner();
 					//MarketPlaceSolrDao marketPlaceDao = getMarketPlaceItemSolrDao(solrUrl);
 					if(indexedItemList != null &&  indexedItemList.size() > 0){
@@ -288,7 +289,9 @@ public class HomeController {
 			listIndexedItems = getItensB2wBySku(itemSolrDao,queryString,start,Integer.valueOf(this.queryForm.getNumSkus()));
 		}else{
 			query.add("rows",String.valueOf(quantity));
-			query.add("start",start);		
+			query.add("start",start);
+			log.warn("start "+ start);
+			query.addField("itemId,isMarketPlace,itemStock");
 			query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
 			try{
 				listIndexedItems = itemSolrDao.query(query);
@@ -303,9 +306,10 @@ public class HomeController {
 	@SuppressWarnings("unchecked")
 	private List<IndexedItem> getItensB2wBySku(ItemSolrDao itemSolrDao, StringBuffer queryString, String start2,Integer skuQuantity) {
 		//aux=Integer.valueOf(start2);
+		String fields = "itemId,isMarketPlace,itemStock,skuList";
 		List<IndexedItem> listIndexedItemsBysku = new ArrayList<IndexedItem>();
-		while(listIndexedItemsBysku.size() < QUANTITY){
-			List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(start2)));
+		while(listIndexedItemsBysku.size() < QUANTITY){			
+			List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(start2)),fields);
 				if(indexedItemList != null &&  indexedItemList.size() > 0){
 					for(IndexedItem indexedItem : indexedItemList){
 						if(indexedItem.getSkuList().size() == skuQuantity){
@@ -406,12 +410,13 @@ public class HomeController {
 			StringBuffer queryString,String skuQuantity) {
 		Integer skuQty = StringUtils.isEmpty(skuQuantity) ? 1 : Integer.valueOf(skuQuantity);
 		List<IndexedItem> listIndexedItemsKit = new ArrayList<IndexedItem>();
+		String fields = "itemId,itemName,isKit,skuList";
 		//aux=Integer.valueOf(getRandom(brandStart));
 		while(listIndexedItemsKit.size() < QUANTITY){
 			SolrQuery query = new SolrQuery(queryString.toString());
 			query.add("rows",String.valueOf(QUANTITY));
 			//query.add("start",getStart());
-			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(Integer.valueOf(getRandom(brandStart)))));
+			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom(brandStart))),fields);
 			if(itemSolrDao.getTotalResults() <= aux ){
 				return listIndexedItems;
 			}
@@ -518,18 +523,17 @@ public class HomeController {
 		}
 	}
 
-	private List<IndexedItem> getSimpleItens(ItemSolrDao itemSolrDao,StringBuffer queryString, int quantity, String start2) {
+	private List<IndexedItem> getSimpleItens(ItemSolrDao itemSolrDao,StringBuffer queryString, int quantity, String start2, String fields) {
 		SolrQuery query = new SolrQuery(queryString.toString());
 		List<IndexedItem> indexedItemList = null;
 		query.add("rows",String.valueOf(quantity));
 		query.add("start",start2);
 		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
-		query.addField("itemId,itemName,isKit,skuList");
+		query.addField(fields);
 		log.warn("Start " +start2);		
 		try{
-			long initExecutionTime = System.currentTimeMillis();
 			indexedItemList = itemSolrDao.query(query);
-			log.warn("TotalResults "+ (initExecutionTime - System.currentTimeMillis()));
+			log.warn("TotalResults "+ itemSolrDao.getTotalResults());
 		}catch(Exception e){
 			log.error("Ocorreu uma exceção. " + e.getMessage());
 			return indexedItemList;
