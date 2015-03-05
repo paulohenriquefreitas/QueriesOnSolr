@@ -109,7 +109,7 @@ public class HomeController {
 			model.addAttribute("msg","Nenhum item foi encontrado !");
 		}else{
 			model.addAttribute("idList",listIndexedItem);
-			model.addAttribute("itemList",getItensById(itemSolrDao, getIdList(listIndexedItem)));
+			model.addAttribute("itemList",getItensById(itemSolrDao, getIdList(listIndexedItem),listIndexedItem.size()));
 			model.addAttribute("link",getLink(queryForm.getBrand()));
 			model.addAttribute("size",listIndexedItem.size());
 			model.addAttribute("solrLink",getSolrBrand(queryForm)+"/idxItem/select?q=itemId%3A");
@@ -214,7 +214,7 @@ public class HomeController {
 		String type = queryForm.getType();
 		if(StringUtils.isNotEmpty(id) ) {
 			queryString.append("itemId:("+id+")");
-			return getItensById(itemSolrDao, queryString);
+			return getItensById(itemSolrDao, queryString,10);
 		}else if(queryForm.getFashion().equalsIgnoreCase("true")){
 			queryString.append("itemStock:"+queryForm.getStock());	
 			queryString.append(" AND erpDepartamentId:("+ FASHIONDEP+")");
@@ -417,10 +417,13 @@ public class HomeController {
 			query.add("rows",String.valueOf(QUANTITY));
 			//query.add("start",getStart());
 			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom(brandStart))),fields);
+			System.out.println("kit"+itemSolrDao.getTotalResults());
 			if(itemSolrDao.getTotalResults() <= aux ){
-				return listIndexedItems;
+				listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getRandom((int) (itemSolrDao.getTotalResults())),fields);
 			}
-			System.out.println(itemSolrDao.getTotalResults());
+			if(itemSolrDao.getTotalResults() < aux ){
+				return listIndexedItems;			
+			}
 			for(IndexedItem indexedItem : listIndexedItems){
 				if(skuQty > 1){
 					if(indexedItem.getSkuList().size() == skuQty){
@@ -498,8 +501,9 @@ public class HomeController {
 	}
 
 	private List<IndexedItem> getItensById(ItemSolrDao itemSolrDao,
-			StringBuffer queryString) {
+			StringBuffer queryString, int rows) {
 		SolrQuery query = new SolrQuery(queryString.toString());	
+		query.add("rows",String.valueOf(rows));
 		List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 		try{
 			listIndexedItems = itemSolrDao.query(query);
