@@ -89,8 +89,8 @@
 												    <thead>
 												        <tr>
 												            <th data-field="link">link</th>
-												            <th data-field="xml">xml</th>
-												            <th data-field="json">json</th>
+												            <th data-field="xml">json</th>
+												            <th data-field="json">xml</th>
 												        </tr>
 												    </thead>
 													<tbody>

@@ -60,6 +60,12 @@ function disabledFunction() {
 	var div = document.getElementById('numPartnerDiv');
     div.style.display = 'none';
 }
+function disableMarketPlace() {
+	 document.getElementById('mktDiv');
+	 b2w.checked = true;
+}
+
+
 	
 </script>
 
@@ -184,7 +190,7 @@ function disabledFunction() {
 							</div>
 						</div>		
 					</div>
-					<div class="panel panel-default">	
+					<div id="mktDiv" class="panel panel-default">	
 						<div class="panel-heading">
 			                <h5 class="panel-title">
 			                    <a data-toggle="collapse"  href="#collapseTwo">Itens Marketplace</a>
@@ -252,8 +258,8 @@ function disabledFunction() {
 	               			 <div class="panel-body">											
 								<label class="control-label" >Kit:   </label>
 								<div class="switch-toggle well">
-								  <input id="kitTrue" type="radio" name="kit" value="true" > <label for="kitTrue" onclick="">TRUE</label>
-								  <input id="kitFalse" type="radio" name="kit" value="false" checked> <label for="kitFalse" onclick="">FALSE</label>
+								  <input id="kitTrue" type="radio" name="kit" value="true" > <label for="kitTrue" onclick="disableMarketPlace()">TRUE</label>
+								  <input id="kitFalse" type="radio" name="kit" value="false" checked> <label for="kitFalse" >FALSE</label>
 								  <a class="btn btn-primary"></a>
 								</div> 
 								<br/>

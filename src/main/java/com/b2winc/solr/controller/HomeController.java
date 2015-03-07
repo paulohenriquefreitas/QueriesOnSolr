@@ -421,9 +421,9 @@ public class HomeController {
 			if(itemSolrDao.getTotalResults() <= aux ){
 				listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getRandom((int) (itemSolrDao.getTotalResults())),fields);
 			}
-			if(itemSolrDao.getTotalResults() < aux ){
-				return listIndexedItems;			
-			}
+			/*if(itemSolrDao.getTotalResults() < aux ){
+				return listIndexedItemsKit;			
+			}*/
 			for(IndexedItem indexedItem : listIndexedItems){
 				if(skuQty > 1){
 					if(indexedItem.getSkuList().size() == skuQty){
@@ -473,7 +473,7 @@ public class HomeController {
 			if(indexedItem.getKitItemList() != null){
 				for(String kitItem : indexedItem.getKitItemList()){
 					String kitInfos[] = kitItem.split("\\^");
-					if(!kitInfos[2].trim().isEmpty()){
+					if(!kitInfos[2].trim().isEmpty() && !memberKits.contains(kitInfos[2].trim())){
 						memberKits.add(kitInfos[2].trim());						
 					}
 				}
