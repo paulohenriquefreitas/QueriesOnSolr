@@ -329,16 +329,44 @@ public class HomeController {
 
 
 
-	private List<IndexedItem> getFashionList(ItemSolrDao itemSolrDao,
-			StringBuffer queryString, String numSkus) {
-		aux=Integer.valueOf(getRandom(100));
+	private List<IndexedItem> getFashionList(ItemSolrDao itemSolrDao,StringBuffer queryString, String numSkus) {
+		//aux=Integer.valueOf(getRandom(100));
+		Integer skuQty = StringUtils.isEmpty(numSkus) ? 8 : Integer.valueOf(numSkus);
 		SolrQuery query = new SolrQuery(queryString.toString());
 		query.add("rows",String.valueOf(QUANTITY));
-		query.add("start",String.valueOf(aux));
+		//query.add("start",String.valueOf(aux));
+		String fields = "itemId,itemName,itemStock,skuList,erpDepartamentId,isMarketPlace";
+		query.addField(fields);
+		Integer numPartner = getNumPartner();
+		List<IndexedItem> listIndexedItemsFashion = new ArrayList<IndexedItem>();
+		while(listIndexedItemsFashion.size() < QUANTITY){
+			/*if(skuQty == 1 && numPartner == 1){
+				query.addField(fields);
+				return itemSolrDao.query(query);
+			}else{*/
+				List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom(brandStart))),fields);
+				System.out.println("Moda"+itemSolrDao.getTotalResults());
+				if(itemSolrDao.getTotalResults() <= aux ){
+					listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getRandom((int) (itemSolrDao.getTotalResults())),fields);
+				}
+				for(IndexedItem indexedItem : listIndexedItems){
+					if(indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(numPartner)){
+						if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) ){
+							listIndexedItemsFashion.add(indexedItem);
+							
+						}						
+					}else if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) ){
+						listIndexedItemsFashion.add(indexedItem);						
+					}	
+					if(listIndexedItemsFashion.size() == QUANTITY){							
+						return listIndexedItemsFashion;
+					}
+				}
+			//}
+		}
+		return listIndexedItemsFashion;
 		//while(listIndexedItemsFashion.size() < QUANTITY && aux < 50000){
-			System.out.println(aux);
 			
-			return itemSolrDao.query(query);
 			//for(IndexedItem indexedItem : listIndexedItems){
 				//if(isFashion(indexedItem)){
 					
@@ -352,42 +380,7 @@ public class HomeController {
 		
 		//return listIndexedItems;
 	}
-
-	/*private boolean isFashion(IndexedItem indexedItem) {
-		if (indexedItem.getSkuDiffs() != null) {
-			return containsColorAndSize(getSkuWithFashionColorsInDiff(indexedItem), getSkuWithFashionSizesInDiff(indexedItem));
-		}
-		return false;
-	}*/
-
-	/*private boolean containsColorAndSize(Set<String> countCor, Set<String> countTamanho) {
-		return CollectionUtils.containsAny(FashionProperty.COLOR.getCodes(), countCor) && CollectionUtils.containsAny(FashionProperty.SIZE.getCodes(), countTamanho);
-	}*/
 	
-	/*private Set<String> getSkuWithFashionColorsInDiff(IndexedItem indexedItem) {
-		Set<String> skuFashionColors = new TreeSet<String>();
-
-		for (String singleSku : indexedItem.getSkuDiffs()) {
-			String[] singleSkuSplitted = singleSku.split(SEPARATOR);
-			if (singleSkuSplitted.length > 1 && FashionProperty.COLOR.getCodes().contains(singleSkuSplitted[1])) {
-				skuFashionColors.add(singleSkuSplitted[1]);
-			}
-		}
-
-		return skuFashionColors;
-	}*/
-	/*private Set<String> getSkuWithFashionSizesInDiff(IndexedItem indexedItem) {
-		Set<String> skuFashionSizes = new TreeSet<String>();
-
-		for (String singleSku : indexedItem.getSkuDiffs()) {
-			String[] singleSkuSplitted = singleSku.split(SEPARATOR);
-			if (singleSkuSplitted.length > 1 && FashionProperty.SIZE.getCodes().contains(singleSkuSplitted[1])) {
-				skuFashionSizes.add(singleSkuSplitted[1]);
-			}
-		}
-
-		return skuFashionSizes;
-	}*/
 
 	private Integer getNumPartner() {
 		return Integer.valueOf(StringUtils.isEmpty(queryForm.getNumPartner()) ? "1" : queryForm.getNumPartner());
