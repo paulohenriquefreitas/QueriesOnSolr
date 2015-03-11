@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.xml.bind.JAXBException;
 
@@ -331,29 +332,30 @@ public class HomeController {
 
 	private List<IndexedItem> getFashionList(ItemSolrDao itemSolrDao,StringBuffer queryString, String numSkus, String type) throws SolrServerException {
 		Integer skuQty = StringUtils.isEmpty(numSkus) ? 8 : Integer.valueOf(numSkus);
+		String random="";
 		SolrQuery query = new SolrQuery(queryString.toString());
 		query.add("rows",String.valueOf(QUANTITY));
 		String fields = "itemId,itemName,itemStock,skuList,erpDepartamentId,isMarketPlace,partnerList";
 		query.addField(fields);
-		Integer numPartner = getNumPartner();
 		List<IndexedItem> listIndexedItemsFashion = new ArrayList<IndexedItem>();
 		if(type.equals("b2w")){
 			return getItens(itemSolrDao, queryString,QUANTITY,getRandom(brandStart));
 		}
+		List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom(brandStart))),fields);
+		System.out.println("Moda"+itemSolrDao.getTotalResults());
+		random = getRandom((int) (itemSolrDao.getTotalResults()));
 		while(listIndexedItemsFashion.size() < QUANTITY){
-				List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom(brandStart))),fields);
-				System.out.println("Moda"+itemSolrDao.getTotalResults());
-				if(itemSolrDao.getTotalResults() <= aux ){
-					listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom((int) (itemSolrDao.getTotalResults())))),fields);
+				if(itemSolrDao.getTotalResults() < aux ){
+					listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,random,fields);
 				}
 				for(IndexedItem indexedItem : listIndexedItems){
 					if(StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() >= 1){
 						listIndexedItemsFashion.add(indexedItem);
 					}else if(!StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getSkuList().size() == Integer.valueOf(skuQty)){
 						listIndexedItemsFashion.add(indexedItem);
-					}else if(StringUtils.isEmpty(numSkus) && !StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(numPartner)){
+					}else if(StringUtils.isEmpty(numSkus) && !StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(queryForm.getNumPartner())){
 						listIndexedItemsFashion.add(indexedItem);
-					}else if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(numPartner)){
+					}else if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(queryForm.getNumPartner())){
 						listIndexedItemsFashion.add(indexedItem);
 					}
 										
@@ -361,6 +363,7 @@ public class HomeController {
 						return listIndexedItemsFashion;
 					}
 				}
+				random = random+500;
 		}
 		return null;
 	}
