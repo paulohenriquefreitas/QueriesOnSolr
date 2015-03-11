@@ -219,7 +219,7 @@ public class HomeController {
 			queryString.append("itemStock:"+queryForm.getStock());	
 			queryString.append(" AND erpDepartamentId:("+ FASHIONDEP+")");
 			queryString.append(" AND "+getQueryType(queryForm.getType()));
-			return getFashionList(itemSolrDao, queryString,queryForm.getNumSkus());
+			return getFashionList(itemSolrDao, queryString,queryForm.getNumSkus(),type);
 		}else if(queryForm.getKit().equalsIgnoreCase("true")){
 			String stock = queryForm.getStock();						
 			queryString.append("itemStock:"+stock);	
@@ -329,56 +329,40 @@ public class HomeController {
 
 
 
-	private List<IndexedItem> getFashionList(ItemSolrDao itemSolrDao,StringBuffer queryString, String numSkus) {
-		//aux=Integer.valueOf(getRandom(100));
+	private List<IndexedItem> getFashionList(ItemSolrDao itemSolrDao,StringBuffer queryString, String numSkus, String type) throws SolrServerException {
 		Integer skuQty = StringUtils.isEmpty(numSkus) ? 8 : Integer.valueOf(numSkus);
 		SolrQuery query = new SolrQuery(queryString.toString());
 		query.add("rows",String.valueOf(QUANTITY));
-		//query.add("start",String.valueOf(aux));
-		String fields = "itemId,itemName,itemStock,skuList,erpDepartamentId,isMarketPlace";
+		String fields = "itemId,itemName,itemStock,skuList,erpDepartamentId,isMarketPlace,partnerList";
 		query.addField(fields);
 		Integer numPartner = getNumPartner();
 		List<IndexedItem> listIndexedItemsFashion = new ArrayList<IndexedItem>();
+		if(type.equals("b2w")){
+			return getItens(itemSolrDao, queryString,QUANTITY,getRandom(brandStart));
+		}
 		while(listIndexedItemsFashion.size() < QUANTITY){
-			/*if(skuQty == 1 && numPartner == 1){
-				query.addField(fields);
-				return itemSolrDao.query(query);
-			}else{*/
 				List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom(brandStart))),fields);
 				System.out.println("Moda"+itemSolrDao.getTotalResults());
 				if(itemSolrDao.getTotalResults() <= aux ){
-					listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getRandom((int) (itemSolrDao.getTotalResults())),fields);
+					listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom((int) (itemSolrDao.getTotalResults())))),fields);
 				}
 				for(IndexedItem indexedItem : listIndexedItems){
-					if(indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(numPartner)){
-						if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) ){
-							listIndexedItemsFashion.add(indexedItem);
-							
-						}						
-					}else if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) ){
-						listIndexedItemsFashion.add(indexedItem);						
-					}	
+					if(StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() >= 1){
+						listIndexedItemsFashion.add(indexedItem);
+					}else if(!StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getSkuList().size() == Integer.valueOf(skuQty)){
+						listIndexedItemsFashion.add(indexedItem);
+					}else if(StringUtils.isEmpty(numSkus) && !StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(numPartner)){
+						listIndexedItemsFashion.add(indexedItem);
+					}else if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(numPartner)){
+						listIndexedItemsFashion.add(indexedItem);
+					}
+										
 					if(listIndexedItemsFashion.size() == QUANTITY){							
 						return listIndexedItemsFashion;
 					}
 				}
-			//}
 		}
-		return listIndexedItemsFashion;
-		//while(listIndexedItemsFashion.size() < QUANTITY && aux < 50000){
-			
-			//for(IndexedItem indexedItem : listIndexedItems){
-				//if(isFashion(indexedItem)){
-					
-					//listIndexedItemsFashion.add(indexedItem);
-				//	if(listIndexedItemsFashion.size() == 1){
-						//return listIndexedItemsFashion;
-				//	}
-			//	}
-			//}
-		//}
-		
-		//return listIndexedItems;
+		return null;
 	}
 	
 
