@@ -220,6 +220,7 @@ public class HomeController {
 			queryString.append("itemStock:"+queryForm.getStock());	
 			queryString.append(" AND erpDepartamentId:("+ FASHIONDEP+")");
 			queryString.append(" AND "+getQueryType(queryForm.getType()));
+			queryString.append(" AND "+"isKit:"+queryForm.getKit());
 			return getFashionList(itemSolrDao, queryString,queryForm.getNumSkus(),type);
 		}else if(queryForm.getKit().equalsIgnoreCase("true")){
 			String stock = queryForm.getStock();						
