@@ -154,7 +154,7 @@ function disableMarketPlace() {
 	</div>
 </div>
 					
-<form:form class="form-horizontal"  action="/busca2" method="get" modelAttribute="query" name="formQuery" >
+<form:form class="form-horizontal"  action="/busca" method="get" modelAttribute="query" name="formQuery" >
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">

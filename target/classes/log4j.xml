@@ -20,7 +20,7 @@
     </logger>
 
     <logger name="org.apache">
-        <level value="WARN"/>
+        <level value="INFO"/>
     </logger>
 
     <logger name="org.hibernate">
@@ -32,7 +32,7 @@
     </logger-->
 
     <logger name="org.springframework">
-        <level value="WARN"/>
+        <level value="INFO"/>
     </logger>
    
     <logger name="org.appfuse">
@@ -40,7 +40,7 @@
     </logger>
 
     <logger name="org.appfuse.util">
-        <level value="WARN"/>
+        <level value="INFO"/>
     </logger>
     
     <logger name="org.appfuse.webapp.filter">
@@ -48,11 +48,11 @@
     </logger>
     
     <logger name="org.appfuse.webapp.listener.UserCounterListener">
-        <level value="WARN"/>
+        <level value="INFO"/>
     </logger>
 
     <root>
-        <level value="WARN"/>
+        <level value="INFO"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 
