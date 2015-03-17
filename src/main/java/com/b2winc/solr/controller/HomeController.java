@@ -171,21 +171,17 @@ public class HomeController {
 			Integer numPartner = getNumPartner();	
 			String stock = queryForm.getStock();
 			queryString.append(getQueryType(type));	
-			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");
-			/*if(stock.equals("true"))
-				queryString.append(" AND itemStockQuantity:[1 TO *]");
-			else
-				queryString.append(" AND itemStockQuantity:[0 TO 0]");*/
+			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");			
 			queryString.append(" AND partnerList:[1 TO *]"); 
 			List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 			String fields = "itemId,isMarketPlace,isExclusiveMarketPlace,partnerList,skuList";
+			@SuppressWarnings("unused")
+			List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
+			int totalResult = (int) itemSolrDao.getTotalResults();
+			int random = Integer.valueOf(getRandom(totalResult));
+			System.out.println("Random do resultado" + totalResult);
 	    	while(listIndexedItems.size() < QUANTITY){
-	    		List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(Integer.valueOf(getRandom(brandStart)))),fields);
-	    		System.out.println("Random do resultado" +getRandom((int) (itemSolrDao.getTotalResults())));
-	    		if(itemSolrDao.getTotalResults() < aux &&  StringUtils.isEmpty(queryForm.getStart())){
-	    			indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getRandom((int) (itemSolrDao.getTotalResults())),fields);
-				}
-				
+	    		List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(random),fields);
 					if(indexedItemList != null &&  indexedItemList.size() > 0){
 						for(IndexedItem indexedItem : indexedItemList){
 							if(indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == numPartner && 
@@ -270,36 +266,40 @@ public class HomeController {
 		/*if(type.equals("b2w")){
 			return getItens(itemSolrDao, queryString,QUANTITY,getRandom(brandStart));
 		}*/
+		
+		@SuppressWarnings("unused")
+		List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
+		int totalResult = (int) itemSolrDao.getTotalResults();
+		int random = Integer.valueOf(getRandom(totalResult));
+		System.out.println("Random do resultado" + totalResult);
 		System.out.println("Moda"+itemSolrDao.getTotalResults());
+		
 		while(listIndexedItemsFashion.size() < QUANTITY){
-			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom(brandStart))),fields);
-			//System.out.println("Random do resultado" +getRandom((int) (itemSolrDao.getTotalResults())));
-			if(itemSolrDao.getTotalResults() < aux &&  StringUtils.isEmpty(queryForm.getStart())){
-				listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getRandom((int) (itemSolrDao.getTotalResults())),fields);
-			}
+			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(random),fields);
 			try{
-				for(IndexedItem indexedItem : listIndexedItems){
-					if(type.equals("b2w") && StringUtils.isEmpty(numSkus)){
-						listIndexedItemsFashion.add(indexedItem);
-					}else if(type.equals("b2w") && !StringUtils.isEmpty(numSkus) && indexedItem.getSkuList().size() == Integer.valueOf(skuQty)){
-						listIndexedItemsFashion.add(indexedItem);
-					}else if(StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() >= 1){
-						listIndexedItemsFashion.add(indexedItem);
-					}else if(!StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getSkuList().size() == Integer.valueOf(skuQty)){
-						listIndexedItemsFashion.add(indexedItem);
-					}else if(StringUtils.isEmpty(numSkus) && !StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(queryForm.getNumPartner())){
-						listIndexedItemsFashion.add(indexedItem);
-					}else if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(queryForm.getNumPartner())){
-						listIndexedItemsFashion.add(indexedItem);
+				if(listIndexedItems != null &&  listIndexedItems.size() > 0){	
+					for(IndexedItem indexedItem : listIndexedItems){
+						if(type.equals("b2w") && StringUtils.isEmpty(numSkus)){
+							listIndexedItemsFashion.add(indexedItem);
+						}else if(type.equals("b2w") && !StringUtils.isEmpty(numSkus) && indexedItem.getSkuList().size() == Integer.valueOf(skuQty)){
+							listIndexedItemsFashion.add(indexedItem);
+						}else if(StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() >= 1){
+							listIndexedItemsFashion.add(indexedItem);
+						}else if(!StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getSkuList().size() == Integer.valueOf(skuQty)){
+							listIndexedItemsFashion.add(indexedItem);
+						}else if(StringUtils.isEmpty(numSkus) && !StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(queryForm.getNumPartner())){
+							listIndexedItemsFashion.add(indexedItem);
+						}else if(indexedItem.getSkuList().size() == Integer.valueOf(skuQty) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(queryForm.getNumPartner())){
+							listIndexedItemsFashion.add(indexedItem);
+						}
+											
+						if(listIndexedItemsFashion.size() == QUANTITY){							
+							return listIndexedItemsFashion;
+						}
 					}
-										
-					if(listIndexedItemsFashion.size() == QUANTITY){							
-						return listIndexedItemsFashion;
-					}
+				}else{
+					return listIndexedItemsFashion;
 				}
-			if(listIndexedItems.size() == 0){
-				return listIndexedItems;
-			}
 			}catch(Exception e){
 				log.error("Ocorreu uma exceção. " + e.getMessage());
 				return listIndexedItemsFashion;
@@ -328,31 +328,37 @@ public class HomeController {
 		Integer skuQty = StringUtils.isEmpty(skuQuantity) ? 1 : Integer.valueOf(skuQuantity);
 		List<IndexedItem> listIndexedItemsKit = new ArrayList<IndexedItem>();
 		String fields = "itemId,itemName,isKit,skuList,kitItemList";
+		@SuppressWarnings("unused")
+		List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
+		int totalResult = (int) itemSolrDao.getTotalResults();
+		int random = Integer.valueOf(getRandom(totalResult));
+		System.out.println("Random do resultado" + totalResult);
 		while(listIndexedItemsKit.size() < QUANTITY){
 			SolrQuery query = new SolrQuery(queryString.toString());
 			query.add("rows",String.valueOf(QUANTITY));
-			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(Integer.valueOf(getRandom(brandStart))),fields);
+			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(random),fields);
 			System.out.println("kit"+itemSolrDao.getTotalResults());
-			if(itemSolrDao.getTotalResults() <= aux ){
-				listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getRandom((int) (itemSolrDao.getTotalResults())),fields);
-			}
 			try{
-				for(IndexedItem indexedItem : listIndexedItems){
-					if(skuQty > 1){
-						if(indexedItem.getSkuList().size() == skuQty){
+				if(listIndexedItems != null &&  listIndexedItems.size() > 0){
+					for(IndexedItem indexedItem : listIndexedItems){
+						if(skuQty > 1){
+							if(indexedItem.getSkuList().size() == skuQty){
+								listIndexedItemsKit.add(indexedItem);
+								if(listIndexedItemsKit.size() == QUANTITY){							
+									return listIndexedItemsKit;
+								}
+							}
+						}else{					
 							listIndexedItemsKit.add(indexedItem);
-							if(listIndexedItemsKit.size() == QUANTITY){							
+							if(listIndexedItemsKit.size() == QUANTITY){
+								kitGroup = getKitGroupList(listIndexedItemsKit);
 								return listIndexedItemsKit;
 							}
+							
 						}
-					}else{					
-						listIndexedItemsKit.add(indexedItem);
-						if(listIndexedItemsKit.size() == QUANTITY){
-							kitGroup = getKitGroupList(listIndexedItemsKit);
-							return listIndexedItemsKit;
-						}
-						
 					}
+				}else{
+					return listIndexedItems;
 				}
 			}catch(Exception e){
 				log.error("Ocorreu uma exceção. " + e.getMessage());
