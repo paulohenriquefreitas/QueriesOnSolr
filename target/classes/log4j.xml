@@ -20,7 +20,7 @@
     </logger>
 
     <logger name="org.apache">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
 
     <logger name="org.hibernate">
@@ -32,7 +32,7 @@
     </logger-->
 
     <logger name="org.springframework">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
    
     <logger name="org.appfuse">

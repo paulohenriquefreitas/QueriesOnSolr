@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.xml.bind.JAXBException;
 
@@ -27,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.ideais.metasolr.template.CommonSolrTemplate;
 
 import com.b2w.catalogbackendcommons.index.IndexedItem;
-import com.b2w.catalogbackendcommons.index.IndexedMarketPlaceItem;
 import com.b2winc.solr.model.BrandSolr;
 import com.b2winc.solr.model.QueryForm;
 import com.b2winc.solr.model.QueryFormPartner;
@@ -39,12 +37,9 @@ import com.b2winc.solr.repository.MarketPlaceSolrDao;
 public class HomeController {
 	private static final Log log = LogFactory.getLog(HomeController.class);
 	private BrandSolr brandSolr;
-	private int start = 0;
 	private Integer aux;
-	private int a = 0;
 	private QueryForm queryForm = new QueryForm();
 	private static Integer QUANTITY = 5; 
-	private int brandStart;
 	private Map<String,List<String>> kitGroup = new HashMap<String, List<String>>();
 	private static final String FASHIONDEP = "10009073 10009074 10009075 10009076 10009077 10009078 10009079 10009069";
 	
@@ -56,7 +51,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value="/busca", method=RequestMethod.GET)
-	public ModelAndView naveguetemp(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException, ClassNotFoundException{
+	public ModelAndView navegue(@ModelAttribute("query") QueryForm queryForm, QueryFormPartner queryFormPartner, Model model , BindingResult result) throws IOException, SolrServerException, JAXBException, ClassNotFoundException{
 		aux=null;
 	    this.queryForm = queryForm;
 		this.queryForm.setNumSkus(queryForm.getNumSkus());	    
@@ -82,7 +77,7 @@ public class HomeController {
 			model.addAttribute("solrLink",getSolrBrand(queryForm)+"/idxItem/select?q=itemId%3A");
 			model.addAttribute("kitGroups", getKitGroup());
 		}
-		log.info("tempo total "+ (initExecutionTime - System.currentTimeMillis()));
+		log.info("Tempo total:  "+ (initExecutionTime - System.currentTimeMillis()));
 		return mv;			
 	}
 
@@ -99,19 +94,14 @@ public class HomeController {
 
 	private String getSolrBrand(QueryForm queryForm) {
 		if(queryForm.getBrand().equals("submarino")){
-			brandStart=20000;
 			return "http://10.13.147.14:8080/solr" ;
 		}else if(queryForm.getBrand().equals("americanas")){
-			brandStart=50000;
 			return "http://10.13.51.14:8080/solr";
 		}else if(queryForm.getBrand().equals("shoptime")){
-			brandStart=40000;
 			return "http://10.13.67.14:8080/solr";
 		}else if(queryForm.getBrand().equals("soubarato")){
-			brandStart=500;
 			return "http://10.13.91.21:8080/solr";
 		}else{
-			brandStart=50;
 			return "http://vmhmlwl1:8080/solr";
 		}
 	}
@@ -139,7 +129,6 @@ public class HomeController {
 	
 	
 	
-	@SuppressWarnings("unchecked")
 	private List<IndexedItem> getItem(ItemSolrDao itemSolrDao,String solrUrl, QueryForm queryForm, QueryFormPartner queryFormPartner) throws SolrServerException, IOException{
 		StringBuffer queryString= new StringBuffer();
 		if(StringUtils.isNotEmpty(System.getProperty("query")))
@@ -165,11 +154,14 @@ public class HomeController {
 			String stock = queryForm.getStock();						
 			queryString.append(" AND itemStock:"+stock);
 			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");
-			return getItens(itemSolrDao, queryString,QUANTITY,getRandom(brandStart));
+			@SuppressWarnings("unused")
+			List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
+			int totalResult = (int) itemSolrDao.getTotalResults();
+			int random = Integer.valueOf(getRandom(totalResult));
+			return getItens(itemSolrDao, queryString,QUANTITY,getIncrement(random));
 			
 		}else {
 			Integer numPartner = getNumPartner();	
-			String stock = queryForm.getStock();
 			queryString.append(getQueryType(type));	
 			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");			
 			queryString.append(" AND partnerList:[1 TO *]"); 
@@ -186,7 +178,6 @@ public class HomeController {
 						for(IndexedItem indexedItem : indexedItemList){
 							if(indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == numPartner && 
 													indexedItem.getSkuList().size() ==  Integer.valueOf(queryForm.getNumSkus().isEmpty() ? "1" : queryForm.getNumSkus())){
-								System.out.println("Quant" +indexedItem.getItemStockQuantity() + "skusize"+ indexedItem.getSkuList().size()  );
 								listIndexedItems.add(indexedItem);
 								if(listIndexedItems.size() >= QUANTITY)
 									return listIndexedItems;
@@ -212,20 +203,18 @@ public class HomeController {
 		}else{
 			query.add("rows",String.valueOf(quantity));
 			query.add("start",start);
-			log.info("start "+ start);
 			query.addField("itemId,isMarketPlace,itemStock");
 			query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
 			try{
+				log.info("Start: " +start);
 				listIndexedItems = itemSolrDao.query(query);
-				log.info("TotalResults "+ itemSolrDao.getTotalResults());
-			}catch(Exception e){
+			}catch(Exception e){ 
 				log.info("Ocorreu exceção "+ e.getMessage());
 			}
 		}
 		return listIndexedItems;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private List<IndexedItem> getItensB2wBySku(ItemSolrDao itemSolrDao, StringBuffer queryString, String start2,Integer skuQuantity) {
 		String fields = "itemId,isMarketPlace,itemStock,skuList";
 		List<IndexedItem> listIndexedItemsBysku = new ArrayList<IndexedItem>();
@@ -263,16 +252,10 @@ public class HomeController {
 		String fields = "itemId,itemName,itemStock,skuList,erpDepartamentId,isMarketPlace,partnerList";
 		query.addField(fields);
 		List<IndexedItem> listIndexedItemsFashion = new ArrayList<IndexedItem>();
-		/*if(type.equals("b2w")){
-			return getItens(itemSolrDao, queryString,QUANTITY,getRandom(brandStart));
-		}*/
-		
 		@SuppressWarnings("unused")
 		List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 		int totalResult = (int) itemSolrDao.getTotalResults();
 		int random = Integer.valueOf(getRandom(totalResult));
-		System.out.println("Random do resultado" + totalResult);
-		System.out.println("Moda"+itemSolrDao.getTotalResults());
 		
 		while(listIndexedItemsFashion.size() < QUANTITY){
 			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(random),fields);
@@ -332,7 +315,6 @@ public class HomeController {
 		List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 		int totalResult = (int) itemSolrDao.getTotalResults();
 		int random = Integer.valueOf(getRandom(totalResult));
-		System.out.println("Random do resultado" + totalResult);
 		while(listIndexedItemsKit.size() < QUANTITY){
 			SolrQuery query = new SolrQuery(queryString.toString());
 			query.add("rows",String.valueOf(QUANTITY));
@@ -386,22 +368,6 @@ public class HomeController {
 		return kitGroup;
 	}
 
-	private String getStart() {
-		if(StringUtils.isEmpty(queryForm.getStart())){			
-			if(a == 0 ){
-				a = start;
-				a =+ 500;
-				return String.valueOf(start);
-			}else{
-				start =  a;
-				a = a + 500;
-				return String.valueOf(start);
-			}
-		}else{
-			return queryForm.getStart();
-		}
-		
-	}
 
 	private List<IndexedItem> getItensById(ItemSolrDao itemSolrDao,
 			StringBuffer queryString, int rows) {
@@ -410,7 +376,6 @@ public class HomeController {
 		List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 		try{
 			listIndexedItems = itemSolrDao.query(query);
-			log.info("TotalResults "+ itemSolrDao.getTotalResults());
 		}catch (Exception e) {
 			log.error("Ocorreu uma exceção. " + e.getMessage());
 			return listIndexedItems;
@@ -437,7 +402,7 @@ public class HomeController {
 		query.add("start",start2);
 		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
 		query.addField(fields);
-		log.info("Start " +start2);		
+		log.info("Start: " +start2);		
 		try{
 			indexedItemList = itemSolrDao.query(query);
 			log.info("TotalResults "+ itemSolrDao.getTotalResults());
@@ -487,10 +452,6 @@ public class HomeController {
 
 	public void setQueryForm(QueryForm queryForm) {
 		this.queryForm = queryForm;
-	}
-
-	public void setBrandStart(int brandStart) {
-		this.brandStart = brandStart;
 	}
 
 	public Map<String, List<String>> getKitGroup() {

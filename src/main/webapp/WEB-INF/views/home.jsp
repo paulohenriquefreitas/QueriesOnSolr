@@ -55,10 +55,14 @@ $(document).ready( function() {
 function enabledFunction() {
     var div = document.getElementById('numPartnerDiv');
     div.style.display = 'block';
+    var div = document.getElementById('stockItemDiv');
+    div.style.display = 'none';
 }
 function disabledFunction() {
 	var div = document.getElementById('numPartnerDiv');
     div.style.display = 'none';
+    var div = document.getElementById('stockItemDiv');
+    div.style.display = 'block';
 }
 function disableMarketPlace() {
 	 document.getElementById('mktDiv');
@@ -131,6 +135,11 @@ function disableMarketPlace() {
 	}
 	div.numPartnerDiv{
 	display: none;
+	}
+	
+	div.stockItemDiv{
+	display: block;
+	margin-bottom: 24px;
 	}
 
 }
@@ -211,22 +220,15 @@ function disableMarketPlace() {
 									<div class="controls ">
 										<form:input id="numPartner" class="form-control" placeholder="Quantidade de parceiros" path="numPartner"/>
 									</div>           
-								</div>	    				 	
-								<label class="control-label" >Estoque do Item:</label>				
-								
-								<div class="switch-toggle well">
-								  <input id="true" type="radio" name="stock" value="true" checked> <label for="true" onclick="">TRUE</label>
-								  <input id="false" type="radio" name="stock" value="false" > <label for="false" onclick="">FALSE</label>
-								  <a class="btn btn-primary"></a>
-								</div> 
-								
-								<label class="control-label" >Estoque do Parceiro:</label>				
-								
-								<div class="switch-toggle well">
-								  <input id="truePartner" type="radio" name="stockPartner" value="true" checked> <label for="truePartner" onclick="">TRUE</label>
-								  <input id="falsePartner" type="radio" name="stockPartner" value="false" > <label for="falsePartner" onclick="">FALSE</label>
-								  <a class="btn btn-primary"></a>
-								</div> 
+								</div>	  
+								<div id="stockItemDiv" class="stockItemDiv">  				 	
+									<label class="control-label" >Estoque do Item:</label>				
+									<div class="switch-toggle well">
+									  <input id="true" type="radio" name="stock" value="true" checked> <label for="true" onclick="">TRUE</label>
+									  <input id="false" type="radio" name="stock" value="false" > <label for="false" onclick="">FALSE</label>
+									  <a class="btn btn-primary"></a>
+									</div> 
+								</div>
 							</div>
 						</div>		
 					</div>
@@ -299,6 +301,8 @@ function disableMarketPlace() {
 						<button type="submit" class="btn btn-success">Submit</button>
 						<button type="reset" class="btn">Cancel</button>
 					</div>	
+						
+						
 						
 						
 			 
