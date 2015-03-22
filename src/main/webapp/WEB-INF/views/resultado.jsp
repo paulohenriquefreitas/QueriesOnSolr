@@ -24,7 +24,6 @@
 <body>
 	 <c:if test="${fn:length(itemList) gt 0}">
 		<div class="col-md-12 ">
-				<label class="control-label" >Resultado da query: ${size}</label><br/>
 				<div class="panel-group" id="accordion"> 
 			        <c:forEach var="item" items="${itemList}"> 
 				         <div class="panel panel-default">

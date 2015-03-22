@@ -212,7 +212,7 @@ function validate(evt) {
 								<label class="control-label">Item Id</label>
 								<div class="controls ">
 									<%-- <form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/> --%>
-									<input type="text" name="id" id="id" class="form-control" onkeypress='validate(event)' placeholder="Pesquisa por Id"  />
+									<input pattern="[0-9.]*" title="Entre com números, por favor." type="text" name="id" id="id" class="form-control" onkeypress='validate(event)' placeholder="Pesquisa por Id"  />
 								</div>		
 							</div>
 						</div>		
@@ -236,7 +236,7 @@ function validate(evt) {
 	               				 <div id="numPartnerDiv" class="numPartnerDiv">
 	               				 	<label class="control-label">Números de Parceiros</label>
 									<div class="controls ">
-										<form:input id="numPartner" class="form-control" onkeypress='validate(event)' placeholder="Quantidade de parceiros" path="numPartner"/>
+										<form:input pattern="[0-9.]*" title="Entre com números, por favor." id="numPartner" class="form-control" onkeypress='validate(event)' placeholder="Quantidade de parceiros" path="numPartner"/>
 									</div>           
 								</div>	  
 								<div id="stockItemDiv" class="stockItemDiv">  				 	
@@ -288,9 +288,9 @@ function validate(evt) {
 					</div>
 					<hr/>
 					<div class="panel-body ">
-						<form:input id="numSku" class="smallfield" placeholder="Nº Skus" onkeypress='validate(event)' path="numSkus"/>
-						<form:input class="smallfield" placeholder="Start"  onkeypress='validate(event)' path="start"/>
-						<form:input class="smallfield" placeholder="Rows" onkeypress='validate(event)' path="rows"/>
+						<form:input pattern="[0-9.]*" title="Entre com números, por favor." id="numSku" class="smallfield" placeholder="Nº Skus" onkeypress='validate(event)' path="numSkus"/>
+						<form:input pattern="[0-9.]*" title="Entre com números, por favor." class="smallfield" placeholder="Start"  onkeypress='validate(event)' path="start"/>
+						<form:input pattern="[0-9.]*" title="Entre com números, por favor." class="smallfield" placeholder="Rows" onkeypress='validate(event)' path="rows"/>
 					</div>  	
 					
 					<%--  <div class="side-by-side clearfix">

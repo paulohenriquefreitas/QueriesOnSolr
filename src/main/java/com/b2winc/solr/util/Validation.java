@@ -1,9 +1,14 @@
 package com.b2winc.solr.util;
 
-public class Validation {
+import org.apache.commons.lang3.StringUtils;
+
+import com.ctc.wstx.util.StringUtil;
+
+public final class Validation {
 	
-	public boolean isNotEmptyAndIsNumber(String id) {
-		return true;
+	public static boolean isNumber(String id) {
+		
+		return StringUtils.isNumeric(id);
 	}
 
 
