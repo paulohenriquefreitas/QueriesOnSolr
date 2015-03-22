@@ -38,6 +38,7 @@ $(document).ready( function() {
 	  form.submit( function(event) {
 		  resultado.children().each(function() { $(this).remove(); });
 		  $('#loading-indicator').show();
+		  $('#submit').prop( "disabled", true);
 	   var request=  $.ajax( {
 	      type: "GET",
 	      url: form.attr( 'action' ),
@@ -45,6 +46,7 @@ $(document).ready( function() {
 	      success: function( response ) {
 	    	resultado.html(response);
 	    	$('#loading-indicator').hide();
+	    	 $('#submit').prop( "disabled", false);
 	      }
 	    } );
 	    event.preventDefault();
@@ -57,6 +59,12 @@ function enabledFunction() {
     div.style.display = 'block';
     var div = document.getElementById('stockItemDiv');
     div.style.display = 'none';
+    document.getElementById('kitDiv');
+    kitFalse.checked = true;
+    
+    
+    
+    
 }
 function disabledFunction() {
 	var div = document.getElementById('numPartnerDiv');
@@ -69,6 +77,16 @@ function disableMarketPlace() {
 	 b2w.checked = true;
 }
 
+function validate(evt) {
+	  var theEvent = evt || window.event;
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode( key );
+	  var regex = /[0-9]|\./;
+	  if( !regex.test(key) ) {
+	    theEvent.returnValue = false;
+	    if(theEvent.preventDefault) theEvent.preventDefault();
+	  }
+}
 
 	
 </script>
@@ -194,7 +212,7 @@ function disableMarketPlace() {
 								<label class="control-label">Item Id</label>
 								<div class="controls ">
 									<%-- <form:input class="form-control" placeholder="Pesquisa por Id"  path="id"/> --%>
-									<input type="text" name="id" id="id" class="form-control"  placeholder="Pesquisa por Id"  />
+									<input type="text" name="id" id="id" class="form-control" onkeypress='validate(event)' placeholder="Pesquisa por Id"  />
 								</div>		
 							</div>
 						</div>		
@@ -218,7 +236,7 @@ function disableMarketPlace() {
 	               				 <div id="numPartnerDiv" class="numPartnerDiv">
 	               				 	<label class="control-label">Números de Parceiros</label>
 									<div class="controls ">
-										<form:input id="numPartner" class="form-control" placeholder="Quantidade de parceiros" path="numPartner"/>
+										<form:input id="numPartner" class="form-control" onkeypress='validate(event)' placeholder="Quantidade de parceiros" path="numPartner"/>
 									</div>           
 								</div>	  
 								<div id="stockItemDiv" class="stockItemDiv">  				 	
@@ -249,8 +267,8 @@ function disableMarketPlace() {
 								<br/>
 							</div>
 						</div>		
-					</div>	
-					<div class="panel panel-default">
+					</div>					
+					<div id="kitDiv" class="panel panel-default">
 						<div class="panel-heading">
 			                <h5 class="panel-title">
 			                    <a data-toggle="collapse"  href="#collapseFour">Kit</a>
@@ -270,10 +288,11 @@ function disableMarketPlace() {
 					</div>
 					<hr/>
 					<div class="panel-body ">
-						<form:input class="smallfield" placeholder="Nº Skus"  path="numSkus"/>
-						<form:input class="smallfield" placeholder="Start"  path="start"/>
-						<form:input class="smallfield" placeholder="Rows"  path="rows"/>
+						<form:input id="numSku" class="smallfield" placeholder="Nº Skus" onkeypress='validate(event)' path="numSkus"/>
+						<form:input class="smallfield" placeholder="Start"  onkeypress='validate(event)' path="start"/>
+						<form:input class="smallfield" placeholder="Rows" onkeypress='validate(event)' path="rows"/>
 					</div>  	
+					
 					<%--  <div class="side-by-side clearfix">
 			         <form:select id="tokenize" data-live-search="true" placeholder="Digite o(s) campo(s) " 
 			                     class="chosen-select" tabindex="8" path="fields" items="${fields}"> 		
@@ -298,7 +317,7 @@ function disableMarketPlace() {
 				     </div> --%>
 					       		 	  
 					<div class="form-actions"><br/>
-						<button type="submit" class="btn btn-success">Submit</button>
+						<button id="submit" type="submit" class="btn btn-success" onclick="disableMinute(this)">Submit</button>
 						<button type="reset" class="btn">Cancel</button>
 					</div>	
 						
@@ -361,6 +380,8 @@ function disableMarketPlace() {
 					  		loaderObj.style.position = "absolute";
 					  		loaderObj.style["top"] = cl.getDiameter() * -0.5 + "px";
 					  		loaderObj.style["left"] = cl.getDiameter() * -0.5 + "px";
+			
+			
 		   </script>
 		</div>
 	</div>			

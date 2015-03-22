@@ -319,25 +319,14 @@ public class HomeController {
 			SolrQuery query = new SolrQuery(queryString.toString());
 			query.add("rows",String.valueOf(QUANTITY));
 			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(random),fields);
-			System.out.println("kit"+itemSolrDao.getTotalResults());
 			try{
 				if(listIndexedItems != null &&  listIndexedItems.size() > 0){
-					for(IndexedItem indexedItem : listIndexedItems){
-						if(skuQty > 1){
-							if(indexedItem.getSkuList().size() == skuQty){
-								listIndexedItemsKit.add(indexedItem);
-								if(listIndexedItemsKit.size() == QUANTITY){							
-									return listIndexedItemsKit;
-								}
-							}
-						}else{					
-							listIndexedItemsKit.add(indexedItem);
-							if(listIndexedItemsKit.size() == QUANTITY){
-								kitGroup = getKitGroupList(listIndexedItemsKit);
-								return listIndexedItemsKit;
-							}
-							
-						}
+					for(IndexedItem indexedItem : listIndexedItems){										
+						listIndexedItemsKit.add(indexedItem);
+						if(listIndexedItemsKit.size() == QUANTITY){
+							kitGroup = getKitGroupList(listIndexedItemsKit);
+							return listIndexedItemsKit;
+						}	
 					}
 				}else{
 					return listIndexedItems;
