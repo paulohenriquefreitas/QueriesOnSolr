@@ -2767,7 +2767,7 @@ select[multiple].input-lg {
 }
 .btn {
   display: inline-block;
-  padding: 6px 12px;
+  padding: 6px 35px;
   margin-bottom: 0;
   font-size: 14px;
   font-weight: normal;
@@ -5289,7 +5289,8 @@ a.list-group-item-danger.active:focus {
   border: 0;
 }
 .panel-group {
-  margin-bottom: 20px;
+  margin-bottom: 4px;
+  margin-top: 4px
 }
 .panel-group .panel {
   margin-bottom: 0;
