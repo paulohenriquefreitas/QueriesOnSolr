@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.ideais.metasolr.template.CommonSolrTemplate;
 
 import com.b2w.catalogbackendcommons.index.IndexedItem;
+import com.b2w.catalogbackendcommons.index.IndexedMarketPlaceItem;
 import com.b2winc.solr.model.BrandSolr;
 import com.b2winc.solr.model.QueryForm;
 import com.b2winc.solr.model.QueryFormPartner;
@@ -61,9 +62,10 @@ public class HomeController {
 	    	QUANTITY = 5;
 	    }
 	    	
-		List<IndexedItem> listIndexedItem = new ArrayList<IndexedItem>();		
+		List<IndexedItem> listIndexedItem = new ArrayList<IndexedItem>();
 		String solrUrl = getSolrBrand(queryForm) ;
 		ItemSolrDao itemSolrDao = getItemSolrDao(solrUrl);
+		MarketPlaceSolrDao marketPlaceSolrDao = getMarketPlaceItemSolrDao(solrUrl);
 		ModelAndView mv =  new ModelAndView("resultado");
 		long initExecutionTime = System.currentTimeMillis();
 		listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner);
@@ -76,11 +78,28 @@ public class HomeController {
 			model.addAttribute("size",listIndexedItem.size());
 			model.addAttribute("solrLink",getSolrBrand(queryForm)+"/idxItem/select?q=itemId%3A");
 			model.addAttribute("kitGroups", getKitGroup());
+			model.addAttribute("partnersMap", getParnerList(marketPlaceSolrDao,listIndexedItem));
 		}
 		log.info("Tempo total:  "+ (initExecutionTime - System.currentTimeMillis()));
 		return mv;			
 	}
 
+
+	private Map<String, List<IndexedMarketPlaceItem>> getParnerList(MarketPlaceSolrDao marketPlaceSolrDao, List<IndexedItem> listIndexedItem) {
+		Map<String , List<IndexedMarketPlaceItem>> partnerMap = new HashMap<String, List<IndexedMarketPlaceItem>>() ;
+		if(!listIndexedItem.isEmpty()){
+			for (IndexedItem indexedItem : listIndexedItem) {
+				if(indexedItem.getPartnerList() !=null && indexedItem.getPartnerList().size() > 0){
+					List<IndexedMarketPlaceItem> partners = new ArrayList<IndexedMarketPlaceItem>();
+					StringBuffer queryString= new StringBuffer();
+					queryString.append("itemId:"+indexedItem.getId());
+					partners = marketPlaceSolrDao.query(queryString.toString());
+						partnerMap.put(indexedItem.getId(), partners);
+				}
+			}
+		}
+		return partnerMap;
+	}
 
 	private StringBuffer getIdList(List<IndexedItem> listIndexedItem) {
 		StringBuffer idList = new StringBuffer();
@@ -171,7 +190,6 @@ public class HomeController {
 			List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 			int totalResult = (int) itemSolrDao.getTotalResults();
 			int random = Integer.valueOf(getRandom(totalResult));
-			System.out.println("Random do resultado" + totalResult);
 	    	while(listIndexedItems.size() < QUANTITY){
 	    		List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(random),fields);
 					if(indexedItemList != null &&  indexedItemList.size() > 0){

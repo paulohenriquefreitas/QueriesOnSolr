@@ -47,12 +47,7 @@
 									  <li><span class="text-danger">AdminTagList :</span> ${item.adminTagList}</li>
 									  <li><span class="text-danger">SiteStructure :</span> ${item.siteStructure}</li>
 									  <c:if test="${item.isMarketPlace}">
-									  <li><span class="text-danger">MainSellerId :</span> ${item.mainSellerId}</li>
-									  <li><span class="text-danger">MainSellerName :</span> ${item.mainSellerName}</li>
 									  <li><span class="text-danger">PartnerList :</span> ${item.partnerList}</li>
-									  <li><span class="text-danger">PartnerListId :</span> ${item.partnerListId}</li>
-									  <li><span class="text-danger">PartnerSmallestDefaultPrice :</span> ${item.partnerSmallestDefaultPrice}</li>
-									  <li><span class="text-danger">PartnerSmallestSalesPrice :</span> ${item.partnerSmallestSalesPrice}</li>
 									  </c:if>
 									  <li><span class="text-danger">FlatGroupId :</span> ${item.flatGroupsIds}</li>
 									  <li><span class="text-danger">SkuStock :</span> ${item.skuStock}</li>
@@ -72,13 +67,7 @@
 									  <li><span class="text-danger">AverageOverallRating :</span> ${item.averageOverallRating}</li>
 									  <li><span class="text-danger">NumReviews :</span> ${item.numReviews}</li>
 									  </c:if>									       	
-									</ul>
-									<div class="cornerRight">
-					                	<span class="text-primary"> ... veja + em 
-						                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
-											<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
-										</span>	
-									</div>
+									</ul>									
 									<c:if test="${item.isKit}">
 										<hr>
 										<div class="cornerLeft">
@@ -107,13 +96,44 @@
 												</table>	
 										</div>
 									</c:if>
+									<c:if test="${fn:length(partnersMap) gt 0}">
+				               			 <div>
+					                		 <ul class="list-unstyled"><br/>
+							                	<li><span class="text-primary">PARCEIROS  *************** </span></li> 
+						                		<c:forEach items="${partnersMap}" var="partners">
+							                	 <c:forEach items="${partners.value}" var="partner">
+							                	 	<c:if test="${item.id eq partner.itemId}">
+							                	 		<li><span class="text-primary">Id : </span>${partner.id}</li> 
+							                	 		<li><span class="text-primary">PartnerId:</span>${partner.partnerId}</li> 				
+							                			<li><span class="text-primary">Name : </span>${partner.partnerName}</li> 	
+							                			<li><span class="text-primary">PartnerStatus : </span>${partner.partnerName}</li> 					                			
+							                			<li><span class="text-primary">SkuStock : </span>${partner.skuStock}</li> 
+							                			<li><span class="text-primary">SkuStatus : </span>${partner.skuStatus}</li> 
+							                			<li><span class="text-primary">SkuDefaultPrice : </span>${partner.skuDefaultPrice}</li>
+							                			<li><span class="text-primary">SkuSalesPrice : </span>${partner.skuSalesPrice}</li>
+							                			<li><span class="text-primary">SkuStockQuantity : </span>${partner.skuStockQuantity}</li>
+														<br/>	
+							                		</c:if>	
+							                	</c:forEach>	 
+							                </c:forEach>
+							              </ul>
+					             		</div>
+					         		 </c:if>      
 				                </div>
+				                <div class="cornerRight">
+					                	<span class="text-primary"> ... veja + em 
+						                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
+											<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
+										</span>	
+									</div>
 				            </div>
 				        </div> 
 			       </c:forEach> 
 			    </div>			
 		</div>
 	 </c:if>
+	 
+	
 	 <c:if test="${fn:length(itemList) eq 0}">	 
 	 	<label class="control-label" >${msg}</label><br/>
 	 </c:if>

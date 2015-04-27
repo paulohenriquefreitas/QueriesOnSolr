@@ -202,3 +202,75 @@ i { font-style: italic; }
   padding-left: 27px;
   text-decoration: none;
 }
+
+
+<style type="text/css">
+	.btn-custom:active {
+	    top: 5px;
+	    border-bottom: 0;
+	}
+	.imagem  {
+	background-image: url("img/apache-solr.jpg");
+	
+	}	
+	.transparencia {
+	     filter:alpha(opacity=50);
+	     opacity: 0.5;
+	     -moz-opacity:0.5;
+	     -webkit-opacity:0.5;
+	}	
+	
+	.verticalLine {
+    border-left: thick solid #ff0000;
+	}	
+	
+	.col{
+	margin-bottom: 0px;
+	padding-bottom: 5px;
+	padding-left: 0px;
+	border-radius: 8px;
+	border: 2px solid #e3e3e3;
+	}
+	
+	.col2{
+	margin-bottom: 0px;
+	padding-bottom: 5px;
+	padding-left: 7px;
+	border-radius: 8px;
+	width: 78%;
+	border: 2px solid #e3e3e3;
+	}
+	
+	.col-wrap{
+	overflow: hidden; 
+	}
+	
+	input.full-width {
+	    box-sizing: border-box;
+	    width: 100%;
+	    height: 30px;
+	}
+	
+	#mode-group .btn:not(.active) {
+		opacity: 0.5;
+	}
+	
+	#loading-indicator {
+	   border: 100px 10px 100px 100px;
+	   display: none;
+	}
+	.wrapper {
+	   position:absolute;
+	   top:50%;
+	   left:60%;
+	}
+	div.numPartnerDiv{
+	display: none;
+	}
+	
+	div.stockItemDiv{
+	display: block;
+	margin-bottom: 24px;
+	}
+
+}

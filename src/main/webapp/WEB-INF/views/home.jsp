@@ -21,153 +21,13 @@
 <script src="/resources/js/bootstrap-select.js"></script>
 <script src="/resources/js/select2.js"></script>
 <script type="text/javascript" src="/resources/js/jquery.tokenize.js"></script>
+<script type="text/javascript" src="/resources/js/innerjs.js"></script>
 <script src="/resources/js/heartcode-canvasloader.js"></script>
 
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" href="/resources/css/prism.css">
 <link rel="stylesheet" href="/resources/css/chosen.css">
 
-
-<script type="text/javascript">
-
-$(document).ready( function() {
-	  var form = $('#query');
-	  var resultado = $('.resultadoBusca');
-	  
-	  resultado.empty();
-	  form.submit( function(event) {
-		  resultado.children().each(function() { $(this).remove(); });
-		  $('#loading-indicator').show();
-		  $('#submit').prop( "disabled", true);
-	   var request=  $.ajax( {
-	      type: "GET",
-	      url: form.attr( 'action' ),
-	      data: form.serialize(),
-	      success: function( response ) {
-	    	resultado.html(response);
-	    	$('#loading-indicator').hide();
-	    	 $('#submit').prop( "disabled", false);
-	      }
-	    } );
-	    event.preventDefault();
-	  } );
-
-	} );
-    
-function enabledFunction() {
-    var div = document.getElementById('numPartnerDiv');
-    div.style.display = 'block';
-    var div = document.getElementById('stockItemDiv');
-    div.style.display = 'none';
-    document.getElementById('kitDiv');
-    kitFalse.checked = true;
-    
-    
-    
-    
-}
-function disabledFunction() {
-	var div = document.getElementById('numPartnerDiv');
-    div.style.display = 'none';
-    var div = document.getElementById('stockItemDiv');
-    div.style.display = 'block';
-}
-function disableMarketPlace() {
-	 document.getElementById('mktDiv');
-	 b2w.checked = true;
-}
-
-function validate(evt) {
-	  var theEvent = evt || window.event;
-	  var key = theEvent.keyCode || theEvent.which;
-	  key = String.fromCharCode( key );
-	  var regex = /[0-9 ]|\./;
-	  if( !regex.test(key) ) {
-	    theEvent.returnValue = false;
-	    if(theEvent.preventDefault) theEvent.preventDefault();
-	  }
-}
-
-function hideCanvasLoader(){
-	var div = document.getElementById('loading-indicator');
-    div.style.display = 'none';
-    document.getElementById("submit").disabled = false;
-}
-
-	
-</script>
-
-<style type="text/css">
-	.btn-custom:active {
-	    top: 5px;
-	    border-bottom: 0;
-	}
-	.imagem  {
-	background-image: url("img/apache-solr.jpg");
-	
-	}	
-	.transparencia {
-	     filter:alpha(opacity=50);
-	     opacity: 0.5;
-	     -moz-opacity:0.5;
-	     -webkit-opacity:0.5;
-	}	
-	
-	.verticalLine {
-    border-left: thick solid #ff0000;
-	}	
-	
-	.col{
-	margin-bottom: 0px;
-	padding-bottom: 5px;
-	padding-left: 0px;
-	border-radius: 8px;
-	border: 2px solid #e3e3e3;
-	}
-	
-	.col2{
-	margin-bottom: 0px;
-	padding-bottom: 5px;
-	padding-left: 7px;
-	border-radius: 8px;
-	width: 78%;
-	border: 2px solid #e3e3e3;
-	}
-	
-	.col-wrap{
-	overflow: hidden; 
-	}
-	
-	input.full-width {
-	    box-sizing: border-box;
-	    width: 100%;
-	    height: 30px;
-	}
-	
-	#mode-group .btn:not(.active) {
-		opacity: 0.5;
-	}
-	
-	#loading-indicator {
-	   border: 100px 10px 100px 100px;
-	   display: none;
-	}
-	.wrapper {
-	   position:absolute;
-	   top:50%;
-	   left:60%;
-	}
-	div.numPartnerDiv{
-	display: none;
-	}
-	
-	div.stockItemDiv{
-	display: block;
-	margin-bottom: 24px;
-	}
-
-}
-</style> 
 </head>
 <body >
 	
@@ -178,7 +38,9 @@ function hideCanvasLoader(){
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
+					<a href="javascript:void(0)" onclick="javascript:window.open('/resources/doc/Documentacao_Operacional QueriesOnSolr.pdf');">
 						<img alt="40x40" src="/resources/image/Java_Log2o.png" class="img-rounded" />
+					</a>	
 						<span>QueriesOnSolr</span>
 					</h3>
 				</div>
@@ -201,7 +63,6 @@ function hideCanvasLoader(){
 			</div>
 		</div>
 	</div>
-	
 	
 	<div class="container">
 		<div class="row clearfix">
@@ -240,7 +101,7 @@ function hideCanvasLoader(){
 								</div>
 								
 	               				 <div id="numPartnerDiv" class="numPartnerDiv">
-	               				 	<label class="control-label">Números de Parceiros</label>
+	               				 	<label class="control-label">Quantidade de Parceiros</label>
 									<div class="controls ">
 										<form:input pattern="[0-9.]*" title="Entre com números, por favor." id="numPartner" class="form-control" onkeypress='validate(event)' placeholder="Quantidade de parceiros" path="numPartner"/>
 									</div>           
