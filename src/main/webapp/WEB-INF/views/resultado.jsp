@@ -96,17 +96,23 @@
 												</table>	
 										</div>
 									</c:if>
+									 <div class="cornerRight">
+					                	<span class="text-primary"> Informações do Item em  
+						                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
+											<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
+										</span>	
+									</div>
 									<c:if test="${fn:length(partnersMap) gt 0}">
+										 <hr/>
 				               			 <div>
-					                		 <ul class="list-unstyled"><br/>
-							                	<li><span class="text-primary">PARCEIROS  *************** </span></li> 
+					                		 <ul class="list-unstyled">
 						                		<c:forEach items="${partnersMap}" var="partners">
 							                	 <c:forEach items="${partners.value}" var="partner">
 							                	 	<c:if test="${item.id eq partner.itemId}">
 							                	 		<li><span class="text-primary">Id : </span>${partner.id}</li> 
 							                	 		<li><span class="text-primary">PartnerId:</span>${partner.partnerId}</li> 				
-							                			<li><span class="text-primary">Name : </span>${partner.partnerName}</li> 	
-							                			<li><span class="text-primary">PartnerStatus : </span>${partner.partnerName}</li> 					                			
+							                			<li><span class="text-primary">Name : </span><a href="${linkWebStore}${partner.partnerName}/${partner.id}" target="_blank">${partner.partnerName}</a></li> 	
+							                			<li><span class="text-primary">PartnerStatus : </span>${partner.partnerStatus}</li> 					                			
 							                			<li><span class="text-primary">SkuStock : </span>${partner.skuStock}</li> 
 							                			<li><span class="text-primary">SkuStatus : </span>${partner.skuStatus}</li> 
 							                			<li><span class="text-primary">SkuDefaultPrice : </span>${partner.skuDefaultPrice}</li>
@@ -118,15 +124,15 @@
 							                </c:forEach>
 							              </ul>
 					             		</div>
-					         		 </c:if>      
-				                </div>
-				                <div class="cornerRight">
-					                	<span class="text-primary"> ... veja + em 
-						                    <a href="${solrLink}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
-											<a href="${solrLink}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
+					         	   <div class="cornerRight">
+					                	<span class="text-primary"> Informações dos parceiros em  
+						                    <a href="${solrLinkPartner}${item.id}&wt=json&indent=true" target="_blank">json</a> ou em	
+											<a href="${solrLinkPartner}${item.id}&wt=xml&indent=true" target="_blank"> xml</a>
 										</span>	
-									</div>
-				            </div>
+									</div>    
+					         		</c:if>  
+				                </div>
+				              </div>
 				        </div> 
 			       </c:forEach> 
 			    </div>			

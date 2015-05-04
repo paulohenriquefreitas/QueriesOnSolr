@@ -75,8 +75,10 @@ public class HomeController {
 			model.addAttribute("idList",listIndexedItem);
 			model.addAttribute("itemList",getItensById(itemSolrDao, getIdList(listIndexedItem),listIndexedItem.size()));
 			model.addAttribute("link",getLink(queryForm.getBrand()));
+			model.addAttribute("linkWebStore",getLinkWebstore(queryForm.getBrand()));
 			model.addAttribute("size",listIndexedItem.size());
 			model.addAttribute("solrLink",getSolrBrand(queryForm)+"/idxItem/select?q=itemId%3A");
+			model.addAttribute("solrLinkPartner",getSolrBrand(queryForm)+"/idxMarketPlace/select?q=itemId%3A");
 			model.addAttribute("kitGroups", getKitGroup());
 			model.addAttribute("partnersMap", getParnerList(marketPlaceSolrDao,listIndexedItem));
 		}
@@ -405,7 +407,7 @@ public class HomeController {
 	private List<IndexedItem> getSimpleItens(ItemSolrDao itemSolrDao,StringBuffer queryString, int quantity, String start2, String fields) {
 		SolrQuery query = new SolrQuery(queryString.toString());
 		List<IndexedItem> indexedItemList = null;
-		query.add("rows",String.valueOf(quantity));
+		//query.add("rows",String.valueOf(quantity));
 		query.add("start",start2);
 		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
 		query.addField(fields);
@@ -442,8 +444,12 @@ public class HomeController {
 		return "http://www."+marca+".com.br/produto/";
 	}
 	
+	private String getLinkWebstore(String marca) {
+		if(marca.equalsIgnoreCase("homolog"))
+			return "http://hml.www.americanas.com.br/lojista/";
+		return "http://www."+marca+".com.br/lojista/";
+	}	
 	
-
 	public BrandSolr getBrandSolr() {
 		return brandSolr;
 	}
