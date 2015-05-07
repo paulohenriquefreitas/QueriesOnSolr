@@ -41,7 +41,7 @@ public class HomeController {
 	private Integer aux;
 	private QueryForm queryForm = new QueryForm();
 	private static Integer QUANTITY = 5; 
-	private Map<String,List<String>> kitGroup = new HashMap<String, List<String>>();
+	private Map<String,List<IndexedItem>> kitGroup ;
 	private static final String FASHIONDEP = "10009073 10009074 10009075 10009076 10009077 10009078 10009079 10009069";
 	
 
@@ -269,13 +269,14 @@ public class HomeController {
 		Integer skuQty = StringUtils.isEmpty(numSkus) ? 8 : Integer.valueOf(numSkus);
 		SolrQuery query = new SolrQuery(queryString.toString());
 		query.add("rows",String.valueOf(QUANTITY));
-		String fields = "itemId,itemName,itemStock,skuList,erpDepartamentId,isMarketPlace,partnerList";
+		String fields = "itemId,itemName,itemStock,skuList,erpDepartamentId,isMarketPlace,partnerList,kitItemList";
 		query.addField(fields);
 		List<IndexedItem> listIndexedItemsFashion = new ArrayList<IndexedItem>();
 		@SuppressWarnings("unused")
 		List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 		int totalResult = (int) itemSolrDao.getTotalResults();
 		int random = Integer.valueOf(getRandom(totalResult));
+		kitGroup = new HashMap<String, List<IndexedItem>>();		
 		
 		while(listIndexedItemsFashion.size() < QUANTITY){
 			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,getIncrement(random),fields);
@@ -296,15 +297,18 @@ public class HomeController {
 							listIndexedItemsFashion.add(indexedItem);
 						}
 											
-						if(listIndexedItemsFashion.size() == QUANTITY){							
+						if(listIndexedItemsFashion.size() == QUANTITY){
+							kitGroup = getKitGroupList(itemSolrDao,listIndexedItemsFashion);
 							return listIndexedItemsFashion;
 						}
 					}
 				}else{
+					kitGroup = getKitGroupList(itemSolrDao,listIndexedItemsFashion);
 					return listIndexedItemsFashion;
 				}
 			}catch(Exception e){
 				log.error("Ocorreu uma exceção. " + e.getMessage());
+				kitGroup = getKitGroupList(itemSolrDao,listIndexedItemsFashion);
 				return listIndexedItemsFashion;
 			}
 		}
@@ -344,7 +348,7 @@ public class HomeController {
 					for(IndexedItem indexedItem : listIndexedItems){										
 						listIndexedItemsKit.add(indexedItem);
 						if(listIndexedItemsKit.size() == QUANTITY){
-							kitGroup = getKitGroupList(listIndexedItemsKit);
+							kitGroup = getKitGroupList(itemSolrDao, listIndexedItemsKit);
 							return listIndexedItemsKit;
 						}	
 					}
@@ -360,8 +364,8 @@ public class HomeController {
 	}
 
 	
-	private Map<String, List<String>> getKitGroupList(List<IndexedItem> listIndexedItemsKit) {
-		
+	private Map<String, List<IndexedItem>> getKitGroupList(ItemSolrDao itemSolrDao, List<IndexedItem> listIndexedItemsKit) {
+		kitGroup = new HashMap<String, List<IndexedItem>>();
 		for (IndexedItem indexedItem : listIndexedItemsKit) {
 			List<String> memberKits = new ArrayList<String>();
 			if(indexedItem.getKitItemList() != null){
@@ -371,16 +375,43 @@ public class HomeController {
 						memberKits.add(kitInfos[2].trim());						
 					}
 				}
-				kitGroup.put(indexedItem.getId(), memberKits);	
+				kitGroup.put(indexedItem.getId(), getItensKitChildrenById(itemSolrDao, getKitChildrenList(memberKits), memberKits.size()));	
 			}
 		}		
+		System.out.println("Tamanho do kitfilho"+ kitGroup.size());
 		return kitGroup;
 	}
 
 
+	private StringBuffer getKitChildrenList(List<String> memberKits) {
+		StringBuffer idList = new StringBuffer();
+		idList.append("itemId:(");
+		for (String itemId : memberKits) {
+			idList.append(itemId+" ");
+		}
+		idList.append(")");
+		return idList;
+	}
+
 	private List<IndexedItem> getItensById(ItemSolrDao itemSolrDao,
 			StringBuffer queryString, int rows) {
 		SolrQuery query = new SolrQuery(queryString.toString());	
+		query.add("rows",String.valueOf(rows));
+		List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
+		try{
+			listIndexedItems = itemSolrDao.query(query);
+		}catch (Exception e) {
+			log.error("Ocorreu uma exceção. " + e.getMessage());
+			return listIndexedItems;
+		}	
+		return listIndexedItems;
+	}	
+	
+	private List<IndexedItem> getItensKitChildrenById(ItemSolrDao itemSolrDao,
+			StringBuffer queryString, int rows) {
+		
+		SolrQuery query = new SolrQuery(queryString.toString());
+		query.addField("itemId,soldSeparatelly");
 		query.add("rows",String.valueOf(rows));
 		List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 		try{
@@ -467,11 +498,11 @@ public class HomeController {
 		this.queryForm = queryForm;
 	}
 
-	public Map<String, List<String>> getKitGroup() {
+	public Map<String, List<IndexedItem>> getKitGroup() {
 		return kitGroup;
 	}
 
-	public void setKitGroup(Map<String, List<String>> kitGroup) {
+	public void setKitGroup(Map<String, List<IndexedItem>> kitGroup) {
 		this.kitGroup = kitGroup;
 	}
 	

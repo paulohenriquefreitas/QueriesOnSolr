@@ -85,9 +85,16 @@
 															<c:if test="${item.id eq itemKitGroup.key}">
 																<c:forEach items="${itemKitGroup.value}" var="itemKit">	
 																	<tr>
-																		<td><a href="${link}${itemKit}" target="_blank">${itemKit}</a></td>
-																		<td><a href="${solrLink}${itemKit}&wt=json&indent=true" target="_blank">${itemKit}</a></td>
-																		<td><a href="${solrLink}${itemKit}&wt=xml&indent=true" target="_blank">${itemKit}</a></td>
+																	<c:choose>
+																		 <c:when test="${itemKit.soldSeparatelly}">
+																				<td><a href="${link}${itemKit.id}" target="_blank">${itemKit.id}</a></td>
+																		 </c:when>
+																		 <c:otherwise>
+																		 	<td>${itemKit.id}</td>	
+																		 </c:otherwise>
+																		</c:choose>
+																		<td><a href="${solrLink}${itemKit.id}&wt=json&indent=true" target="_blank">${itemKit.id}</a></td>
+																		<td><a href="${solrLink}${itemKit.id}&wt=xml&indent=true" target="_blank">${itemKit.id}</a></td>
 																	</tr>
 																</c:forEach>	
 															</c:if>
