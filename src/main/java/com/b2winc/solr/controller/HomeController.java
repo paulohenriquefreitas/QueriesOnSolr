@@ -42,7 +42,7 @@ public class HomeController {
 	private QueryForm queryForm = new QueryForm();
 	private static Integer QUANTITY = 5; 
 	private Map<String,List<IndexedItem>> kitGroup ;
-	private static final String FASHIONDEP = "10009073 10009074 10009075 10009076 10009077 10009078 10009079 10009069";
+	private static final String FASHIONDEP = "10009073 10009074 10009075 10009076 10009077 10009078 10009079 10009069 10009088";
 	
 
 	@RequestMapping(value="/")
