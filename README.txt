@@ -1,20 +1,9 @@
-AppFuse Basic Spring MVC Archetype
---------------------------------------------------------------------------------
-If you're reading this then you've created your new project using Maven and
-appfuse-basic-spring.  You have only created the shell of an AppFuse Java EE
-application.  The project object model (pom) is defined in the file pom.xml.
-The application is ready to run as a web application. The pom.xml file is
-pre-defined with Hibernate as a persistence model and Spring MVC as the web
-framework.
+Parameters Configuration:
 
-To get started, please complete the following steps:
-
-1. Download and install a MySQL 5.x database from 
-   http://dev.mysql.com/downloads/mysql/5.0.html#downloads.
-
-2. Run "mvn jetty:run-war" and view the application at http://localhost:8080.
-
-3. More information can be found at:
-
-   http://dev.appfuse.org/display/APF/QuickStart+Guide
+-Dacom=http://10.13.147.14:8080/solr
+-Dacom=http://10.13.51.14:8080/solr
+-Dshop=http://10.13.67.14:8080/solr
+-Dsoub=http://10.13.91.21:8080/solr
+-Dhomolog=http://vmhmlwl1:8080/solr
+-DfashionErpDepId="10009073 10009074 10009075 10009076 10009077 10009078 10009079 10009069 10009088";
 

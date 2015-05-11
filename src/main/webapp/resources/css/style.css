@@ -59,7 +59,7 @@ div.side-by-side > div > em { margin-bottom: 10px; display: block; }
   visibility: hidden;
 }
 
-a { outline: none; text-decoration: none; }
+a { outline: none; text-decoration: none; color: #007EB8;}
 a:hover { text-decoration: underline; }
 
 ul.credits li { margin-bottom: .25em; }
