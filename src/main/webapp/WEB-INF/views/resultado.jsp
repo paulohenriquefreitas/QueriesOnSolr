@@ -25,7 +25,6 @@
 		<div class="col-md-12 ">
 			<div class="panel panel-default">
 			   <div class="panel-heading">
-				<label class="control-label" >Resultado da busca: ${fn:length(itemList)}</label><br>
 				<c:forEach var="item" items="${idList}">
 				  <a href="${link}${item.id}" target="_blank">${item.id}</a>
 				</c:forEach>

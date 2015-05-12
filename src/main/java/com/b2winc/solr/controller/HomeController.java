@@ -35,7 +35,7 @@ import com.b2winc.solr.util.Properties;
 
 
 @Controller
-public	 class HomeController  implements Comparable<IndexedItem>{
+public	 class HomeController {
 	private static final Log log = LogFactory.getLog(HomeController.class);
 	private BrandSolr brandSolr;
 	private Integer aux;
@@ -66,14 +66,7 @@ public	 class HomeController  implements Comparable<IndexedItem>{
 		ItemSolrDao itemSolrDao = ItemSolrDao.getItemSolrDao(solrUrl);
 		MarketPlaceSolrDao marketPlaceSolrDao = MarketPlaceSolrDao.getMarketPlaceItemSolrDao(solrUrl);
 		long initExecutionTime = System.currentTimeMillis();
-		listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner);
-		/*Collections.sort(listIndexedItem, new Comparator<IndexedItem>() {
-	        @Override
-	        public int compare(IndexedItem  indexedItem, IndexedItem  indexedItem2)
-	        {
-	            return  indexedItem.getId().compareTo(indexedItem2.getId());
-	        }
-	    });*/
+		listIndexedItem = getItem(itemSolrDao,solrUrl,queryForm,queryFormPartner);		
 		if(listIndexedItem.isEmpty()){
 			model.addAttribute("msg","Nenhum item foi encontrado !");
 		}else{
@@ -477,7 +470,6 @@ public	 class HomeController  implements Comparable<IndexedItem>{
 		query.add("start",start2);
 		query.addFilterQuery("+(+isFreeBee:false -soldSeparatelly:false -item_property_EXCLUSIVE_B2B:true)");
 		query.addField(fields);
-		//log.info("Start: " +start2);		
 		try{
 			indexedItemList = itemSolrDao.query(query);			
 		}catch(Exception e){
@@ -539,11 +531,5 @@ public	 class HomeController  implements Comparable<IndexedItem>{
 	public void setKitGroup(Map<String, List<IndexedItem>> kitGroup) {
 		this.kitGroup = kitGroup;
 	}
-
-	@Override
-	public int compareTo(IndexedItem indexedItem) {
-		return  indexedItem.getItemName().compareTo((indexedItem.getItemName()));
-	}
-
 	
 }

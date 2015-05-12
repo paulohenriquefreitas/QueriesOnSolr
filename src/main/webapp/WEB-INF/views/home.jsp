@@ -7,13 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<title>Solr Queries Simplifying</title>
+<title>Easy Query</title>
 <link type="text/css" href="/resources/css/bootstrap.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/hover.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/bootstrap-select.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/toggle-switch.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/select2.css" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="/resources/css/jquery.tokenize.css" />
+<link rel="shortcut icon" href="/resources/image/Java_Log2o.png"/>
 
 <link href="bootstrap-switch.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery.min.js"></script>
@@ -38,10 +39,8 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-					<a href="javascript:void(0)" onclick="javascript:window.open('/resources/doc/Documentacao_Operacional QueriesOnSolr.pdf');">
 						<img alt="40x40" src="/resources/image/Java_Log2o.png" class="img-rounded" />
-					</a>	
-						<span>QueriesOnSolr</span>
+						<span>Easy Query</span>
 					</h3>
 				</div>
 			</div>
