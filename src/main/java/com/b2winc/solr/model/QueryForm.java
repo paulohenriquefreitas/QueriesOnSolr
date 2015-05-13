@@ -17,6 +17,7 @@ public class QueryForm {
 	private String kit;
 	private String start;
 	private String rows;
+	private String wrapped;
 	
 	public String getId() {
 		return id;
@@ -105,6 +106,16 @@ public class QueryForm {
 	public void setRows(String rows) {
 		this.rows = rows;
 	}
+
+	public String getWrapped() {
+		return wrapped;
+	}
+
+	public void setWrapped(String rewrapped) {
+		this.wrapped = rewrapped;
+	}
+	
+	
 	
 
 	

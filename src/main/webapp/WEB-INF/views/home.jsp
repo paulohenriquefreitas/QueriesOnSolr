@@ -29,9 +29,11 @@
 <link rel="stylesheet" href="/resources/css/prism.css">
 <link rel="stylesheet" href="/resources/css/chosen.css">
 
+
+
 </head>
 <body >
-	
+
 		
 <div class="container">
 	<div class="row clearfix">
@@ -149,6 +151,24 @@
 								  <a class="btn btn-primary"></a>
 								</div> 
 								<br/>
+							</div>
+						</div>		
+					</div>				
+					
+					<div id="kitDiv" class="panel panel-default">
+						<div class="panel-heading">
+			                <h5 class="panel-title">
+			                    <a data-toggle="collapse"  href="#collapseFive">Reembalados</a>
+			                </h5>
+			            </div>
+	            		<div id="collapseFive" class="panel-collapse collapse">
+	               			 <div class="panel-body">											
+								<div >
+								    <input type="checkbox" id="new"  name="wrapped" value="new" class="checkbox" checked />
+								    <label for="new">NOVO</label>								
+								    <input type="checkbox" id="rewrapped"  name="wrapped" value="rewrapped" class="checkbox"  />
+								    <label for="rewrapped">REEMBALADO</label>
+								</div> 
 							</div>
 						</div>		
 					</div>

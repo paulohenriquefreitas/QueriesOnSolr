@@ -63,6 +63,7 @@ public	 class HomeController {
 			model.addAttribute("msg","Ops! Não foi possível encontrar o ip do Solr da marca "+ queryForm.getBrand()+" na configuração.");
 			return mv;
 		}
+		
 		ItemSolrDao itemSolrDao = ItemSolrDao.getItemSolrDao(solrUrl);
 		MarketPlaceSolrDao marketPlaceSolrDao = MarketPlaceSolrDao.getMarketPlaceItemSolrDao(solrUrl);
 		long initExecutionTime = System.currentTimeMillis();
@@ -87,7 +88,11 @@ public	 class HomeController {
 	private void setUp(QueryForm queryForm) {
 		aux=null;
 	    this.queryForm = queryForm;
-		this.queryForm.setNumSkus(queryForm.getNumSkus());	    
+		this.queryForm.setNumSkus(queryForm.getNumSkus());	
+		 String wrapped []  = StringUtils.split(this.queryForm.getWrapped(),",");
+		for (String string : wrapped) {
+			System.out.println(string);
+		}
 		if(StringUtils.isNotEmpty(queryForm.getRows())){
 	    	QUANTITY = Integer.valueOf(queryForm.getRows());
 	    }else{
