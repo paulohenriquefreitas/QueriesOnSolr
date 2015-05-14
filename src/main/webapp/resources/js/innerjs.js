@@ -45,6 +45,19 @@ function disableMarketPlace() {
 	 b2w.checked = true;
 }
 
+function enableReembalados(){
+	var div = document.getElementById('rewrappedDiv');
+    div.style.display = 'block';
+}
+
+function disableReembalados(){
+	var div = document.getElementById('rewrappedDiv');
+    div.style.display = 'none';
+}
+
+
+
+
 function validate(evt) {
 	  var theEvent = evt || window.event;
 	  var key = theEvent.keyCode || theEvent.which;

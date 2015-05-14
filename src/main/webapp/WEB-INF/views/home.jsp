@@ -28,7 +28,13 @@
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" href="/resources/css/prism.css">
 <link rel="stylesheet" href="/resources/css/chosen.css">
+<script type="text/javascript">
 
+function hideDiv() {
+    document.getElementById("rewrappedDiv").style.display = 'none';    
+  } 
+
+</script>
 
 
 </head>
@@ -55,11 +61,11 @@
 		<div class="row clearfix">
 			<div class="col-md-12 column">
 			     <div id=mode-group class="btn-group btn-group-justified font-group " data-toggle="buttons">
-			      <label class="btn btn-primary active" ><form:radiobutton path="brand" value="submarino"  checked="checked"/>SUBMARINO</label>			        
-			      <label class="btn btn-danger "><form:radiobutton path="brand" value="americanas" />AMERICANAS</label>			        
-			      <label class="btn btn-shop " ><form:radiobutton path="brand" value="shoptime"/>SHOPTIME</label>
-			      <label class="btn btn-soub" ><form:radiobutton path="brand" value="soubarato"/>SOUBARATO</label>
-			      <label class="btn btn-success" ><form:radiobutton path="brand" value="homolog" />HOMOLOGAÇÃO</label>
+			      <label class="btn btn-primary active" onclick="disableReembalados()"><form:radiobutton path="brand" value="submarino"  checked="checked"/>SUBMARINO</label>			        
+			      <label class="btn btn-danger" onclick="disableReembalados()"><form:radiobutton path="brand" value="americanas" />AMERICANAS</label>			        
+			      <label class="btn btn-shop" onclick="disableReembalados()"><form:radiobutton path="brand" value="shoptime"/>SHOPTIME</label>
+			      <label class="btn btn-soub" onclick="enableReembalados()" ><form:radiobutton path="brand" value="soubarato" />SOUBARATO</label>
+			      <label class="btn btn-success" onclick="disableReembalados()"><form:radiobutton path="brand" value="homolog" />HOMOLOGAÇÃO</label>
 			    </div>
 			</div>
 		</div>
@@ -155,16 +161,16 @@
 						</div>		
 					</div>				
 					
-					<div id="kitDiv" class="panel panel-default">
+					<div id="rewrappedDiv" class="panel panel-default" style="display:none">
 						<div class="panel-heading">
 			                <h5 class="panel-title">
-			                    <a data-toggle="collapse"  href="#collapseFive">Reembalados</a>
+			                    <a data-toggle="collapse "  href="#collapseFive">Reembalados</a>
 			                </h5>
 			            </div>
-	            		<div id="collapseFive" class="panel-collapse collapse">
+	            		<div id="collapseFive" class="panel-collapse collapse in">
 	               			 <div class="panel-body">											
 								<div >
-								    <input type="checkbox" id="new"  name="wrapped" value="new" class="checkbox" checked />
+								    <input type="checkbox" id="new"  name="wrapped" value="new" class="checkbox"  />
 								    <label for="new">NOVO</label>								
 								    <input type="checkbox" id="rewrapped"  name="wrapped" value="rewrapped" class="checkbox"  />
 								    <label for="rewrapped">REEMBALADO</label>
@@ -172,6 +178,10 @@
 							</div>
 						</div>		
 					</div>
+					
+					<script type="text/javascript">
+    $("hideme").hide();
+</script>
 					<hr/>
 					<div class="panel-body ">
 						<form:input pattern="[0-9.]*" title="Entre com números, por favor." id="numSku" class="smallfield" placeholder="Nº Skus" onkeypress='validate(event)' path="numSkus"/>

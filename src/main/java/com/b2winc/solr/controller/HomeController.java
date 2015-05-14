@@ -89,10 +89,10 @@ public	 class HomeController {
 		aux=null;
 	    this.queryForm = queryForm;
 		this.queryForm.setNumSkus(queryForm.getNumSkus());	
-		 String wrapped []  = StringUtils.split(this.queryForm.getWrapped(),",");
+		/* String wrapped []  = StringUtils.split(this.queryForm.getWrapped(),",");
 		for (String string : wrapped) {
 			System.out.println(string);
-		}
+		}*/
 		if(StringUtils.isNotEmpty(queryForm.getRows())){
 	    	QUANTITY = Integer.valueOf(queryForm.getRows());
 	    }else{
@@ -147,11 +147,20 @@ public	 class HomeController {
 			queryString.append("itemStock:"+stock);	
 			queryString.append(" AND isKit:true");
 			return getKits(itemSolrDao, queryString,queryForm.getNumSkus());
-		}else if (type.equals("b2w")){			
+		}/*else if(queryForm.getWrapped() != null ){
+			System.out.println("entrei no reembaldos");
+			String stock = queryForm.getStock();						
+			queryString.append("itemStock:"+stock);	
+			queryString.append(" AND isKit:true");
+			return getKits(itemSolrDao, queryString,queryForm.getNumSkus());
+		}*/else if (type.equals("b2w")){			
 			queryString.append(getQueryType(type));
 			String stock = queryForm.getStock();						
 			queryString.append(" AND itemStock:"+stock);
 			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");
+			if(queryForm.getWrapped() != null ){
+				queryString.append(" AND 	itemStockQuantityNew:[1 TO *] AND itemStockQuantityRewrapped:"+getWrappedStatus());
+			}
 			@SuppressWarnings("unused")
 			List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 			int totalResult = (int) itemSolrDao.getTotalResults();
@@ -201,6 +210,10 @@ public	 class HomeController {
 		
 	}
 	
+	private String getWrappedStatus() {
+		return "[0 TO 0]";
+	}
+
 	private List<IndexedItem> getItens(ItemSolrDao itemSolrDao,	StringBuffer queryString,Integer quantity, String start) throws SolrServerException {
 		List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 		SolrQuery query = new SolrQuery(queryString.toString());
