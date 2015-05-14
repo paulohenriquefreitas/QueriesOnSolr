@@ -89,10 +89,7 @@ public	 class HomeController {
 		aux=null;
 	    this.queryForm = queryForm;
 		this.queryForm.setNumSkus(queryForm.getNumSkus());	
-		/* String wrapped []  = StringUtils.split(this.queryForm.getWrapped(),",");
-		for (String string : wrapped) {
-			System.out.println(string);
-		}*/
+		System.out.println(this.queryForm.getWrapped());
 		if(StringUtils.isNotEmpty(queryForm.getRows())){
 	    	QUANTITY = Integer.valueOf(queryForm.getRows());
 	    }else{
@@ -158,8 +155,8 @@ public	 class HomeController {
 			String stock = queryForm.getStock();						
 			queryString.append(" AND itemStock:"+stock);
 			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");
-			if(queryForm.getWrapped() != null ){
-				queryString.append(" AND 	itemStockQuantityNew:[1 TO *] AND itemStockQuantityRewrapped:"+getWrappedStatus());
+			if(this.queryForm.getWrapped() != null ){
+				queryString.append(getWrappedStatus());
 			}
 			@SuppressWarnings("unused")
 			List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
@@ -211,7 +208,15 @@ public	 class HomeController {
 	}
 	
 	private String getWrappedStatus() {
-		return "[0 TO 0]";
+		String [] wrapped = StringUtils.split(this.queryForm.getWrapped(),",");
+		if(wrapped.length == 2){
+			return "AND itemStockQuantityNew:[1 TO *] AND itemStockQuantityRewrapped:[1 TO *]";
+		}else if (wrapped[0].equalsIgnoreCase("new")){
+			return "AND itemStockQuantityNew:[1 TO *] AND itemStockQuantityRewrapped:[0 TO 0]";
+		}else if (wrapped[0].equalsIgnoreCase("rewrapped")){
+			return "AND itemStockQuantityNew:[0 TO 0] AND itemStockQuantityRewrapped:[1 TO *]";
+		}
+		return "";
 	}
 
 	private List<IndexedItem> getItens(ItemSolrDao itemSolrDao,	StringBuffer queryString,Integer quantity, String start) throws SolrServerException {
@@ -250,7 +255,7 @@ public	 class HomeController {
 				if(indexedItemList != null &&  indexedItemList.size() > 0 && Integer.valueOf(increment) < totalResult){
 					
 					for(IndexedItem indexedItem : indexedItemList){
-						if(indexedItem.getSkuList().size() == skuQuantity && getSkuStock(indexedItem) == skuQuantity){
+						if(indexedItem.getSkuList().size() >= skuQuantity && getSkuStock(indexedItem) == skuQuantity){
 							listIndexedItemsBysku.add(indexedItem);
 							if(listIndexedItemsBysku.size() == QUANTITY){
 								return listIndexedItemsBysku;
