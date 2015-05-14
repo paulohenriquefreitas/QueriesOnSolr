@@ -164,7 +164,7 @@ function hideDiv() {
 					<div id="rewrappedDiv" class="panel panel-default" style="display:none">
 						<div class="panel-heading">
 			                <h5 class="panel-title">
-			                    <a data-toggle="collapse "  href="#collapseFive">Reembalados</a>
+			                    <a data-toggle="collapse"  href="#collapseFive">Reembalados</a>
 			                </h5>
 			            </div>
 	            		<div id="collapseFive" class="panel-collapse collapse in">
@@ -177,11 +177,8 @@ function hideDiv() {
 								</div> 
 							</div>
 						</div>		
-					</div>
-					
-					<script type="text/javascript">
-    $("hideme").hide();
-</script>
+					</div>					
+
 					<hr/>
 					<div class="panel-body ">
 						<form:input pattern="[0-9.]*" title="Entre com números, por favor." id="numSku" class="smallfield" placeholder="Nº Skus" onkeypress='validate(event)' path="numSkus"/>

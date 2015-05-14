@@ -89,7 +89,6 @@ public	 class HomeController {
 		aux=null;
 	    this.queryForm = queryForm;
 		this.queryForm.setNumSkus(queryForm.getNumSkus());	
-		System.out.println(this.queryForm.getWrapped());
 		if(StringUtils.isNotEmpty(queryForm.getRows())){
 	    	QUANTITY = Integer.valueOf(queryForm.getRows());
 	    }else{
