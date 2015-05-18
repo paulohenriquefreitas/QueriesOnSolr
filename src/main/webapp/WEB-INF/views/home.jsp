@@ -170,8 +170,8 @@ function hideDiv() {
 	            		<div id="collapseFive" class="panel-collapse collapse in">
 	               			 <div class="panel-body">											
 								<div >
-								    <input type="checkbox" id="new"  name="wrapped" value="new" class="checkbox"  />
-								    <label for="new">NOVO</label>								
+								    <input type="checkbox" id="newSoub"  name="wrapped" value="newSoub" class="checkbox"  />
+								    <label for="newSoub">NOVO</label>								
 								    <input type="checkbox" id="rewrapped"  name="wrapped" value="rewrapped" class="checkbox"  />
 								    <label for="rewrapped">REEMBALADO</label>
 								</div> 

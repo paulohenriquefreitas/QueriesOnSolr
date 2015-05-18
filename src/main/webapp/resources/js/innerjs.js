@@ -48,11 +48,16 @@ function disableMarketPlace() {
 function enableReembalados(){
 	var div = document.getElementById('rewrappedDiv');
     div.style.display = 'block';
+    document.getElementById('rewrappedDiv');
+    newSoub.checked = true;
 }
 
 function disableReembalados(){
 	var div = document.getElementById('rewrappedDiv');
     div.style.display = 'none';
+    document.getElementById('rewrappedDiv');
+    newSoub.checked = false;
+    rewrapped.checked = false;
 }
 
 
