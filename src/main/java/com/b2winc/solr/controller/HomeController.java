@@ -145,6 +145,9 @@ public	 class HomeController {
 			String stock = queryForm.getStock();						
 			queryString.append("itemStock:"+stock);	
 			queryString.append(" AND isKit:true");
+			if(this.queryForm.getWrapped() != null ){
+				queryString.append(getWrappedStatus());
+			}
 			return getKits(itemSolrDao, queryString,queryForm.getNumSkus());
 		}/*else if(queryForm.getWrapped() != null ){
 			System.out.println("entrei no reembaldos");

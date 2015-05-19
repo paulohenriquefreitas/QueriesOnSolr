@@ -10,13 +10,11 @@
 <title>Easy Query</title>
 <link type="text/css" href="/resources/css/bootstrap.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/hover.css" rel="stylesheet"/>
-<link type="text/css" href="/resources/css/bootstrap-select.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/toggle-switch.css" rel="stylesheet"/>
 <link type="text/css" href="/resources/css/select2.css" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="/resources/css/jquery.tokenize.css" />
 <link rel="shortcut icon" href="/resources/image/Java_Log2o.png"/>
 
-<link href="bootstrap-switch.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
 <script src="/resources/js/bootstrap-select.js"></script>
@@ -28,14 +26,6 @@
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" href="/resources/css/prism.css">
 <link rel="stylesheet" href="/resources/css/chosen.css">
-<script type="text/javascript">
-
-function hideDiv() {
-    document.getElementById("rewrappedDiv").style.display = 'none';    
-  } 
-
-</script>
-
 
 </head>
 <body >
