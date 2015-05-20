@@ -149,24 +149,14 @@ public	 class HomeController {
 				queryString.append(getWrappedStatus());
 			}
 			return getKits(itemSolrDao, queryString,queryForm.getNumSkus());
-		}/*else if(queryForm.getWrapped() != null ){
-			System.out.println("entrei no reembaldos");
-			String stock = queryForm.getStock();						
-			queryString.append("itemStock:"+stock);	
-			queryString.append(" AND isKit:true");
-			return getKits(itemSolrDao, queryString,queryForm.getNumSkus());
-		}*/else if (type.equals("b2w")){			
+		}else if (type.equals("b2w")){			
 			queryString.append(getQueryType(type));
 			String stock = queryForm.getStock();						
 			queryString.append(" AND itemStock:"+stock);
 			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");
 			if(this.queryForm.getWrapped() != null ){
 				queryString.append(getWrappedStatus());
-			}
-			/*@SuppressWarnings("unused")
-			List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
-			int totalResult = (int) itemSolrDao.getTotalResults();
-			int random = Integer.valueOf(getRandom(totalResult));*/
+			}		
 			return getItens(itemSolrDao, queryString,QUANTITY);
 			
 		}else {
@@ -176,15 +166,23 @@ public	 class HomeController {
 			queryString.append(" AND partnerList:[1 TO *]"); 
 			List<IndexedItem> listIndexedItems = new ArrayList<IndexedItem>();
 			String fields = "itemId,isMarketPlace,isExclusiveMarketPlace,skuStock,partnerList,skuList";
+			if(this.queryForm.getWrapped() != null ){
+				queryString.append(getWrappedStatus());
+			}
+			int random = 0;
+			int row = 500;
 			@SuppressWarnings("unused")
 			List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 			int totalResult = (int) itemSolrDao.getTotalResults();
-			int random = Integer.valueOf(getRandom(totalResult));
+			random = Integer.valueOf(getRandom(totalResult));
 			log.info("TotalResults "+ totalResult);
 	    	while(listIndexedItems.size() < QUANTITY){
 	    		String increment = getIncrement(random);
 	    		log.info("Start "+ increment);
-				List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, 500,increment,fields);
+	    		if(totalResult < 500 && Integer.valueOf(increment) < 500){
+	    			row=totalResult-Integer.valueOf(increment);
+	    		}
+				List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, row,increment,fields);
 					if(indexedItemList != null &&  indexedItemList.size() > 0 && Integer.valueOf(increment) < totalResult){
 						for(IndexedItem indexedItem : indexedItemList){
 							if(indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == numPartner && 
@@ -196,10 +194,10 @@ public	 class HomeController {
 							}
 						}
 					}else{
-						if(StringUtils.isEmpty(queryForm.getStart()) && totalResult > 500){
+						if(StringUtils.isEmpty(queryForm.getStart()) && totalResult > 1){
 							totalResult=random;
 							random = Integer.valueOf(getRandom(totalResult));
-							aux=(totalResult > 500 ? random-500 : -500);
+							aux=(totalResult > 500 ? random-500 : (-500+random));
 							log.info("TotalResults "+ totalResult);
 						}else{
 							return listIndexedItems;
@@ -243,9 +241,7 @@ public	 class HomeController {
 		@SuppressWarnings("unused")
 		List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 		int totalResult = (int) itemSolrDao.getTotalResults();
-		//if(totalResult > 500){
-			random = Integer.valueOf(getRandom(totalResult));
-		//}
+		random = Integer.valueOf(getRandom(totalResult));
 		log.info("TotalResults "+ totalResult);	
 		while(listIndexedItemsBysku.size() < QUANTITY){
 			String increment = getIncrement(random);
@@ -256,8 +252,7 @@ public	 class HomeController {
     		
 			List<IndexedItem> indexedItemList = getSimpleItens(itemSolrDao, queryString, row,increment,fields);
 			try{
-				if(indexedItemList != null &&  indexedItemList.size() > 0 && Integer.valueOf(increment) < totalResult){
-					
+				if(indexedItemList != null &&  indexedItemList.size() > 0 && Integer.valueOf(increment) < totalResult){				
 					for(IndexedItem indexedItem : indexedItemList){
 						if(indexedItem.getSkuList().size() >= skuQuantity && getSkuStock(indexedItem) == skuQuantity){
 							listIndexedItemsBysku.add(indexedItem);
@@ -303,16 +298,21 @@ public	 class HomeController {
 		String fields = "itemId,itemName,itemStock,skuStock,skuList,erpDepartamentId,isMarketPlace,partnerList,kitItemList";
 		query.addField(fields);
 		List<IndexedItem> listIndexedItemsFashion = new ArrayList<IndexedItem>();
+		int random = 0;
+		int row = 500;
 		@SuppressWarnings("unused")
 		List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 		int totalResult = (int) itemSolrDao.getTotalResults();
-		int random = Integer.valueOf(getRandom(totalResult));
+		random = Integer.valueOf(getRandom(totalResult));
 		log.info("TotalResults "+ totalResult);	
 		kitGroup = new HashMap<String, List<IndexedItem>>();		
 		while(listIndexedItemsFashion.size() < QUANTITY){
 			String increment = getIncrement(random);
     		log.info("Start "+ increment);
-			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,increment,fields);
+    		if(totalResult < 500 && Integer.valueOf(increment) < 500){
+    			row=totalResult-Integer.valueOf(increment);
+    		}
+			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, row,increment,fields);
 			try{
 				if(listIndexedItems != null &&  listIndexedItems.size() > 0  && Integer.valueOf(increment) < totalResult){	
 					for(IndexedItem indexedItem : listIndexedItems){
@@ -339,10 +339,10 @@ public	 class HomeController {
 						}
 					}
 				}else{
-					if(StringUtils.isEmpty(queryForm.getStart()) && totalResult > 500){
+					if(StringUtils.isEmpty(queryForm.getStart()) && totalResult > 1){
 						totalResult=random;
 						random = Integer.valueOf(getRandom(totalResult));
-						aux=(totalResult > 500 ? random-500 : -500);
+						aux=(totalResult > 500 ? random-500 : (-500+random));
 						log.info("TotalResults "+ totalResult);
 					}else{
 						kitGroup = getKitGroupList(itemSolrDao,listIndexedItemsFashion);
@@ -381,15 +381,20 @@ public	 class HomeController {
 		query.add("rows",String.valueOf(QUANTITY));
 		List<IndexedItem> listIndexedItemsKit = new ArrayList<IndexedItem>();
 		String fields = "itemId,itemName,isKit,skuList,kitItemList";
+		int random = 0;
+		int row = 500;
 		@SuppressWarnings("unused")
 		List<IndexedItem> indexedItemListCounter = getSimpleItens(itemSolrDao, queryString, 1,"1","itemId");
 		int totalResult = (int) itemSolrDao.getTotalResults();
-		int random = Integer.valueOf(getRandom(totalResult));
+		random = Integer.valueOf(getRandom(totalResult));
 		log.info("TotalResults "+ totalResult);	
 		while(listIndexedItemsKit.size() < QUANTITY){
 			String increment = getIncrement(random);
-    		log.info("Start "+ increment);			
-			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, 500,increment,fields);
+    		log.info("Start "+ increment);
+    		if(totalResult < 500 && Integer.valueOf(increment) < 500){
+    			row=totalResult-Integer.valueOf(increment);
+    		}
+			List<IndexedItem> listIndexedItems = getSimpleItens(itemSolrDao, queryString, row,increment,fields);
 			try{
 				if(listIndexedItems != null &&  listIndexedItems.size() > 0 && Integer.valueOf(increment) < totalResult){
 					for(IndexedItem indexedItem : listIndexedItems){
@@ -402,10 +407,10 @@ public	 class HomeController {
 						}	
 					}
 				}else{
-					if(StringUtils.isEmpty(queryForm.getStart()) && totalResult > 500){
+					if(StringUtils.isEmpty(queryForm.getStart()) && totalResult > 1){
 						totalResult=random;
 						random = Integer.valueOf(getRandom(totalResult));
-						aux=(totalResult > 500 ? random-500 : -500);
+						aux=(totalResult > 500 ? random-500 : (-500+random));
 						log.info("TotalResults "+ totalResult);
 					}else{
 						return listIndexedItemsKit;
