@@ -81,7 +81,7 @@ public	 class HomeController {
 			model.addAttribute("kitGroups", getKitGroup());
 			model.addAttribute("partnersMap", getParnerList(marketPlaceSolrDao,listIndexedItem));
 		}
-		log.info("Tempo total: "+ (initExecutionTime - System.currentTimeMillis()) + " milionésimos de segundo.");
+		log.info("Tempo total:  "+ (initExecutionTime - System.currentTimeMillis()));
 		return mv;			
 	}
 
@@ -151,9 +151,9 @@ public	 class HomeController {
 			return getKits(itemSolrDao, queryString,queryForm.getNumSkus());
 		}else if (type.equals("b2w")){			
 			queryString.append(getQueryType(type));
-			queryString.append(" AND itemStock:"+queryForm.getStock());
+			String stock = queryForm.getStock();						
+			queryString.append(" AND itemStock:"+stock);
 			queryString.append(" AND -erpDepartamentId:("+ FASHIONDEP+")");
-			queryString.append(" AND isKit:"+queryForm.getKit());
 			if(this.queryForm.getWrapped() != null ){
 				queryString.append(getWrappedStatus());
 			}		
@@ -234,9 +234,8 @@ public	 class HomeController {
 	}
 	
 	private List<IndexedItem> getItensB2wBySku(ItemSolrDao itemSolrDao, StringBuffer queryString,Integer skuQuantity) {
-		String fields = "itemId,isKit,isMarketPlace,itemStock,skuList,skuStock,itemStockQuantityNew,itemStockQuantityRewrapped";
+		String fields = "itemId,isMarketPlace,itemStock,skuList,skuStock,itemStockQuantityNew,itemStockQuantityRewrapped";
 		List<IndexedItem> listIndexedItemsBysku = new ArrayList<IndexedItem>();
-		String stock = queryForm.getStock();
 		int random = 0;
 		int row = 500;
 		@SuppressWarnings("unused")
@@ -255,7 +254,7 @@ public	 class HomeController {
 			try{
 				if(indexedItemList != null &&  indexedItemList.size() > 0 && Integer.valueOf(increment) < totalResult){				
 					for(IndexedItem indexedItem : indexedItemList){
-						if(indexedItem.getSkuList().size() >= skuQuantity && getSkuStock(indexedItem,stock) == skuQuantity){
+						if(indexedItem.getSkuList().size() >= skuQuantity && getSkuStock(indexedItem) == skuQuantity){
 							listIndexedItemsBysku.add(indexedItem);
 							if(listIndexedItemsBysku.size() == QUANTITY){
 								return listIndexedItemsBysku;
@@ -282,11 +281,11 @@ public	 class HomeController {
 	}
 
 
-	private Integer getSkuStock(IndexedItem indexedItem,String stock) {
+	private Integer getSkuStock(IndexedItem indexedItem) {
 		int count = 0; 
 		for(String sku : indexedItem.getSkuStock()){
 			String skuSplitted [] = sku.split(SEPARATOR);
-			if(skuSplitted[1].equalsIgnoreCase(stock)){
+			if(Boolean.valueOf(skuSplitted[1])){
 				count ++;
 			}
 		}
@@ -299,7 +298,6 @@ public	 class HomeController {
 		String fields = "itemId,itemName,itemStock,skuStock,skuList,erpDepartamentId,isMarketPlace,partnerList,kitItemList";
 		query.addField(fields);
 		List<IndexedItem> listIndexedItemsFashion = new ArrayList<IndexedItem>();
-		String stock = queryForm.getStock();
 		int random = 0;
 		int row = 500;
 		@SuppressWarnings("unused")
@@ -320,17 +318,17 @@ public	 class HomeController {
 					for(IndexedItem indexedItem : listIndexedItems){
 						if(type.equals("b2w") && StringUtils.isEmpty(numSkus)){
 							listIndexedItemsFashion.add(indexedItem);
-						}else if(type.equals("b2w") && !StringUtils.isEmpty(numSkus) && getSkuStock(indexedItem,stock) == Integer.valueOf(numSkus)){
+						}else if(type.equals("b2w") && !StringUtils.isEmpty(numSkus) && getSkuStock(indexedItem) == Integer.valueOf(numSkus)){
 							listIndexedItemsFashion.add(indexedItem);
 						}else if(StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && indexedItem.getPartnerList() != null){
 							listIndexedItemsFashion.add(indexedItem);
-						}else if(!StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && getSkuStock(indexedItem,stock) == Integer.valueOf(numSkus)
+						}else if(!StringUtils.isEmpty(numSkus) && StringUtils.isEmpty(queryForm.getNumPartner()) && getSkuStock(indexedItem) == Integer.valueOf(numSkus)
 								&& indexedItem.getPartnerList() != null){
 							listIndexedItemsFashion.add(indexedItem);
 						}else if(StringUtils.isEmpty(numSkus) && !StringUtils.isEmpty(queryForm.getNumPartner()) && 
 								indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(queryForm.getNumPartner())){
 							listIndexedItemsFashion.add(indexedItem);
-						}else if(!StringUtils.isEmpty(numSkus) && getSkuStock(indexedItem,stock) == Integer.valueOf(numSkus) && 
+						}else if(!StringUtils.isEmpty(numSkus) && getSkuStock(indexedItem) == Integer.valueOf(numSkus) && 
 								!StringUtils.isEmpty(numSkus) && indexedItem.getPartnerList() != null && indexedItem.getPartnerList().size() == Integer.valueOf(queryForm.getNumPartner())){
 							listIndexedItemsFashion.add(indexedItem);
 						}
@@ -530,10 +528,14 @@ public	 class HomeController {
 	}
 	
 	private String getLink(String marca) {
+		if(marca.equalsIgnoreCase("homolog"))
+			return "http://hml.www.americanas.com.br/produto/";
 		return "http://www."+marca+".com.br/produto/";
 	}
 	
 	private String getLinkWebstore(String marca) {
+		if(marca.equalsIgnoreCase("homolog"))
+			return "http://hml.www.americanas.com.br/lojista/";
 		return "http://www."+marca+".com.br/lojista/";
 	}	
 	

@@ -55,6 +55,7 @@
 			      <label class="btn btn-danger" onclick="disableReembalados()"><form:radiobutton path="brand" value="americanas" />AMERICANAS</label>			        
 			      <label class="btn btn-shop" onclick="disableReembalados()"><form:radiobutton path="brand" value="shoptime"/>SHOPTIME</label>
 			      <label class="btn btn-soub" onclick="enableReembalados()" ><form:radiobutton path="brand" value="soubarato" />SOUBARATO</label>
+			      <label class="btn btn-success" onclick="disableReembalados()"><form:radiobutton path="brand" value="homolog" />HOMOLOGAÇÃO</label>
 			    </div>
 			</div>
 		</div>

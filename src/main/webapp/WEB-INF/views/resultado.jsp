@@ -51,6 +51,11 @@
 				                <h4 class="panel-title">
 				                    <a href="${link}${item.id}" target="_blank">${item.id}</a> - 
 				                    <a data-toggle="collapse" href="#${item.id}">${item.itemName}</a>
+				                     <c:if test="${item.itemStockQuantityNew > 0}" ><span class="spt-tag-novo-esq">NOVO</span>
+				                      </c:if>
+				                      <c:if test="${item.itemStockQuantityRewrapped > 0}" ><span class="spt-tag-reembalado-esq">REEMBALADO</span>
+				                      </c:if> 
+				                      
 				                </h4>
 				            </div>
 				            <div id="${item.id}" class="panel-collapse collapse">
