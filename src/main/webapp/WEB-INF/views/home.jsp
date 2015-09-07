@@ -180,7 +180,8 @@
 					<div class="form-actions"><br/>
 						<button id="submit" type="submit" class="btn btn-success" >Submit</button>
 						<button type="button" class="btn" onclick="hideCanvasLoader()">Cancel</button>
-					</div>						
+					</div>	
+					<h1>Alteração no master</h1>					
 				</div>	
 			</div>
 			
