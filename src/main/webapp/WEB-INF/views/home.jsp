@@ -30,7 +30,7 @@
 </head>
 <body >
 
-		
+<h1>Aki vai ter um conflito da branch1 com a branch2 - Este texto é da branch2</h1>		
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
