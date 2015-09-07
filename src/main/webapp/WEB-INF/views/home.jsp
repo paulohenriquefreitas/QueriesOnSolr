@@ -60,6 +60,7 @@
 		</div>
 	</div>
 	<h1>Exibindo lição de ADD and COMMIT</h1>
+	<h1>Commit para ammend</h1>
 	
 	<div class="container">
 		<div class="row clearfix">
