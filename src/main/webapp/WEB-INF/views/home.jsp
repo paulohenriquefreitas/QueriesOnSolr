@@ -29,6 +29,7 @@
 
 </head>
 <body >
+<h1>Agora estou trabalhando na iss53</h1>
 <h1>Texto branch</h1>	
 <h1>Texto adicionado na master</h1>	
 <h1>Aki vai ter um conflito da branch1 com a branch2 - Este texto é da branch2</h1>		
