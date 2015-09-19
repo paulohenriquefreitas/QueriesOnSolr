@@ -33,20 +33,6 @@
 
 <h1>Aki vai ter um conflito da branch1 com a branch2 - Este texto é da branch2</h1>		
 
-<div class="container">
-	<div class="row clearfix">
-		<div class="col-md-12 column">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						<img alt="40x40" src="/resources/image/Java_Log2o.png" class="img-rounded" />
-						<span>Easy Query</span>
-					</h3>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
 <h1>Branch new-feature</h1>
 					
